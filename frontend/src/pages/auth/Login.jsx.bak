@@ -1,0 +1,75 @@
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import toast from 'react-hot-toast'
+import api from '../../services/api'
+import useAuthStore from '../../store/authStore'
+import { detectDeviceProfile } from '../../utils/deviceProfile'
+
+export default function Login() {
+  const { t } = useTranslation()
+  const nav   = useNavigate()
+  const setAuth = useAuthStore(s => s.setAuth)
+  const setDevice = useAuthStore(s => s.setDeviceProfile)
+
+  const [form, setForm] = useState({ emailOrPhone: '', password: '' })
+  const [loading, setLoading] = useState(false)
+
+  const roleHome = { student: '/student/home', teacher: '/teacher/home', guardian: '/parent/notifications', admin: '/admin/home' }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      const { data } = await api.post('/auth/login', form)
+      setAuth(data)
+      setDevice(detectDeviceProfile())
+      toast.success('Welcome back!')
+      nav(roleHome[data.role] || '/')
+    } catch (err) {
+      toast.error(err.response?.data?.error || t('common.error'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-50 to-blue-100 p-4">
+      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-brand-700 mb-6 text-center">EduApp</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">{t('auth.email')}</label>
+            <input
+              className="input"
+              type="text"
+              value={form.emailOrPhone}
+              onChange={e => setForm(f => ({ ...f, emailOrPhone: e.target.value }))}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">{t('auth.password')}</label>
+            <input
+              className="input"
+              type="password"
+              value={form.password}
+              onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+              required
+            />
+          </div>
+          <button className="btn-primary w-full" disabled={loading}>
+            {loading ? t('common.loading') : t('auth.login')}
+          </button>
+        </form>
+        <div className="mt-4 text-center text-sm space-y-1">
+          <Link to="/forgot-password" className="text-brand-600 hover:underline block">
+            {t('auth.forgotPassword')}
+          </Link>
+          <span className="text-gray-500">{t('auth.noAccount')} </span>
+          <Link to="/signup" className="text-brand-600 hover:underline">{t('auth.signup')}</Link>
+        </div>
+      </div>
+    </div>
+  )
+}

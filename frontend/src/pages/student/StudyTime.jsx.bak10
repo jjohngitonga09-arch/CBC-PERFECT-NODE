@@ -1,0 +1,4301 @@
+import { useState, useEffect, useCallback } from 'react'
+
+
+
+/*════════════════════════════════════════════════════
+
+  DATA
+
+════════════════════════════════════════════════════*/
+
+const LETTERS = {
+
+  A:{w:'Apple',e:'🍎',k:'Apeli',s:'/æ/'},     B:{w:'Ball',e:'⚽',k:'Mpira',s:'/b/'},
+
+  C:{w:'Cat',e:'🐱',k:'Paka',s:'/k/'},         D:{w:'Dog',e:'🐕',k:'Mbwa',s:'/d/'},
+
+  E:{w:'Egg',e:'🥚',k:'Yai',s:'/ɛ/'},          F:{w:'Fish',e:'🐟',k:'Samaki',s:'/f/'},
+
+  G:{w:'Goat',e:'🐐',k:'Mbuzi',s:'/g/'},        H:{w:'Hat',e:'🎩',k:'Kofia',s:'/h/'},
+
+  I:{w:'Insect',e:'🐛',k:'Mdudu',s:'/ɪ/'},      J:{w:'Jug',e:'🫙',k:'Bilauri',s:'/dʒ/'},
+
+  K:{w:'Kite',e:'🪁',k:'Tiara',s:'/k/'},         L:{w:'Lion',e:'🦁',k:'Simba',s:'/l/'},
+
+  M:{w:'Mango',e:'🥭',k:'Embe',s:'/m/'},         N:{w:'Nest',e:'🪺',k:'Kiota',s:'/n/'},
+
+  O:{w:'Orange',e:'🍊',k:'Chungwa',s:'/ɒ/'},     P:{w:'Pen',e:'✏️',k:'Kalamu',s:'/p/'},
+
+  Q:{w:'Queen',e:'👑',k:'Malkia',s:'/kw/'},       R:{w:'Rain',e:'🌧️',k:'Mvua',s:'/r/'},
+
+  S:{w:'Sun',e:'☀️',k:'Jua',s:'/s/'},             T:{w:'Tree',e:'🌳',k:'Mti',s:'/t/'},
+
+  U:{w:'Umbrella',e:'☂️',k:'Mwavuli',s:'/ʌ/'},    V:{w:'Van',e:'🚐',k:'Gari',s:'/v/'},
+
+  W:{w:'Water',e:'💧',k:'Maji',s:'/w/'},           X:{w:'Xylophone',e:'🎵',k:'—',s:'/z/'},
+
+  Y:{w:'Yam',e:'🍠',k:'Viazi',s:'/j/'},            Z:{w:'Zebra',e:'🦓',k:'Punda milia',s:'/z/'},
+
+}
+
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+
+const VOWELS = ['A','E','I','O','U']
+
+
+
+const SYLLABLE_FAMILIES = {
+
+  b:['ba','be','bi','bo','bu'],   ch:['cha','che','chi','cho','chu'],
+
+  d:['da','de','di','do','du'],   f:['fa','fe','fi','fo','fu'],
+
+  g:['ga','ge','gi','go','gu'],   h:['ha','he','hi','ho','hu'],
+
+  j:['ja','je','ji','jo','ju'],   k:['ka','ke','ki','ko','ku'],
+
+  l:['la','le','li','lo','lu'],   m:['ma','me','mi','mo','mu'],
+
+  n:['na','ne','ni','no','nu'],   p:['pa','pe','pi','po','pu'],
+
+  r:['ra','re','ri','ro','ru'],   s:['sa','se','si','so','su'],
+
+  sh:['sha','she','shi','sho','shu'], t:['ta','te','ti','to','tu'],
+
+  v:['va','ve','vi','vo','vu'],   w:['wa','we','wi','wo','wu'],
+
+  y:['ya','ye','yi','yo','yu'],   z:['za','ze','zi','zo','zu'],
+
+}
+
+
+
+const FIB = {
+
+  PP1:[
+
+    {w:'cat',b:'c_t',m:'a',o:['a','e','i','o','u'],e:'🐱'},{w:'dog',b:'d_g',m:'o',o:['a','e','i','o','u'],e:'🐕'},
+
+    {w:'hat',b:'h_t',m:'a',o:['a','e','i','o','u'],e:'🎩'},{w:'pen',b:'p_n',m:'e',o:['a','e','i','o','u'],e:'✏️'},
+
+    {w:'pig',b:'p_g',m:'i',o:['a','e','i','o','u'],e:'🐷'},{w:'sun',b:'s_n',m:'u',o:['a','e','i','o','u'],e:'☀️'},
+
+    {w:'cup',b:'c_p',m:'u',o:['a','e','i','o','u'],e:'☕'},{w:'bed',b:'b_d',m:'e',o:['a','e','i','o','u'],e:'🛏️'},
+
+    {w:'hop',b:'h_p',m:'o',o:['a','e','i','o','u'],e:'🐸'},{w:'sit',b:'s_t',m:'i',o:['a','e','i','o','u'],e:'🪑'},
+
+    {w:'bus',b:'b_s',m:'u',o:['a','e','i','o','u'],e:'🚌'},{w:'map',b:'m_p',m:'a',o:['a','e','i','o','u'],e:'🗺️'},
+
+  ],
+
+  PP2:[
+
+    {w:'cake',b:'c_ke',m:'a',o:['a','e','i','o','u'],e:'🎂'},{w:'kite',b:'k_te',m:'i',o:['a','e','i','o','u'],e:'🪁'},
+
+    {w:'bone',b:'b_ne',m:'o',o:['a','e','i','o','u'],e:'🦴'},{w:'mule',b:'m_le',m:'u',o:['a','e','i','o','u'],e:'🫏'},
+
+    {w:'fire',b:'f_re',m:'i',o:['a','e','i','o','u'],e:'🔥'},{w:'rope',b:'r_pe',m:'o',o:['a','e','i','o','u'],e:'🪢'},
+
+    {w:'game',b:'g_me',m:'a',o:['a','e','i','o','u'],e:'🎮'},{w:'tune',b:'t_ne',m:'u',o:['a','e','i','o','u'],e:'🎵'},
+
+    {w:'pipe',b:'p_pe',m:'i',o:['a','e','i','o','u'],e:'🪈'},{w:'note',b:'n_te',m:'o',o:['a','e','i','o','u'],e:'📝'},
+
+    {w:'late',b:'l_te',m:'a',o:['a','e','i','o','u'],e:'🕐'},{w:'cube',b:'c_be',m:'u',o:['a','e','i','o','u'],e:'📦'},
+
+  ],
+
+  'Grade 1':[
+
+    {w:'plant',b:'pl_nt',m:'a',o:['a','e','i','o','u'],e:'🌱'},{w:'frog',b:'fr_g',m:'o',o:['a','e','i','o','u'],e:'🐸'},
+
+    {w:'drum',b:'dr_m',m:'u',o:['a','e','i','o','u'],e:'🥁'},{w:'clock',b:'cl_ck',m:'o',o:['a','e','i','o','u'],e:'🕐'},
+
+    {w:'stone',b:'st_ne',m:'o',o:['a','e','i','o','u'],e:'🪨'},{w:'bread',b:'br__d',m:'ea',o:['ea','ee','oo','au','ai'],e:'🍞'},
+
+    {w:'greet',b:'gr__t',m:'ee',o:['ee','ea','oo','ai','ie'],e:'👋'},{w:'cloud',b:'cl__d',m:'ou',o:['ou','oo','ea','ai','ie'],e:'☁️'},
+
+    {w:'snail',b:'sn__l',m:'ai',o:['ai','ea','oo','ie','au'],e:'🐌'},{w:'train',b:'tr__n',m:'ai',o:['ai','ea','oo','ie','au'],e:'🚂'},
+
+    {w:'float',b:'fl__t',m:'oa',o:['oa','ee','ou','ai','ie'],e:'🛶'},{w:'sheep',b:'sh__p',m:'ee',o:['ee','ea','oo','ai','ie'],e:'🐑'},
+
+  ],
+
+}
+
+
+
+const WILD_ANIMALS = [
+
+  {n:'Lion',e:'🦁',s:'Roar!',k:'Simba',h:'Savannah'},
+
+  {n:'Elephant',e:'🐘',s:'Trumpet!',k:'Tembo',h:'Forest & Savannah'},
+
+  {n:'Zebra',e:'🦓',s:'Bray!',k:'Punda milia',h:'Savannah'},
+
+  {n:'Giraffe',e:'🦒',s:'Hum!',k:'Twiga',h:'Savannah'},
+
+  {n:'Crocodile',e:'🐊',s:'Hiss!',k:'Mamba',h:'Rivers'},
+
+  {n:'Monkey',e:'🐒',s:'Chatter!',k:'Tumbili',h:'Forest'},
+
+  {n:'Hippo',e:'🦛',s:'Grunt!',k:'Kiboko',h:'Rivers'},
+
+  {n:'Cheetah',e:'🐆',s:'Chirp!',k:'Duma',h:'Savannah'},
+
+  {n:'Rhino',e:'🦏',s:'Snort!',k:'Kifaru',h:'Grassland'},
+
+  {n:'Eagle',e:'🦅',s:'Screech!',k:'Tai',h:'Mountains'},
+
+  {n:'Snake',e:'🐍',s:'Hiss!',k:'Nyoka',h:'Grassland'},
+
+  {n:'Parrot',e:'🦜',s:'Squawk!',k:'Kasuku',h:'Forest'},
+
+]
+
+
+
+const DOMESTIC_ANIMALS = [
+
+  {n:'Dog',e:'🐕',s:'Woof!',k:'Mbwa',u:'Guard / Pet'},
+
+  {n:'Cat',e:'🐱',s:'Meow!',k:'Paka',u:'Pet / Catches mice'},
+
+  {n:'Cow',e:'🐄',s:'Moo!',k:"Ng'ombe",u:'Milk & meat'},
+
+  {n:'Goat',e:'🐐',s:'Baa!',k:'Mbuzi',u:'Milk & meat'},
+
+  {n:'Sheep',e:'🐑',s:'Baa!',k:'Kondoo',u:'Wool & meat'},
+
+  {n:'Chicken',e:'🐔',s:'Cluck!',k:'Kuku',u:'Eggs & meat'},
+
+  {n:'Donkey',e:'🫏',s:'Hee-haw!',k:'Punda',u:'Carries loads'},
+
+  {n:'Rabbit',e:'🐇',s:'Squeak!',k:'Sungura',u:'Meat & pet'},
+
+  {n:'Horse',e:'🐴',s:'Neigh!',k:'Farasi',u:'Transport'},
+
+  {n:'Pig',e:'🐷',s:'Oink!',k:'Nguruwe',u:'Meat'},
+
+]
+
+
+
+const COLORS = [
+
+  {n:'Red',h:'#ef4444',k:'Nyekundu',e:'🔴'},{n:'Blue',h:'#3b82f6',k:'Bluu',e:'🔵'},
+
+  {n:'Yellow',h:'#eab308',k:'Njano',e:'🟡'},{n:'Green',h:'#22c55e',k:'Kijani',e:'🟢'},
+
+  {n:'Orange',h:'#f97316',k:'Chungwa',e:'🟠'},{n:'Purple',h:'#a855f7',k:'Zambarau',e:'🟣'},
+
+  {n:'Pink',h:'#ec4899',k:'Pinki',e:'💗'},{n:'Brown',h:'#92400e',k:'Kahawia',e:'🟤'},
+
+  {n:'Black',h:'#1c1c1e',k:'Nyeusi',e:'⚫'},{n:'White',h:'#e5e7eb',k:'Nyeupe',e:'⚪'},
+
+]
+
+
+
+const SHAPES = [
+
+  {n:'Circle',sides:0,k:'Duara',desc:'No corners, perfectly round',svg:'circle'},
+
+  {n:'Square',sides:4,k:'Mraba',desc:'4 equal sides and 4 equal corners',svg:'square'},
+
+  {n:'Triangle',sides:3,k:'Pembetatu',desc:'3 sides and 3 corners',svg:'triangle'},
+
+  {n:'Rectangle',sides:4,k:'Mstatili',desc:'4 sides — 2 long and 2 short',svg:'rect'},
+
+  {n:'Oval',sides:0,k:'Duara refu',desc:'Like a stretched circle',svg:'oval'},
+
+  {n:'Diamond',sides:4,k:'Almasi',desc:'4 equal sides, tilted like a kite',svg:'diamond'},
+
+]
+
+
+
+const BODY_PARTS = [
+
+  {n:'Head',e:'👤',k:'Kichwa',f:'Thinking and sensing'},
+
+  {n:'Eyes',e:'👁️',k:'Macho',f:'Seeing the world'},
+
+  {n:'Ears',e:'👂',k:'Masikio',f:'Hearing sounds'},
+
+  {n:'Nose',e:'👃',k:'Pua',f:'Smelling & breathing'},
+
+  {n:'Mouth',e:'👄',k:'Mdomo',f:'Eating & talking'},
+
+  {n:'Teeth',e:'🦷',k:'Meno',f:'Chewing food'},
+
+  {n:'Hands',e:'🤲',k:'Mikono',f:'Touching & holding'},
+
+  {n:'Legs',e:'🦵',k:'Miguu',f:'Walking & running'},
+
+  {n:'Stomach',e:'🫃',k:'Tumbo',f:'Digesting food'},
+
+  {n:'Heart',e:'❤️',k:'Moyo',f:'Pumping blood'},
+
+]
+
+
+
+const WEATHER = [
+
+  {n:'Sunny',e:'☀️',k:'Jua',d:'Bright & warm. Wear light clothes!',wear:'👕'},
+
+  {n:'Rainy',e:'🌧️',k:'Mvua',d:'Water falls from clouds.',wear:'☂️'},
+
+  {n:'Windy',e:'💨',k:'Upepo',d:'Air moves fast. Hold your hat!',wear:'🧥'},
+
+  {n:'Cloudy',e:'☁️',k:'Mawingu',d:'Sky is covered with clouds.',wear:'👚'},
+
+  {n:'Cold',e:'🥶',k:'Baridi',d:'Cool weather. Wear a sweater!',wear:'🧣'},
+
+  {n:'Hot',e:'🌡️',k:'Joto',d:'Very warm. Drink lots of water!',wear:'🩳'},
+
+]
+
+
+
+const PLANTS = [
+
+  {n:'Mango Tree',e:'🥭',k:"Mti wa embe",t:'Tree',u:'Fruit to eat'},
+
+  {n:'Maize',e:'🌽',k:'Mahindi',t:'Crop',u:'Food (ugali)'},
+
+  {n:'Rose',e:'🌹',k:'Waridi',t:'Flower',u:'Beauty'},
+
+  {n:'Banana',e:'🍌',k:'Ndizi',t:'Tree',u:'Fruit to eat'},
+
+  {n:'Avocado',e:'🥑',k:'Parachichi',t:'Tree',u:'Fruit to eat'},
+
+  {n:'Sunflower',e:'🌻',k:'Alizeti',t:'Flower',u:'Oil & seeds'},
+
+  {n:'Grass',e:'🌿',k:'Nyasi',t:'Plant',u:'Animals feed on it'},
+
+  {n:'Cactus',e:'🌵',k:'Mkakasi',t:'Plant',u:'Stores water'},
+
+]
+
+
+
+const FAMILY = [
+
+  {n:'Father',e:'👨',k:'Baba',r:'Head of the family, protects & provides'},
+
+  {n:'Mother',e:'👩',k:'Mama',r:'Cares for the family, cooks & nurtures'},
+
+  {n:'Sister',e:'👧',k:'Dada',r:'Female sibling'},
+
+  {n:'Brother',e:'👦',k:'Kaka',r:'Male sibling'},
+
+  {n:'Grandmother',e:'👵',k:'Bibi',r:'Mother\'s or father\'s mother'},
+
+  {n:'Grandfather',e:'👴',k:'Babu',r:'Mother\'s or father\'s father'},
+
+  {n:'Aunt',e:'🧑',k:'Shangazi / Mama mdogo',r:'Father\'s or mother\'s sister'},
+
+  {n:'Uncle',e:'🧔',k:'Mjomba / Baba mdogo',r:'Father\'s or mother\'s brother'},
+
+]
+
+
+
+const COMMUNITY_HELPERS = [
+
+  {n:'Teacher',e:'👩‍🏫',k:'Mwalimu',j:'Teaches children in school'},
+
+  {n:'Doctor',e:'👨‍⚕️',k:'Daktari',j:'Heals the sick'},
+
+  {n:'Police',e:'👮',k:'Polisi',j:'Keeps the community safe'},
+
+  {n:'Farmer',e:'👨‍🌾',k:'Mkulima',j:'Grows our food'},
+
+  {n:'Cook',e:'👨‍🍳',k:'Mpishi',j:'Prepares food'},
+
+  {n:'Driver',e:'🚗',k:'Dereva',j:'Drives vehicles'},
+
+  {n:'Nurse',e:'👩‍⚕️',k:'Nesi',j:'Cares for patients'},
+
+  {n:'Firefighter',e:'🧑‍🚒',k:'Mzima moto',j:'Puts out fires'},
+
+]
+
+
+
+const SWAHILI_GREETINGS = [
+
+  {e:'How are you?',k:'Habari?',r:'Nzuri / Sawa'},
+
+  {e:'Good morning',k:'Habari ya asubuhi?',r:'Nzuri sana'},
+
+  {e:'Good afternoon',k:'Habari ya mchana?',r:'Nzuri'},
+
+  {e:'Good evening',k:'Habari ya jioni?',r:'Nzuri'},
+
+  {e:'Respect (to elders)',k:'Shikamoo',r:'Marahaba'},
+
+  {e:'Welcome',k:'Karibu',r:'Asante'},
+
+  {e:'Thank you',k:'Asante',r:'Karibu'},
+
+  {e:'Please',k:'Tafadhali',r:'—'},
+
+  {e:'Sorry / Excuse me',k:'Samahani',r:'Sawa'},
+
+  {e:'Goodbye',k:'Kwaheri',r:'Kwaheri pia'},
+
+]
+
+
+
+const SWAHILI_NUMBERS = [
+
+  {n:1,k:'Moja'},{n:2,k:'Mbili'},{n:3,k:'Tatu'},{n:4,k:'Nne'},{n:5,k:'Tano'},
+
+  {n:6,k:'Sita'},{n:7,k:'Saba'},{n:8,k:'Nane'},{n:9,k:'Tisa'},{n:10,k:'Kumi'},
+
+  {n:11,k:'Kumi na moja'},{n:12,k:'Kumi na mbili'},{n:15,k:'Kumi na tano'},
+
+  {n:20,k:'Ishirini'},{n:30,k:'Thelathini'},{n:40,k:'Arobaini'},{n:50,k:'Hamsini'},
+
+  {n:100,k:'Mia moja'},
+
+]
+
+
+
+const BIBLE_STORIES = [
+
+  {
+
+    title:"Noah's Ark",emoji:'⛵',
+
+    verse:'Genesis 6–9',
+
+    story:"God saw that the earth was full of evil. He told Noah, who was a good man, to build a huge boat called an ark. Noah obeyed. He put two of every animal on the ark. Then it rained for 40 days and 40 nights. The flood covered the earth. Noah and his family were safe. When the water went away, God put a rainbow in the sky as a promise never to flood the whole earth again.",
+
+    lesson:'Obedience to God keeps us safe. God keeps His promises.',
+
+    questions:['Why did God ask Noah to build the ark?','How many days did it rain?','What did God put in the sky as a promise?'],
+
+  },
+
+  {
+
+    title:'David and Goliath',emoji:'🗡️',
+
+    verse:'1 Samuel 17',
+
+    story:"The Philistine army had a giant warrior called Goliath. He was over 9 feet tall! Every day he challenged Israel's army and everyone was afraid. But a young shepherd boy called David was not afraid. He said God would help him. With just a sling and a stone, David hit Goliath on the forehead and the giant fell down. David won because he trusted in God, not in swords or armour.",
+
+    lesson:'With faith in God, even a small person can do great things.',
+
+    questions:['Who was Goliath?','What weapons did David use?','Why wasn\'t David afraid?'],
+
+  },
+
+  {
+
+    title:"Daniel in the Lions' Den",emoji:'🦁',
+
+    verse:'Daniel 6',
+
+    story:"Daniel was a man who prayed to God three times every day. Some jealous men tricked the king into making a law that no one could pray to God. When Daniel continued to pray, he was thrown into a den of hungry lions. But God sent an angel who closed the lions\' mouths. Daniel was not hurt at all! The king was amazed and declared that everyone should respect Daniel\'s God.",
+
+    lesson:'Trust in God even when it is hard. God protects those who are faithful.',
+
+    questions:['What did Daniel do three times a day?','What happened when Daniel was thrown to the lions?','What did the king say after Daniel was safe?'],
+
+  },
+
+]
+
+
+
+const CHRISTIAN_VALUES = [
+
+  {v:'Sharing',e:'🤝',b:'Acts 4:32',d:'Give some of what you have to those who need it'},
+
+  {v:'Honesty',e:'✅',b:'Proverbs 12:17',d:'Always tell the truth, even when it is hard'},
+
+  {v:'Obedience',e:'👂',b:'Ephesians 6:1',d:'Listen to and obey your parents and teachers'},
+
+  {v:'Kindness',e:'💛',b:'Ephesians 4:32',d:'Be gentle and caring to everyone around you'},
+
+  {v:'Forgiveness',e:'🙏',b:'Matthew 6:14',d:'When someone wrongs you, choose to forgive them'},
+
+  {v:'Thankfulness',e:'🙌',b:'1 Thess 5:18',d:'Say "thank you" to God and to people who help you'},
+
+  {v:'Responsibility',e:'⭐',b:'Luke 16:10',d:'Do your duties well — at home, at school, everywhere'},
+
+]
+
+
+
+const SIMPLE_WORDS = {
+
+  PP1: [
+
+    {w:'cat',e:'🐱'},{w:'dog',e:'🐕'},{w:'mat',e:'🛏️'},{w:'rat',e:'🐀'},{w:'hat',e:'🎩'},
+
+    {w:'bat',e:'🦇'},{w:'hen',e:'🐔'},{w:'pen',e:'✏️'},{w:'ten',e:'🔟'},{w:'men',e:'👥'},
+
+    {w:'big',e:'🐘'},{w:'pig',e:'🐷'},{w:'dig',e:'⛏️'},{w:'fig',e:'🍑'},{w:'wig',e:'💇'},
+
+    {w:'hot',e:'🌡️'},{w:'pot',e:'🍲'},{w:'dot',e:'⚫'},{w:'rot',e:'🍂'},{w:'got',e:'🎁'},
+
+  ],
+
+  PP2: [
+
+    {w:'cake',e:'🎂'},{w:'lake',e:'🌊'},{w:'bake',e:'🧁'},{w:'make',e:'🔨'},{w:'take',e:'✋'},
+
+    {w:'bike',e:'🚲'},{w:'hike',e:'🥾'},{w:'like',e:'👍'},{w:'mike',e:'🎤'},{w:'pike',e:'🐟'},
+
+    {w:'bone',e:'🦴'},{w:'cone',e:'🍦'},{w:'tone',e:'🎵'},{w:'zone',e:'🗺️'},{w:'lone',e:'👤'},
+
+    {w:'mule',e:'🫏'},{w:'rule',e:'📏'},{w:'yule',e:'🎄'},{w:'dune',e:'🏜️'},{w:'tune',e:'🎶'},
+
+  ],
+
+}
+
+
+
+const HEALTH_SAFETY = [
+
+  {t:'Handwashing',e:'🧼',steps:['Wet hands with clean water','Apply soap','Scrub for 20 seconds','Rinse well','Dry with a clean cloth'],when:['Before eating','After using the toilet','After playing outside','After touching animals']},
+
+  {t:'Healthy Eating',e:'🥦',groups:['Fruits 🍎🍌🍊','Vegetables 🥦🥕🌽','Grains 🌾🍞🍚','Proteins 🥚🥩🐟','Dairy 🥛🧀'],rule:'Eat a rainbow of foods every day!'},
+
+  {t:'Safety Rules',e:'🦺',rules:['Never touch sharp objects like blades or knives','Stay away from fire','Say NO to strangers and run to a trusted adult','Don\'t go near uncovered wells or rivers alone','Cross the road only at a safe crossing — Stop, Look, Listen!']},
+
+  {t:'Personal Hygiene',e:'🪥',daily:['Brush teeth twice a day 🦷','Bath/wash body every day 🛁','Wear clean clothes 👕','Comb your hair 💈','Cut nails regularly ✂️'],shared:'Never share: toothbrush, towel, or comb'},
+
+]
+
+
+
+/*════════════════════════════════════════════════════
+
+  CURRICULUM NOTES
+
+════════════════════════════════════════════════════*/
+
+const CURRICULUM_NOTES = {
+
+  alphabet:{
+
+    title:'Language — Alphabet',
+
+    outcomes:['Articulate all 26 uppercase and lowercase letters correctly','Match each letter to a word beginning with that letter','Begin to blend simple sounds into syllables (phonics)'],
+
+    inquiries:['What letter is this? What sound does it make?','Which things in our classroom begin with the sound /b/?','Can you name a word for every letter of the alphabet?'],
+
+    tip:'💡 Tip: Sing the alphabet song slowly, pointing to each letter on the chart!'
+
+  },
+
+  vowels:{
+
+    title:'Language — Vowels (Irabu) & Consonants (Konsonanti)',
+
+    outcomes:['Identify and name the 5 vowels: A E I O U (irabu)','Distinguish vowels from consonants (konsonanti)','Understand that every syllable must contain a vowel'],
+
+    inquiries:['Which letters are vowels (irabu)? Can you name all five?','Is the letter B a vowel or a consonant?','How many vowels can you find in the word "elephant"?'],
+
+    tip:'💡 Tip: Vowels are the "singing" sounds — A E I O U. Every word needs at least one vowel!'
+
+  },
+
+  syllables:{
+
+    title:'Language — Syllables',
+
+    outcomes:['Blend a consonant with each of the 5 vowels to form open syllables (ba, be, bi, bo, bu)','Recognise common syllable families in spoken words','Clap and count syllables in familiar words'],
+
+    inquiries:['What sound do you make when you put "b" and "a" together?','How many syllables are in "banana"? Clap it!','Which consonant family starts with the /m/ sound?'],
+
+    tip:'💡 Tip: Clap each syllable — ba-na-na = 3 claps, ap-ple = 2 claps!'
+
+  },
+
+  fib:{
+
+    title:'Language — Fill in the Blank',
+
+    outcomes:['Identify the missing vowel in a CVC (consonant-vowel-consonant) word','Apply phonics knowledge to decode simple words','Self-correct using letter-sound knowledge and picture clues'],
+
+    inquiries:['What letter is missing from c_t?','Which vowel makes this word sound right?','Can you think of another word with the same middle sound?'],
+
+    tip:'💡 Tip: Try saying each vowel out loud until the word sounds right — then you\'ll know!'
+
+  },
+
+  numbers:{
+
+    title:'Mathematics — Numbers',
+
+    outcomes:['Rote-count from 1 to 20 (PP1/PP2) or 1 to 100 (Grade 1)','Count concrete objects with one-to-one correspondence','Recognise numeral symbols and match them to quantities'],
+
+    inquiries:['What number comes after 7? What comes before 10?','How many fingers do you have on both hands? Count them!','Can you find the number 5 somewhere in this room?'],
+
+    tip:'💡 Tip: Count real objects — bottle tops, stones, beans. Touching each one as you count helps!'
+
+  },
+
+  shapes:{
+
+    title:'Mathematics — Shapes',
+
+    outcomes:['Name and describe basic 2D shapes: circle, square, triangle, rectangle, oval','Count the sides and corners of each shape','Identify shapes in the real environment (window = rectangle, clock = circle)'],
+
+    inquiries:['How many sides does a triangle have?','Can you find something round (circle-shaped) in this room?','What is the difference between a square and a rectangle?'],
+
+    tip:'💡 Tip: Go on a shape hunt around your home — find 3 different shapes!'
+
+  },
+
+  multiplication:{
+
+    title:'Mathematics — Multiplication Tables',
+
+    outcomes:['Recite multiplication tables from ×2 to ×10 fluently','Understand multiplication as repeated addition (3×4 = 4+4+4)','Apply multiplication facts to solve simple word problems'],
+
+    inquiries:['What is 3 × 4? Can you show it with groups of objects?','If each hand has 5 fingers, how many fingers on 4 hands?','What multiplication fact can you see on a carton of 6 eggs?'],
+
+    tip:'💡 Tip: 3 × 4 means "3 groups of 4". Draw dots to help you see it!'
+
+  },
+
+  animals:{
+
+    title:'Environmental — Animals',
+
+    outcomes:['Name and classify wild and domestic animals','Describe characteristics: sound made, habitat, physical features','Explain the uses of domestic animals to people'],
+
+    inquiries:['What sound does a lion make? Where does it live?','Which of these animals do we find at home or on a farm?','How is a cow useful to us? What about a dog?'],
+
+    tip:'💡 Tip: Visit a farm or watch a nature video to learn animal sounds and habits!'
+
+  },
+
+  body:{
+
+    title:'Environmental — Body Parts',
+
+    outcomes:['Name at least 10 external body parts','Describe the function of each body part','Understand why keeping the body clean is important'],
+
+    inquiries:['What do you use your eyes for? Your ears? Your hands?','Point to your elbow — your knee — your ankle.','Why is it important to wash your hands after using the toilet?'],
+
+    tip:'💡 Tip: Play "Simon says… touch your nose / your ear / your knee" to learn body parts!'
+
+  },
+
+  weather:{
+
+    title:'Environmental — Weather',
+
+    outcomes:['Describe the day\'s weather using correct vocabulary','Match appropriate clothing to each weather condition','Observe and record daily weather patterns on a chart'],
+
+    inquiries:['How is the weather today? How do you know?','What would you wear if it were very cold? Very hot?','What happens to trees and grass when it is windy?'],
+
+    tip:'💡 Tip: Keep a weather diary for one week — draw a sun, cloud, or raindrop each day!'
+
+  },
+
+  plants:{
+
+    title:'Environmental — Plants',
+
+    outcomes:['Name common plants in the local environment','Describe parts of a plant: roots, stem, leaves, flower, fruit','Understand that plants need water, sunlight and soil to grow'],
+
+    inquiries:['What plants can you see around our school?','What do plants need to grow strong?','Which plants give us food? Which ones give us shade?'],
+
+    tip:'💡 Tip: Plant a seed (like a bean) in a cup of soil. Water it and watch it grow!'
+
+  },
+
+  health:{
+
+    title:'Environmental — Health, Hygiene & Safety',
+
+    outcomes:['Demonstrate the 5 steps of proper handwashing','Classify foods as everyday (healthy) or sometimes (less healthy) foods','Identify potential dangers and practise simple safety responses'],
+
+    inquiries:['When must we wash our hands? Name at least 4 times.','Which foods help you grow strong?','What should you do if you find a sharp blade on the floor?'],
+
+    tip:'💡 Tip: Wash your hands for as long as it takes to sing "Happy Birthday" twice — that\'s 20 seconds!'
+
+  },
+
+  creation:{
+
+    title:'Religious Education — God\'s Creation',
+
+    outcomes:['Recognise that God created the world and everything in it (Genesis 1)','Express wonder and gratitude for the beauty of creation','Understand that God made each person special and loves them'],
+
+    inquiries:['Who created you? Who created the sun, moon and stars?','What is your favourite part of God\'s creation?','The Bible says God looked at everything He made and said it was "very good." What does that mean to you?'],
+
+    tip:'💡 Tip: Go outside and name 5 beautiful things God created that you can see right now!'
+
+  },
+
+  bible:{
+
+    title:'Religious Education — Bible Stories',
+
+    outcomes:['Retell key OT stories: Noah\'s Ark, David & Goliath, Daniel in the Lions\' Den','Identify the main moral lesson from each story','Apply Bible values (obedience, courage, faith) to daily life'],
+
+    inquiries:['What did God tell Noah to build? Why did He do that?','How did David defeat Goliath? What lesson do we learn?','What happened to Daniel when he was thrown to the lions? Why?'],
+
+    tip:'💡 Tip: Act out the stories with friends or family — it helps you remember them!'
+
+  },
+
+}
+
+
+
+/*════════════════════════════════════════════════════
+
+  CLASS / SUBJECT / TOPIC STRUCTURE
+
+════════════════════════════════════════════════════*/
+
+const ALL_GRADES = ['PP1','PP2','Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9']
+
+const GRADE_SUBJECTS_MAP = {
+  'PP1':['Language Activities','Mathematical Activities','Creative Activities','Environmental Activities','Religious Education'],
+  'PP2':['Language Activities','Mathematical Activities','Creative Activities','Environmental Activities','Religious Education'],
+  'Grade 1':['English','Mathematics','Kiswahili','Environmental Activities','Creative Arts','Religious Education'],
+  'Grade 2':['English','Mathematics','Kiswahili','Environmental Activities','Creative Arts','Religious Education'],
+  'Grade 3':['English','Mathematics','Kiswahili','Environmental Activities','Creative Arts','Religious Education'],
+  'Grade 4':['English','Mathematics','Kiswahili','Science & Technology','Social Studies','Creative Arts','Religious Education'],
+  'Grade 5':['English','Mathematics','Kiswahili','Science & Technology','Social Studies','Creative Arts','Religious Education'],
+  'Grade 6':['English','Mathematics','Kiswahili','Science & Technology','Social Studies','Creative Arts','Religious Education'],
+  'Grade 7':['English','Mathematics','Kiswahili','Integrated Science','Health Education','Social Studies','Religious Education','Agriculture','Creative Arts & Sports'],
+  'Grade 8':['English','Mathematics','Kiswahili','Integrated Science','Health Education','Social Studies','Religious Education','Agriculture','Creative Arts & Sports'],
+  'Grade 9':['English','Mathematics','Kiswahili','Integrated Science','Health Education','Social Studies','Religious Education','Agriculture','Creative Arts & Sports'],
+}
+
+const CLASS_SUBJECTS = {
+
+  PP1:['Language Activities','Mathematical Activities','Creative Activities','Environmental Activities','Religious Education'],
+
+  PP2:['Language Activities','Mathematical Activities','Creative Activities','Environmental Activities','Religious Education'],
+
+  'Grade 1':['English','Mathematics','Kiswahili','Environmental Activities','Creative Arts'],
+
+}
+
+
+
+const SUBJECT_TOPICS = {
+
+  PP1:{
+
+    'Language Activities':['Uppercase ABC','Lowercase abc','Vowels — Irabu','Consonants — Konsonanti','Syllables','Fill in the Blank','Simple Words','Study Notes'],
+
+    'Mathematical Activities':['Numbers 1–50','Shapes','Colours','Counting Fun','Study Notes'],
+
+    'Creative Activities':['Colours Chart','Patterns','Music & Movement','Study Notes'],
+
+    'Environmental Activities':['Wild Animals','Domestic Animals','Body Parts','Weather','My Family','Study Notes'],
+
+    'Religious Education':["God's Creation",'Study Notes'],
+
+  },
+
+  PP2:{
+
+    'Language Activities':['Uppercase ABC','Lowercase abc','Vowels — Irabu','Consonants — Konsonanti','Syllables','Fill in the Blank','Simple Words','Study Notes'],
+
+    'Mathematical Activities':['Numbers 1–50','Shapes','Colours','Patterns','Measurement','Study Notes'],
+
+    'Creative Activities':['Colours Chart','Art Techniques','Music & Movement','Study Notes'],
+
+    'Environmental Activities':['Wild Animals','Domestic Animals','Body Parts','Weather','Plants & Water','Health & Safety','My School','Study Notes'],
+
+    'Religious Education':["God's Creation",'Bible Stories','Christian Values','Life of Jesus','Prayer & Church','Study Notes'],
+
+  },
+
+  'Grade 1':{
+
+    'English':['Alphabet Review','Syllables & Blends','Fill in the Blank','Simple Words','Study Notes'],
+
+    'Mathematics':['Numbers 1–100','Addition','Subtraction','Multiplication Tables','Shapes','Study Notes'],
+
+    'Kiswahili':['Salamu — Greetings','Nambari — Numbers','Rangi — Colours','Wanyama — Animals','Study Notes'],
+
+    'Environmental Activities':['Wild & Domestic Animals','Body Parts','Community Helpers','Weather','Plants','Health & Safety','Study Notes'],
+
+    'Creative Arts':['Colours & Drawing','Crafts','Music & Dance','Movement Skills','Study Notes'],
+
+  },
+
+}
+
+
+
+const SUBJECT_COLORS = {
+
+  'Language Activities':{acc:'#3b82f6',bg:'rgba(59,130,246,0.1)',border:'rgba(59,130,246,0.25)',txt:'#93c5fd'},
+
+  'Mathematical Activities':{acc:'#8b5cf6',bg:'rgba(139,92,246,0.1)',border:'rgba(139,92,246,0.25)',txt:'#c4b5fd'},
+
+  'Creative Activities':{acc:'#f97316',bg:'rgba(249,115,22,0.1)',border:'rgba(249,115,22,0.25)',txt:'#fdba74'},
+
+  'Environmental Activities':{acc:'#22c55e',bg:'rgba(34,197,94,0.1)',border:'rgba(34,197,94,0.25)',txt:'#86efac'},
+
+  'Religious Education':{acc:'#6366f1',bg:'rgba(99,102,241,0.1)',border:'rgba(99,102,241,0.25)',txt:'#a5b4fc'},
+
+  English:{acc:'#3b82f6',bg:'rgba(59,130,246,0.1)',border:'rgba(59,130,246,0.25)',txt:'#93c5fd'},
+
+  Mathematics:{acc:'#8b5cf6',bg:'rgba(139,92,246,0.1)',border:'rgba(139,92,246,0.25)',txt:'#c4b5fd'},
+
+  Kiswahili:{acc:'#14b8a6',bg:'rgba(20,184,166,0.1)',border:'rgba(20,184,166,0.25)',txt:'#5eead4'},
+
+  'Creative Arts':{acc:'#f97316',bg:'rgba(249,115,22,0.1)',border:'rgba(249,115,22,0.25)',txt:'#fdba74'},
+
+}
+
+
+
+/*════════════════════════════════════════════════════
+
+  TINY HELPER STYLES
+
+════════════════════════════════════════════════════*/
+
+const card  = (extra={})=>({background:'#1a2234',border:'1px solid #1f2937',borderRadius:'14px',padding:'16px',...extra})
+
+const badge = (col,extra={})=>({background:col+'20',border:`1px solid ${col}40`,borderRadius:'20px',padding:'3px 10px',fontSize:'.72rem',fontWeight:700,color:col,...extra})
+
+const grid  = (min='140px',gap='10px')=>({display:'grid',gridTemplateColumns:`repeat(auto-fill,minmax(${min},1fr))`,gap})
+
+const sectionTitle = (color)=>({fontSize:'1rem',fontWeight:800,color,margin:'0 0 14px',letterSpacing:'-0.2px'})
+
+const label = {fontSize:'.7rem',fontWeight:700,color:'#6b7280',textTransform:'uppercase',letterSpacing:'.5px'}
+
+
+
+/*════════════════════════════════════════════════════
+
+  SHAPE SVG RENDERER
+
+════════════════════════════════════════════════════*/
+
+const QUIZ_QUESTIONS = {
+  'Uppercase ABC':[
+    {q:'Which letter comes after D?',o:['C','E','F','B'],a:'E'},
+    {q:'How many letters are in the alphabet?',o:['24','25','26','27'],a:'26'},
+    {q:'Which of these is a vowel?',o:['B','D','E','F'],a:'E'},
+    {q:'What is the first letter of the alphabet?',o:['Z','B','A','C'],a:'A'},
+    {q:'Which letter makes the /k/ sound?',o:['S','K','G','X'],a:'K'},
+  ],
+  'Lowercase abc':[
+    {q:'What is the lowercase of A?',o:['A','a','@','4'],a:'a'},
+    {q:'Which of these is a lowercase vowel?',o:['B','D','e','F'],a:'e'},
+    {q:'How many lowercase letters are in the alphabet?',o:['24','25','26','27'],a:'26'},
+    {q:'What is the lowercase of Z?',o:['Z','z','s','x'],a:'z'},
+    {q:'Which letter is this: "b"?',o:['d','p','b','q'],a:'b'},
+  ],
+  'Vowels — Irabu':[
+    {q:'How many vowels are there?',o:['3','4','5','6'],a:'5'},
+    {q:'Which is a vowel?',o:['B','C','A','D'],a:'A'},
+    {q:'Swahili word for vowel?',o:['Konsonanti','Irabu','Silabi','Herufi'],a:'Irabu'},
+    {q:'Is U a vowel?',o:['Yes','No','Sometimes','Never'],a:'Yes'},
+    {q:'Which word has 3 vowels?',o:['cat','dog','umbrella','frog'],a:'umbrella'},
+  ],
+  'Syllables':[
+    {q:'Syllables in "ba-na-na"?',o:['2','3','4','1'],a:'3'},
+    {q:'Every syllable must have a...?',o:['consonant','vowel','number','shape'],a:'vowel'},
+    {q:'Syllables in "ap-ple"?',o:['1','2','3','4'],a:'2'},
+    {q:'What does b + a make?',o:['bi','be','ba','bo'],a:'ba'},
+    {q:'Syllables in "cat"?',o:['1','2','3','4'],a:'1'},
+  ],
+  'Fill in the Blank':[
+    {q:'c_t — missing letter?',o:['a','e','i','o'],a:'a'},
+    {q:'d_g — missing letter?',o:['a','i','o','u'],a:'o'},
+    {q:'h_t — missing letter?',o:['a','e','i','u'],a:'a'},
+    {q:'p_n — missing letter?',o:['a','e','i','o'],a:'e'},
+    {q:'s_n — missing letter?',o:['a','e','u','o'],a:'u'},
+  ],
+  'Numbers 1–50':[
+    {q:'What comes after 9?',o:['8','10','11','7'],a:'10'},
+    {q:'5 + 5 = ?',o:['9','10','11','8'],a:'10'},
+    {q:'Biggest number?',o:['12','7','19','15'],a:'19'},
+    {q:'15 - 5 = ?',o:['8','9','10','11'],a:'10'},
+    {q:'Fingers on both hands?',o:['8','9','10','12'],a:'10'},
+  ],
+  'Shapes':[
+    {q:'Sides in a triangle?',o:['2','3','4','5'],a:'3'},
+    {q:'Which shape has no corners?',o:['square','triangle','circle','diamond'],a:'circle'},
+    {q:'Swahili for circle?',o:['Mraba','Duara','Mstatili','Pembetatu'],a:'Duara'},
+    {q:'Sides in a square?',o:['3','4','5','6'],a:'4'},
+    {q:'Shape like a stretched circle?',o:['oval','square','diamond','triangle'],a:'oval'},
+  ],
+  'Wild Animals':[
+    {q:'Sound a lion makes?',o:['Moo','Baa','Roar','Cluck'],a:'Roar'},
+    {q:'Swahili for elephant?',o:['Simba','Tembo','Punda','Twiga'],a:'Tembo'},
+    {q:'Where does a crocodile live?',o:['Mountains','Desert','Rivers','Forest'],a:'Rivers'},
+    {q:'Fastest land animal?',o:['Lion','Elephant','Cheetah','Zebra'],a:'Cheetah'},
+    {q:'Swahili for zebra?',o:['Punda milia','Tembo','Kiboko','Duma'],a:'Punda milia'},
+  ],
+  'Domestic Animals':[
+    {q:'Which animal gives us milk?',o:['Dog','Cat','Cow','Horse'],a:'Cow'},
+    {q:'Sound a dog makes?',o:['Moo','Woof','Baa','Cluck'],a:'Woof'},
+    {q:'Swahili for cat?',o:['Mbwa','Paka','Kuku','Kondoo'],a:'Paka'},
+    {q:'Which animal lays eggs?',o:['Cow','Dog','Chicken','Goat'],a:'Chicken'},
+    {q:'Which animal carries loads?',o:['Cat','Rabbit','Donkey','Sheep'],a:'Donkey'},
+  ],
+  'Body Parts':[
+    {q:'What do you use to see?',o:['Ears','Nose','Eyes','Mouth'],a:'Eyes'},
+    {q:'Swahili for hands?',o:['Miguu','Mikono','Macho','Pua'],a:'Mikono'},
+    {q:'Which part pumps blood?',o:['Stomach','Lungs','Brain','Heart'],a:'Heart'},
+    {q:'What do you use to smell?',o:['Eyes','Nose','Ears','Mouth'],a:'Nose'},
+    {q:'Swahili for head?',o:['Tumbo','Miguu','Kichwa','Mkono'],a:'Kichwa'},
+  ],
+  'Weather':[
+    {q:'Swahili for rain?',o:['Jua','Upepo','Mvua','Baridi'],a:'Mvua'},
+    {q:'Wear on a rainy day?',o:['Shorts','Umbrella','Sandals','Hat'],a:'Umbrella'},
+    {q:'Fast moving air = ?',o:['Sunny','Rainy','Windy','Hot'],a:'Windy'},
+    {q:'Swahili for sun?',o:['Mvua','Jua','Baridi','Upepo'],a:'Jua'},
+    {q:'Weather when sky is bright and warm?',o:['Rainy','Cloudy','Sunny','Windy'],a:'Sunny'},
+  ],
+  'Multiplication Tables':[
+    {q:'3 — 4 = ?',o:['10','11','12','13'],a:'12'},
+    {q:'5 — 5 = ?',o:['20','25','30','15'],a:'25'},
+    {q:'2 — 7 = ?',o:['12','14','16','18'],a:'14'},
+    {q:'10 — 6 = ?',o:['50','60','70','80'],a:'60'},
+    {q:'4 — 8 = ?',o:['28','30','32','34'],a:'32'},
+  ],
+  "God's Creation":[
+    {q:'Who created the world?',o:['People','God','Animals','Angels'],a:'God'},
+    {q:'Which Bible book tells of creation?',o:['Psalms','John','Genesis','Matthew'],a:'Genesis'},
+    {q:'What did God create first?',o:['Animals','Plants','Light','People'],a:'Light'},
+    {q:'What did God say about creation?',o:['It was bad','It was ok','It was very good','It was small'],a:'It was very good'},
+    {q:'Days God took to create the world?',o:['5','6','7','8'],a:'6'},
+  ],
+  'Bible Stories':[
+    {q:"What did God ask Noah to build?",o:['A house','An ark','A tower','A bridge'],a:'An ark'},
+    {q:"Days of rain in Noah flood?",o:['20','30','40','50'],a:'40'},
+    {q:'David used what to defeat Goliath?',o:['Sword','Arrow','Sling and stone','Spear'],a:'Sling and stone'},
+    {q:"What closed the lions mouths for Daniel?",o:['A wall','An angel','A chain','A net'],a:'An angel'},
+    {q:'God put what in sky after the flood?',o:['A star','A cloud','A rainbow','The sun'],a:'A rainbow'},
+  ],
+}
+function ShapeSvg({type,color='#6366f1',size=60}){
+
+  const s={width:size,height:size}
+
+  switch(type){
+
+    case'circle':   return <svg {...s} viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill={color} opacity=".85"/></svg>
+
+    case'square':   return <svg {...s} viewBox="0 0 100 100"><rect x="6" y="6" width="88" height="88" rx="4" fill={color} opacity=".85"/></svg>
+
+    case'triangle': return <svg {...s} viewBox="0 0 100 100"><polygon points="50,4 96,94 4,94" fill={color} opacity=".85"/></svg>
+
+    case'rect':     return <svg width={size*1.6} height={size} viewBox="0 0 160 100"><rect x="5" y="10" width="150" height="80" rx="4" fill={color} opacity=".85"/></svg>
+
+    case'oval':     return <svg width={size*1.4} height={size} viewBox="0 0 140 100"><ellipse cx="70" cy="50" rx="65" ry="44" fill={color} opacity=".85"/></svg>
+
+    case'diamond':  return <svg {...s} viewBox="0 0 100 100"><polygon points="50,4 96,50 50,96 4,50" fill={color} opacity=".85"/></svg>
+
+    default:        return null
+
+  }
+
+}
+
+
+
+/*════════════════════════════════════════════════════
+
+  CONTENT SECTIONS — ALL EXISTING COMPONENTS
+
+════════════════════════════════════════════════════*/
+
+
+
+/* ── LETTER CHART ── */
+
+function LetterChart({upper,showKiswahili}){
+
+  const [sel,setSel]=useState(null)
+
+  const letters=upper?ALPHABET:ALPHABET.map(l=>l.toLowerCase())
+
+  const getKey=l=>l.toUpperCase()
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>{upper?'Uppercase — CAPITAL LETTERS':'Lowercase — small letters'}</p>
+
+      <div style={grid('88px','10px')}>
+
+        {letters.map(l=>{
+
+          const k=getKey(l); const isVowel=VOWELS.includes(k); const isSel=sel===k
+
+          return(
+
+            <div key={l} onClick={()=>setSel(isSel?null:k)}
+
+              style={{...card({padding:'10px 6px',textAlign:'center',cursor:'pointer',
+
+                background:isSel?'rgba(99,102,241,0.2)':'#1a2234',
+
+                border:`2px solid ${isSel?'#6366f1':isVowel?'rgba(239,68,68,0.4)':'#1f2937'}`,
+
+                transition:'all .15s'})}}
+
+            >
+
+              <div style={{fontSize:'3.2rem',fontWeight:900,color:isVowel?'#f87171':'#f9fafb',lineHeight:1.1}}>{l}</div>
+
+              <div style={{fontSize:'.78rem',color:'#9ca3af',marginTop:'5px'}}>{LETTERS[k].s}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({background:'rgba(99,102,241,0.1)',border:'1px solid rgba(99,102,241,0.3)',marginTop:'16px',display:'flex',alignItems:'center',gap:'20px',flexWrap:'wrap'})}}>
+
+          <div style={{fontSize:'5rem',lineHeight:1}}>{LETTERS[sel].e}</div>
+
+          <div style={{flex:1}}>
+
+            <div style={{fontSize:'3rem',fontWeight:900,color:'#f9fafb',lineHeight:1}}>{upper?sel:sel.toLowerCase()}</div>
+
+            <div style={{fontSize:'1.1rem',fontWeight:700,color:'#a5b4fc',margin:'4px 0'}}>{LETTERS[sel].w}</div>
+
+            <div style={{fontSize:'.8rem',color:'#6b7280'}}>Sound: <span style={{color:'#c4b5fd'}}>{LETTERS[sel].s}</span></div>
+
+            {showKiswahili&&<div style={{fontSize:'.8rem',color:'#6b7280',marginTop:'2px'}}>Kiswahili: <span style={{color:'#5eead4'}}>{LETTERS[sel].k}</span></div>}
+
+            <div style={{...badge(VOWELS.includes(sel)?'#ef4444':'#3b82f6',{marginTop:'8px',display:'inline-block'})}}>
+
+              {VOWELS.includes(sel)?'VOWEL — Irabu':'CONSONANT — Konsonanti'}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      <div style={{marginTop:'12px',padding:'10px 14px',background:'rgba(239,68,68,0.08)',borderRadius:'10px',border:'1px solid rgba(239,68,68,0.2)'}}>
+
+        <span style={{...label,color:'#fca5a5'}}>🔴 Red letters = Vowels (Irabu) → </span>
+
+        <span style={{fontWeight:700,color:'#f87171',fontSize:'.9rem'}}>A  E  I  O  U</span>
+
+        <span style={{...label,color:'#9ca3af',marginLeft:'12px'}}> · Blue letters = Consonants (Konsonanti)</span>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── VOWELS & CONSONANTS ── */
+
+function VowelsConsonants(){
+  const [tab, setTab] = useState('vowels')
+  const [selSyl, setSelSyl] = useState(null)
+
+  const vowelInfo = [
+    {l:'A', word:'Apple',    emoji:'🍎', col:'#ef4444', sw:'Apeli'},
+    {l:'E', word:'Egg',      emoji:'🥚', col:'#f97316', sw:'Yai'},
+    {l:'I', word:'Insect',   emoji:'🐛', col:'#eab308', sw:'Mdudu'},
+    {l:'O', word:'Orange',   emoji:'🍊', col:'#22c55e', sw:'Chungwa'},
+    {l:'U', word:'Umbrella', emoji:'☂️', col:'#3b82f6', sw:'Mwavuli'},
+  ]
+
+  const vCols = {a:'#ef4444', e:'#f97316', i:'#eab308', o:'#22c55e', u:'#3b82f6'}
+  const allFamilies = Object.entries(SYLLABLE_FAMILIES)
+
+  return (
+    <div>
+      <p style={{fontSize:'1.3rem',fontWeight:900,color:'#f9fafb',margin:'0 0 18px'}}>
+        Vowels &amp; Syllables — Irabu na Silabi
+      </p>
+
+      {/* Tab buttons */}
+      <div style={{display:'flex',gap:'10px',marginBottom:'20px',flexWrap:'wrap'}}>
+        {[
+          {id:'vowels',    label:'🔴 Vowels — Irabu'},
+          {id:'syllables', label:'📖 Syllable Families'},
+        ].map(t => (
+          <button key={t.id} onClick={() => setTab(t.id)}
+            style={{
+              padding:'10px 20px', borderRadius:'24px', fontWeight:700,
+              fontSize:'1rem', cursor:'pointer',
+              border: `2px solid ${tab === t.id ? '#6366f1' : '#374151'}`,
+              background: tab === t.id ? 'rgba(99,102,241,0.2)' : 'transparent',
+              color:  tab === t.id ? '#a5b4fc' : '#9ca3af',
+            }}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'vowels' && (
+        <div>
+          <p style={{color:'#9ca3af',fontSize:'1rem',marginBottom:'16px'}}>
+            There are <strong style={{color:'#f87171'}}>5 vowels</strong> in English —
+            called <strong style={{color:'#f87171'}}>Irabu</strong> in Kiswahili.
+            Every word needs at least one vowel!
+          </p>
+
+          {/* Vowel cards */}
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(140px,1fr))',gap:'14px',marginBottom:'24px'}}>
+            {vowelInfo.map(v => (
+              <div key={v.l} style={{
+                background: v.col + '18',
+                border: `2px solid ${v.col}50`,
+                borderRadius:'16px', padding:'20px 12px', textAlign:'center',
+              }}>
+                <div style={{fontSize:'4.5rem',lineHeight:1}}>{v.emoji}</div>
+                <div style={{fontSize:'4rem',fontWeight:900,color:v.col,lineHeight:1,marginTop:'8px'}}>{v.l}</div>
+                <div style={{fontSize:'1.1rem',fontWeight:700,color:'#f9fafb',marginTop:'6px'}}>{v.word}</div>
+                <div style={{fontSize:'0.9rem',color:'#5eead4',marginTop:'4px'}}>{v.sw}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Sing them banner */}
+          <div style={{background:'rgba(239,68,68,0.08)',borderRadius:'14px',padding:'16px 20px',border:'1px solid rgba(239,68,68,0.25)',marginBottom:'20px',textAlign:'center'}}>
+            <p style={{fontWeight:800,color:'#f87171',fontSize:'1.1rem',margin:'0 0 12px'}}>🎵 The 5 Vowels — Sing them!</p>
+            <div style={{display:'flex',gap:'20px',justifyContent:'center',flexWrap:'wrap'}}>
+              {['A','E','I','O','U'].map(v => (
+                <span key={v} style={{fontSize:'3.5rem',fontWeight:900,color:'#f87171'}}>{v}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Consonants grid */}
+          <p style={{color:'#9ca3af',fontSize:'1rem',marginBottom:'12px'}}>
+            All other letters are <strong style={{color:'#93c5fd'}}>Consonants — Konsonanti</strong> (21 letters):
+          </p>
+          <div style={{display:'flex',flexWrap:'wrap',gap:'8px'}}>
+            {'BCDFGHJKLMNPQRSTVWXYZ'.split('').map(c => (
+              <div key={c} style={{
+                width:'46px', height:'46px', borderRadius:'10px',
+                display:'flex', alignItems:'center', justifyContent:'center',
+                background:'rgba(59,130,246,0.12)', border:'1px solid rgba(59,130,246,0.3)',
+                fontWeight:800, fontSize:'1.3rem', color:'#93c5fd',
+              }}>
+                {c}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {tab === 'syllables' && (
+        <div>
+          <p style={{color:'#9ca3af',fontSize:'1rem',marginBottom:'16px'}}>
+            A syllable = <strong style={{color:'#f9fafb'}}>consonant + vowel</strong>.
+            Tap any cell to highlight it!
+          </p>
+          <div style={{overflowX:'auto'}}>
+            <table style={{borderCollapse:'separate',borderSpacing:'4px',width:'100%'}}>
+              <thead>
+                <tr>
+                  <th style={{padding:'10px 14px',background:'#111827',borderRadius:'8px',color:'#6b7280',fontWeight:700,textAlign:'center',minWidth:'52px'}}>—</th>
+                  {['a','e','i','o','u'].map(v => (
+                    <th key={v} style={{
+                      padding:'10px 14px',
+                      background: vCols[v] + '20',
+                      borderRadius:'8px',
+                      color: vCols[v],
+                      fontWeight:900,
+                      fontSize:'1.5rem',
+                      textAlign:'center',
+                      minWidth:'62px',
+                    }}>{v}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {allFamilies.map(([fam, sylls]) => (
+                  <tr key={fam}>
+                    <td style={{padding:'10px 14px',background:'#111827',borderRadius:'8px',color:'#9ca3af',fontWeight:800,fontSize:'1.1rem',textAlign:'center'}}>
+                      {fam}—
+                    </td>
+                    {sylls.map((s, i) => {
+                      const v     = ['a','e','i','o','u'][i]
+                      const isSel = selSyl === s
+                      return (
+                        <td key={s}
+                          onClick={() => setSelSyl(isSel ? null : s)}
+                          style={{
+                            padding:'10px 8px', borderRadius:'10px',
+                            textAlign:'center', cursor:'pointer',
+                            background: isSel ? vCols[v] + '30' : '#0f1520',
+                            border: `2px solid ${isSel ? vCols[v] : 'transparent'}`,
+                            transition:'all .12s',
+                          }}>
+                          <span style={{fontWeight:900,fontSize:'1.5rem',color: isSel ? '#fff' : vCols[v]}}>
+                            <span style={{color: isSel ? '#e2e8f0' : '#d1d5db'}}>{fam}</span>{v}
+                          </span>
+                        </td>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {selSyl && (
+            <div style={{marginTop:'16px',padding:'16px 20px',background:'rgba(99,102,241,0.12)',borderRadius:'12px',border:'1px solid rgba(99,102,241,0.3)',textAlign:'center'}}>
+              <span style={{color:'#a5b4fc',fontSize:'1rem'}}>Selected: </span>
+              <span style={{fontSize:'3rem',fontWeight:900,color:'#f9fafb',marginLeft:'10px'}}>{selSyl}</span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+
+function SyllableChart(){
+
+  const [family,setFamily]=useState('b')
+
+  const [hilight,setHilight]=useState(null)
+
+  const families=Object.keys(SYLLABLE_FAMILIES)
+
+  const sylls=SYLLABLE_FAMILIES[family]
+
+  const vowelColors={'a':'#ef4444','e':'#f97316','i':'#eab308','o':'#22c55e','u':'#3b82f6',"'a":'#ef4444',"'e":'#f97316',"'i":'#eab308',"'o":'#22c55e',"'u":'#3b82f6'}
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Syllable Families</p>
+
+      <div style={{marginBottom:'16px'}}>
+
+        <p style={{...label,marginBottom:'8px'}}>Choose a consonant family:</p>
+
+        <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
+
+          {families.map(f=>(
+
+            <button key={f} onClick={()=>{setFamily(f);setHilight(null)}}
+
+              style={{padding:'6px 12px',borderRadius:'20px',border:`1px solid ${family===f?'#6366f1':'#374151'}`,
+
+                background:family===f?'rgba(99,102,241,0.2)':'transparent',
+
+                color:family===f?'#a5b4fc':'#9ca3af',fontWeight:700,fontSize:'.85rem',cursor:'pointer'}}>
+
+              {f}–
+
+            </button>
+
+          ))}
+
+        </div>
+
+      </div>
+
+      <div style={{...card({background:'rgba(99,102,241,0.08)',border:'1px solid rgba(99,102,241,0.25)',marginBottom:'16px'})}}>
+
+        <p style={{...label,marginBottom:'10px',color:'#a5b4fc'}}>Click each syllable to highlight it:</p>
+
+        <div style={{display:'flex',gap:'10px',flexWrap:'wrap',justifyContent:'center'}}>
+
+          {sylls.map(s=>{
+
+            const vow=s.slice(family.length)
+
+            const col=vowelColors[vow]||'#9ca3af'
+
+            const isSel=hilight===s
+
+            return(
+
+              <div key={s} onClick={()=>setHilight(isSel?null:s)}
+
+                style={{padding:'16px 20px',borderRadius:'14px',textAlign:'center',cursor:'pointer',minWidth:'80px',
+
+                  border:`2px solid ${isSel?col:'#374151'}`,background:isSel?col+'25':'#111827',transition:'all .15s'}}>
+
+                <span style={{fontSize:'3.2rem',fontWeight:900,color:isSel?col:'#f9fafb',letterSpacing:'-1px'}}>
+
+                  <span style={{color:isSel?'#f9fafb':'#9ca3af'}}>{family}</span>
+
+                  <span style={{color:col}}>{vow}</span>
+
+                </span>
+
+              </div>
+
+            )
+
+          })}
+
+        </div>
+
+        {hilight&&(
+
+          <div style={{marginTop:'12px',textAlign:'center',padding:'8px',background:'rgba(99,102,241,0.12)',borderRadius:'8px'}}>
+
+            <span style={{color:'#a5b4fc',fontSize:'.9rem'}}>You selected: </span>
+
+            <span style={{fontSize:'1.4rem',fontWeight:900,color:'#f9fafb',marginLeft:'6px'}}>{hilight}</span>
+
+          </div>
+
+        )}
+
+      </div>
+
+      <div style={{overflowX:'auto'}}>
+
+        <table style={{width:'100%',borderCollapse:'collapse',fontSize:'.85rem'}}>
+
+          <thead>
+
+            <tr>
+
+              <th style={{padding:'8px',color:'#6b7280',textAlign:'left',borderBottom:'1px solid #1f2937'}}>Family</th>
+
+              {['a','e','i','o','u'].map(v=>(
+
+                <th key={v} style={{padding:'8px',textAlign:'center',borderBottom:'1px solid #1f2937',
+
+                  color:vowelColors[v],fontWeight:800,fontSize:'1rem'}}>–{v}</th>
+
+              ))}
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {families.map(f=>(
+
+              <tr key={f} style={{background:f===family?'rgba(99,102,241,0.08)':'transparent'}}>
+
+                <td style={{padding:'8px',color:'#9ca3af',fontWeight:700,borderBottom:'1px solid #111827'}}>{f}–</td>
+
+                {SYLLABLE_FAMILIES[f].map((s,i)=>{
+
+                  const v=['a','e','i','o','u'][i]
+
+                  return(
+
+                    <td key={s} style={{padding:'8px',textAlign:'center',borderBottom:'1px solid #111827',
+
+                      fontWeight:800,fontSize:'1.4rem',color:vowelColors[v],cursor:'pointer'}}
+
+                      onClick={()=>{setFamily(f);setHilight(s)}}>
+
+                      {s}
+
+                    </td>
+
+                  )
+
+                })}
+
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── FILL IN THE BLANK ── */
+
+function FillInBlank({level}){
+
+  const words=FIB[level]||FIB.PP1
+
+  const [idx,setIdx]=useState(0)
+
+  const [ans,setAns]=useState(null)
+
+  const [chosen,setChosen]=useState(null)
+
+  const [score,setScore]=useState(0)
+
+  const [total,setTotal]=useState(0)
+
+  const w=words[idx]
+
+  const handleAnswer=(opt)=>{
+
+    if(ans)return
+
+    const correct=opt===w.m
+
+    setChosen(opt);setAns(correct?'correct':'wrong')
+
+    setTotal(t=>t+1)
+
+    if(correct)setScore(s=>s+1)
+
+    setTimeout(()=>{
+
+      setAns(null);setChosen(null)
+
+      setIdx(i=>(i+1)%words.length)
+
+    },1500)
+
+  }
+
+  // Render blank pattern: each consecutive run of _ = one gap bar
+  const renderBlankWord = (pattern) => {
+    const segs = []
+    let i = 0
+    while (i < pattern.length) {
+      if (pattern[i] === '_') {
+        let count = 0
+        while (i < pattern.length && pattern[i] === '_') { count++; i++ }
+        segs.push({ type:'blank', count })
+      } else {
+        let txt = ''
+        while (i < pattern.length && pattern[i] !== '_') { txt += pattern[i]; i++ }
+        segs.push({ type:'text', txt })
+      }
+    }
+    return segs.map((seg, idx) =>
+      seg.type === 'text'
+        ? <span key={idx} style={{color:'#f9fafb',fontSize:'3.2rem',fontWeight:900,fontFamily:'monospace',letterSpacing:'4px'}}>{seg.txt}</span>
+        : <span key={idx} style={{
+            display:'inline-block',
+            width: seg.count === 1 ? '56px' : '100px',
+            height:'8px',
+            borderRadius:'4px',
+            background:'#6366f1',
+            margin:'0 8px',
+            verticalAlign:'middle',
+            position:'relative',
+            top:'-6px'
+          }}/>
+    )
+  }
+
+  return(
+
+    <div>
+
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',flexWrap:'wrap',gap:'10px'}}>
+
+        <p style={sectionTitle('#f9fafb')}>Fill in the Missing Letter</p>
+
+        <div style={{display:'flex',gap:'8px'}}>
+
+          <span style={{...badge('#22c55e')}}>{score} ✅</span>
+
+          <span style={{...badge('#6b7280')}}>{idx+1} / {words.length}</span>
+
+          <button onClick={()=>{setIdx(0);setScore(0);setTotal(0);setAns(null);setChosen(null)}}
+
+            style={{...badge('#f97316',{cursor:'pointer'})}}>↺ Restart</button>
+
+        </div>
+
+      </div>
+
+      <div style={{...card({textAlign:'center',padding:'32px 20px',marginBottom:'16px',
+
+        background:ans==='correct'?'rgba(34,197,94,0.1)':ans==='wrong'?'rgba(239,68,68,0.1)':'rgba(99,102,241,0.06)',
+
+        border:`2px solid ${ans==='correct'?'#22c55e':ans==='wrong'?'#ef4444':'rgba(99,102,241,0.2)'}`,
+
+        transition:'all .2s'})}}>
+
+        <div style={{fontSize:'4rem',marginBottom:'12px'}}>{w.e}</div>
+
+        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'2px',marginBottom:'12px',flexWrap:'wrap'}}>
+
+          {renderBlankWord(w.b)}
+
+        </div>
+
+        {ans==='correct'&&<div style={{color:'#4ade80',fontWeight:700,fontSize:'1.1rem',marginTop:'8px'}}>⭐ Correct! The word is "{w.w}"</div>}
+
+        {ans==='wrong'&&<div style={{color:'#f87171',fontWeight:700,fontSize:'1.1rem',marginTop:'8px'}}>Not quite! The answer is "{w.m}"</div>}
+
+      </div>
+
+      <div style={{display:'flex',gap:'10px',justifyContent:'center',flexWrap:'wrap'}}>
+
+        {w.o.map(opt=>(
+
+          <button key={opt} onClick={()=>handleAnswer(opt)} disabled={!!ans}
+
+            style={{padding:'18px 28px',borderRadius:'14px',fontWeight:900,fontSize:'1.6rem',cursor:ans?'default':'pointer',
+
+              border:`2px solid ${chosen===opt?(ans==='correct'?'#22c55e':'#ef4444'):'#374151'}`,
+
+              background:chosen===opt?(ans==='correct'?'rgba(34,197,94,0.2)':'rgba(239,68,68,0.2)'):'#1a2234',
+
+              color:chosen===opt?(ans==='correct'?'#4ade80':'#f87171'):'#f9fafb',
+
+              transition:'all .1s',transform:chosen===opt&&ans?'scale(1.1)':'scale(1)'}}>
+
+            {opt}
+
+          </button>
+
+        ))}
+
+      </div>
+
+      {total>0&&<div style={{textAlign:'center',marginTop:'14px',color:'#6b7280',fontSize:'.8rem'}}>
+
+        Score: {score}/{total} · {Math.round(score/total*100)}%
+
+      </div>}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── NUMBER CHART ── */
+
+function NumberChart({max=20}){
+
+  const [sel,setSel]=useState(null)
+
+  const nums=Array.from({length:max},(_,i)=>i+1)
+
+  const dots=(n)=>{
+
+    const arr=Array.from({length:Math.min(n,10)},(_,i)=>i)
+
+    return arr.map(i=>(
+
+      <span key={i} style={{display:'inline-block',width:'13px',height:'13px',borderRadius:'50%',
+
+        background:'#6366f1',margin:'2px',opacity:.9}}/>
+
+    ))
+
+  }
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Numbers 1 – {max}</p>
+
+      <div style={grid('92px','10px')}>
+
+        {nums.map(n=>(
+
+          <div key={n} onClick={()=>setSel(sel===n?null:n)}
+
+            style={{...card({padding:'10px 6px',textAlign:'center',cursor:'pointer',
+
+              background:sel===n?'rgba(139,92,246,0.2)':'#1a2234',
+
+              border:`2px solid ${sel===n?'#8b5cf6':'#1f2937'}`,transition:'all .15s'})}}>
+
+            <div style={{fontSize:'2.7rem',fontWeight:900,color:sel===n?'#c4b5fd':'#f9fafb'}}>{n}</div>
+
+            <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'3px',marginTop:'6px',minHeight:'36px'}}>
+
+              {dots(n)}
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({background:'rgba(139,92,246,0.1)',border:'1px solid rgba(139,92,246,0.3)',marginTop:'16px',textAlign:'center',padding:'24px'})}}>
+
+          <div style={{fontSize:'5rem',fontWeight:900,color:'#c4b5fd',lineHeight:1}}>{sel}</div>
+
+          <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'4px',margin:'12px 0'}}>
+
+            {Array.from({length:sel}).map((_,i)=>(
+
+              <span key={i} style={{fontSize:'1.4rem'}}>⭐</span>
+
+            ))}
+
+          </div>
+
+          <div style={{color:'#9ca3af',fontSize:'.85rem'}}>
+
+            {sel-1} + 1 = <strong style={{color:'#c4b5fd'}}>{sel}</strong>
+
+            &nbsp;&nbsp;·&nbsp;&nbsp;
+
+            {sel} - 1 = <strong style={{color:'#c4b5fd'}}>{sel-1}</strong>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── ADDITION / SUBTRACTION PRACTICE ── */
+
+function ArithmeticPractice({op}){
+
+  const gen=()=>{
+
+    const a=Math.floor(Math.random()*10)+1
+
+    const b=op==='+'?Math.floor(Math.random()*10)+1:Math.floor(Math.random()*a)+1
+
+    return{a,b,ans:op==='+'?a+b:a-b}
+
+  }
+
+  const [q,setQ]=useState(gen)
+
+  const [input,setInput]=useState('')
+
+  const [result,setResult]=useState(null)
+
+  const [score,setScore]=useState(0)
+
+  const [total,setTotal]=useState(0)
+
+  const check=()=>{
+
+    if(input==='')return
+
+    const correct=parseInt(input)===q.ans
+
+    setResult(correct?'correct':'wrong')
+
+    setTotal(t=>t+1)
+
+    if(correct)setScore(s=>s+1)
+
+    setTimeout(()=>{setQ(gen());setInput('');setResult(null)},1200)
+
+  }
+
+  return(
+
+    <div>
+
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+
+        <p style={sectionTitle('#f9fafb')}>{op==='+'?'Addition — Kuongeza':'Subtraction — Kutoa'}</p>
+
+        <span style={{...badge('#22c55e')}}>{score}/{total}</span>
+
+      </div>
+
+      <div style={{...card({textAlign:'center',padding:'40px 20px',marginBottom:'16px',
+
+        background:result==='correct'?'rgba(34,197,94,0.1)':result==='wrong'?'rgba(239,68,68,0.1)':'rgba(99,102,241,0.06)',
+
+        border:`2px solid ${result==='correct'?'#22c55e':result==='wrong'?'#ef4444':'#1f2937'}`})}}>
+
+        <div style={{fontSize:'3rem',fontWeight:900,color:'#f9fafb',letterSpacing:'4px'}}>
+
+          {q.a} {op} {q.b} = ?
+
+        </div>
+
+        {result==='correct'&&<div style={{color:'#4ade80',fontWeight:700,marginTop:'8px'}}>⭐ Correct! = {q.ans}</div>}
+
+        {result==='wrong'&&<div style={{color:'#f87171',fontWeight:700,marginTop:'8px'}}>Answer is {q.ans}</div>}
+
+      </div>
+
+      <div style={{display:'flex',gap:'10px',justifyContent:'center'}}>
+
+        <input type="number" value={input} onChange={e=>setInput(e.target.value)}
+
+          onKeyDown={e=>e.key==='Enter'&&check()}
+
+          placeholder="Your answer"
+
+          style={{padding:'12px 18px',borderRadius:'10px',border:'1px solid #374151',background:'#111827',
+
+            color:'#f9fafb',fontSize:'1.2rem',fontWeight:700,width:'140px',textAlign:'center',outline:'none'}}/>
+
+        <button onClick={check}
+
+          style={{padding:'12px 24px',borderRadius:'10px',background:'linear-gradient(135deg,#6366f1,#4f46e5)',
+
+            color:'#fff',fontWeight:700,border:'none',cursor:'pointer',fontSize:'1rem'}}>
+
+          Check ✓
+
+        </button>
+
+      </div>
+
+      <p style={{textAlign:'center',color:'#6b7280',fontSize:'.75rem',marginTop:'10px'}}>Press Enter or click Check</p>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── MULTIPLICATION TABLES ── */
+
+function MultiplicationTables(){
+  const nums = Array.from({length:13},(_,i)=>i+1)
+  const [highlight,setHighlight] = useState(null)
+
+  const getCellColor = (r,c) => {
+    if(!highlight) return null
+    if(r===highlight.r && c===highlight.c) return 'rgba(99,102,241,0.6)'
+    if(r===highlight.r || c===highlight.c) return 'rgba(99,102,241,0.12)'
+    return null
+  }
+
+  return(
+    <div>
+      <p style={{fontSize:'1rem',fontWeight:800,color:'#f9fafb',margin:'0 0 4px'}}>Multiplication Tables — 1 to 13</p>
+      <p style={{fontSize:'.78rem',color:'#6b7280',margin:'0 0 16px'}}>Tap any cell to highlight its row and column</p>
+      <div style={{overflowX:'auto'}}>
+        <table style={{borderCollapse:'collapse',fontSize:'.82rem',minWidth:'100%'}}>
+          <thead>
+            <tr>
+              <th style={{padding:'8px 10px',background:'#0d1117',color:'#6b7280',fontWeight:700,border:'1px solid #1f2937',position:'sticky',left:0,zIndex:2}}>—</th>
+              {nums.map(n=>(
+                <th key={n} style={{padding:'8px 10px',background:'#111827',color:'#a5b4fc',fontWeight:800,border:'1px solid #1f2937',textAlign:'center',minWidth:'44px'}}>
+                  {n}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {nums.map(r=>(
+              <tr key={r}>
+                <td style={{padding:'8px 10px',background:'#111827',color:'#a5b4fc',fontWeight:800,border:'1px solid #1f2937',textAlign:'center',position:'sticky',left:0,zIndex:1}}>
+                  {r}
+                </td>
+                {nums.map(c=>{
+                  const val = r*c
+                  const bg = getCellColor(r,c)
+                  const isSelected = highlight?.r===r && highlight?.c===c
+                  return(
+                    <td key={c}
+                      onClick={()=>setHighlight(highlight?.r===r&&highlight?.c===c?null:{r,c})}
+                      style={{
+                        padding:'8px 10px',textAlign:'center',border:'1px solid #1f2937',
+                        background: bg || (r%2===0?'#0f1520':'#0a0e17'),
+                        color: isSelected?'#fff':bg?'#c4b5fd':'#e5e7eb',
+                        fontWeight: isSelected?900:bg?700:400,
+                        fontSize: isSelected?'1rem':'.82rem',
+                        cursor:'pointer',transition:'all .1s',
+                        borderRadius: isSelected?'4px':'0'
+                      }}>
+                      {val}
+                    </td>
+                  )
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {highlight&&(
+        <div style={{marginTop:'14px',padding:'12px 16px',background:'rgba(99,102,241,0.1)',borderRadius:'10px',border:'1px solid rgba(99,102,241,0.25)',display:'flex',gap:'16px',alignItems:'center',flexWrap:'wrap'}}>
+          <span style={{fontSize:'1.4rem',fontWeight:900,color:'#f9fafb'}}>{highlight.r} — {highlight.c} = <span style={{color:'#a5b4fc'}}>{highlight.r*highlight.c}</span></span>
+          <span style={{color:'#6b7280',fontSize:'.82rem'}}>That is {highlight.r} groups of {highlight.c}</span>
+          <button onClick={()=>setHighlight(null)} style={{marginLeft:'auto',padding:'4px 10px',borderRadius:'6px',background:'transparent',border:'1px solid #374151',color:'#6b7280',cursor:'pointer',fontSize:'.78rem'}}>Clear</button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+
+
+
+/* ── SHAPES ── */
+
+function ShapesSection(){
+
+  const [sel,setSel]=useState(null)
+
+  const shapeColors=['#6366f1','#3b82f6','#ef4444','#22c55e','#f97316','#a855f7']
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>2D Shapes — Maumbo</p>
+
+      <div style={grid('170px','12px')}>
+
+        {SHAPES.map((sh,i)=>{
+
+          const col=shapeColors[i]
+
+          const isSel=sel?.n===sh.n
+
+          return(
+
+            <div key={sh.n} onClick={()=>setSel(isSel?null:sh)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'20px 10px',
+
+                border:`2px solid ${isSel?col:'#1f2937'}`,background:isSel?col+'15':'#1a2234',
+
+                transition:'all .15s'})}}>
+
+              <div style={{display:'flex',justifyContent:'center',marginBottom:'10px'}}>
+
+                <ShapeSvg type={sh.svg} color={col} size={90}/>
+
+              </div>
+
+              <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.9rem'}}>{sh.n}</div>
+
+              <div style={{color:'#5eead4',fontSize:'.75rem'}}>{sh.k}</div>
+
+              {sh.sides>0&&<div style={{...badge(col,{marginTop:'6px',display:'inline-block'}),fontSize:'.65rem'}}>{sh.sides} sides</div>}
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({background:'rgba(99,102,241,0.08)',border:'1px solid rgba(99,102,241,0.25)',marginTop:'16px',
+
+          display:'flex',gap:'20px',alignItems:'center',flexWrap:'wrap',padding:'20px'})}}>
+
+          <ShapeSvg type={sel.svg} color='#6366f1' size={80}/>
+
+          <div>
+
+            <div style={{fontSize:'1.4rem',fontWeight:800,color:'#f9fafb',marginBottom:'4px'}}>{sel.n} — {sel.k}</div>
+
+            <div style={{color:'#9ca3af',fontSize:'.9rem',marginBottom:'4px'}}>{sel.desc}</div>
+
+            {sel.sides>0
+
+              ?<div style={{color:'#a5b4fc',fontSize:'.85rem'}}>Sides: <strong>{sel.sides}</strong> · Corners: <strong>{sel.sides}</strong></div>
+
+              :<div style={{color:'#a5b4fc',fontSize:'.85rem'}}>No sides, no corners — perfectly curved!</div>
+
+            }
+
+            <div style={{color:'#6b7280',fontSize:'.8rem',marginTop:'6px'}}>
+
+              <strong>Find it around you:</strong>&nbsp;
+
+              {{circle:'clock 🕐, coin, ball',square:'tile, button, window pane',triangle:'roof, piece of pizza, yield sign',
+
+                rect:'door 🚪, book, phone',oval:'egg, mirror, leaf',diamond:'kite, road sign'}[sel.svg]}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── COLOURS ── */
+
+function ColoursSection(){
+
+  const [sel,setSel]=useState(null)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Colours — Rangi</p>
+
+      <div style={grid('140px','12px')}>
+
+        {COLORS.map(c=>{
+
+          const isSel=sel?.n===c.n
+
+          return(
+
+            <div key={c.n} onClick={()=>setSel(isSel?null:c)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'12px',
+
+                border:`2px solid ${isSel?c.h:'#1f2937'}`,transition:'all .15s'})}}>
+
+              <div style={{width:'100%',height:'82px',borderRadius:'14px',background:c.h,marginBottom:'10px',
+
+                border:c.n==='White'?'1px solid #374151':'none'}}/>
+
+              <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.85rem'}}>{c.n}</div>
+
+              <div style={{color:'#5eead4',fontSize:'.75rem'}}>{c.k}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({marginTop:'16px',display:'flex',gap:'16px',alignItems:'center',
+
+          background:'rgba(99,102,241,0.06)',border:'1px solid rgba(99,102,241,0.25)',flexWrap:'wrap'})}}>
+
+          <div style={{width:'80px',height:'80px',borderRadius:'14px',background:sel.h,flexShrink:0,
+
+            border:sel.n==='White'?'1px solid #374151':'none'}}/>
+
+          <div>
+
+            <div style={{fontSize:'1.4rem',fontWeight:800,color:'#f9fafb'}}>{sel.e} {sel.n}</div>
+
+            <div style={{color:'#5eead4',fontSize:'.9rem',marginBottom:'4px'}}>Kiswahili: <strong>{sel.k}</strong></div>
+
+            <div style={{color:'#9ca3af',fontSize:'.8rem'}}>Hex code: <span style={{fontFamily:'monospace',color:'#a5b4fc'}}>{sel.h}</span></div>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── PATTERNS ── */
+
+function PatternsSection(){
+
+  const patterns=[
+
+    {seq:['🔴','🔵','🔴','🔵','🔴','🔵'],next:'🔴'},
+
+    {seq:['🟡','🟡','🟢','🟡','🟡','🟢'],next:'🟡'},
+
+    {seq:['⭐','🔷','🔶','⭐','🔷','🔶'],next:'⭐'},
+
+    {seq:['🐱','🐕','🐕','🐱','🐕','🐕'],next:'🐱'},
+
+    {seq:['🔺','🔶','🔺','🔺','🔶','🔺'],next:'🔺'},
+
+  ]
+
+  const [revealed,setRevealed]=useState({})
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Patterns — Mfumo</p>
+
+      {patterns.map((p,i)=>(
+
+        <div key={i} style={{...card({marginBottom:'12px',padding:'16px'})}}>
+
+          <p style={{...label,marginBottom:'8px',color:'#9ca3af'}}>Pattern {i+1} — What comes next?</p>
+
+          <div style={{display:'flex',gap:'8px',alignItems:'center',flexWrap:'wrap',marginBottom:'10px'}}>
+
+            {p.seq.map((s,j)=>(
+
+              <span key={j} style={{fontSize:'1.8rem'}}>{s}</span>
+
+            ))}
+
+            <span style={{fontSize:'1.5rem',color:'#374151'}}>→</span>
+
+            <div onClick={()=>setRevealed(r=>({...r,[i]:true}))}
+
+              style={{width:'44px',height:'44px',borderRadius:'10px',
+
+                background:revealed[i]?'transparent':'rgba(99,102,241,0.15)',
+
+                border:`2px dashed ${revealed[i]?'transparent':'#6366f1'}`,
+
+                display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'1.8rem'}}>
+
+              {revealed[i]?p.next:'?'}
+
+            </div>
+
+          </div>
+
+          {!revealed[i]&&<p style={{fontSize:'.75rem',color:'#6b7280',margin:0}}>Tap the "?" to reveal the answer!</p>}
+
+        </div>
+
+      ))}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── ANIMALS ── */
+
+function AnimalsSection({type}){
+
+  const [flipped,setFlipped]=useState({})
+
+  const all=type==='wild'?WILD_ANIMALS:type==='domestic'?DOMESTIC_ANIMALS:[...WILD_ANIMALS,...DOMESTIC_ANIMALS]
+
+  const isWild=(n)=>WILD_ANIMALS.some(a=>a.n===n)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>
+
+        {type==='wild'?'🦁 Wild Animals — Wanyama Pori':type==='domestic'?'🐄 Domestic Animals — Wanyama wa Nyumbani':'🐾 Wild & Domestic Animals'}
+
+      </p>
+
+      <div style={grid('160px','12px')}>
+
+        {all.map(a=>{
+
+          const isF=flipped[a.n]
+
+          const wild=isWild(a.n)
+
+          const col=wild?'#f97316':'#22c55e'
+
+          return(
+
+            <div key={a.n} onClick={()=>setFlipped(f=>({...f,[a.n]:!f[a.n]}))}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'16px',minHeight:'220px',
+
+                display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:'6px',
+
+                border:`1px solid ${isF?col+'60':'#1f2937'}`,
+
+                background:isF?col+'10':'#1a2234',transition:'all .2s'})}}>
+
+              {!isF?(
+
+                <>
+
+                  <div style={{fontSize:'5.5rem',lineHeight:1.1,marginBottom:'4px'}}>{a.e}</div>
+
+                  <div style={{fontWeight:800,color:'#f9fafb',fontSize:'1.1rem',marginTop:'6px'}}>{a.n}</div>
+
+                  <div style={{...badge(col,{fontSize:'.65rem'}),marginTop:'2px'}}>{wild?'Wild':'Domestic'}</div>
+
+                  <div style={{fontSize:'.7rem',color:'#6b7280',marginTop:'2px'}}>Tap to flip ↻</div>
+
+                </>
+
+              ):(
+
+                <>
+
+                  <div style={{fontWeight:700,color:col,fontSize:'1rem'}}>{a.k}</div>
+
+                  <div style={{color:'#fdba74',fontSize:'.9rem',fontWeight:600}}>{a.s}</div>
+
+                  <div style={{color:'#6b7280',fontSize:'.7rem',marginTop:'4px'}}>
+
+                    {wild?`Habitat: ${a.h}`:`Use: ${a.u}`}
+
+                  </div>
+
+                </>
+
+              )}
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      <p style={{color:'#6b7280',fontSize:'.75rem',marginTop:'10px',textAlign:'center'}}>
+
+        Tap any card to flip it and see the Swahili name & sound!
+
+      </p>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── BODY PARTS ── */
+
+function BodyPartsSection(){
+
+  const [sel,setSel]=useState(null)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Body Parts — Sehemu za Mwili</p>
+
+      <div style={grid('130px','10px')}>
+
+        {BODY_PARTS.map(b=>{
+
+          const isSel=sel?.n===b.n
+
+          return(
+
+            <div key={b.n} onClick={()=>setSel(isSel?null:b)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'14px',
+
+                border:`2px solid ${isSel?'#22c55e':'#1f2937'}`,
+
+                background:isSel?'rgba(34,197,94,0.1)':'#1a2234',transition:'all .15s'})}}>
+
+              <div style={{fontSize:'2rem',marginBottom:'6px'}}>{b.e}</div>
+
+              <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.85rem'}}>{b.n}</div>
+
+              <div style={{color:'#5eead4',fontSize:'.72rem'}}>{b.k}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({marginTop:'14px',background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.25)',
+
+          display:'flex',gap:'16px',alignItems:'center',padding:'16px',flexWrap:'wrap'})}}>
+
+          <span style={{fontSize:'3rem'}}>{sel.e}</span>
+
+          <div>
+
+            <div style={{fontSize:'1.2rem',fontWeight:800,color:'#f9fafb'}}>{sel.n} — <span style={{color:'#5eead4'}}>{sel.k}</span></div>
+
+            <div style={{color:'#86efac',fontSize:'.9rem',marginTop:'4px'}}>Function: {sel.f}</div>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── WEATHER ── */
+
+function WeatherSection(){
+
+  const [sel,setSel]=useState(null)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Weather — Hali ya Hewa</p>
+
+      <div style={grid('140px','10px')}>
+
+        {WEATHER.map(w=>{
+
+          const isSel=sel?.n===w.n
+
+          return(
+
+            <div key={w.n} onClick={()=>setSel(isSel?null:w)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'16px',
+
+                border:`2px solid ${isSel?'#3b82f6':'#1f2937'}`,
+
+                background:isSel?'rgba(59,130,246,0.1)':'#1a2234',transition:'all .15s'})}}>
+
+              <div style={{fontSize:'2.8rem',marginBottom:'6px'}}>{w.e}</div>
+
+              <div style={{fontWeight:700,color:'#f9fafb'}}>{w.n}</div>
+
+              <div style={{color:'#5eead4',fontSize:'.75rem'}}>{w.k}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({marginTop:'14px',background:'rgba(59,130,246,0.08)',border:'1px solid rgba(59,130,246,0.25)',padding:'16px'})}}>
+
+          <div style={{display:'flex',gap:'12px',alignItems:'flex-start',flexWrap:'wrap'}}>
+
+            <span style={{fontSize:'2.5rem'}}>{sel.e}</span>
+
+            <div>
+
+              <div style={{fontWeight:800,color:'#f9fafb',fontSize:'1.1rem'}}>{sel.n} — {sel.k}</div>
+
+              <div style={{color:'#93c5fd',fontSize:'.9rem',margin:'4px 0'}}>{sel.d}</div>
+
+              <div style={{color:'#9ca3af',fontSize:'.8rem'}}>What to wear: <span style={{fontSize:'1.2rem'}}>{sel.wear}</span></div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      <div style={{...card({marginTop:'14px',background:'rgba(34,197,94,0.06)',border:'1px solid rgba(34,197,94,0.2)',padding:'14px'})}}>
+
+        <p style={{...label,color:'#86efac',marginBottom:'8px'}}>📊 Class Weather Chart — Record today's weather!</p>
+
+        <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
+
+          {WEATHER.map(w=>(
+
+            <div key={w.n} style={{textAlign:'center',padding:'8px 10px',borderRadius:'10px',background:'#111827',border:'1px solid #1f2937'}}>
+
+              <div style={{fontSize:'1.5rem'}}>{w.e}</div>
+
+              <div style={{fontSize:'.65rem',color:'#6b7280'}}>{w.n}</div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── PLANTS ── */
+
+function PlantsSection(){
+
+  const [sel,setSel]=useState(null)
+
+  const plantParts=['Roots 🌱','Stem 🪵','Leaves 🍃','Flowers 🌸','Fruit 🍎']
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Plants — Mimea</p>
+
+      <div style={{...card({marginBottom:'16px',background:'rgba(34,197,94,0.06)',border:'1px solid rgba(34,197,94,0.2)',padding:'14px'})}}>
+
+        <p style={{...label,color:'#86efac',marginBottom:'8px'}}>Parts of a Plant — Sehemu za Mmea:</p>
+
+        <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
+
+          {plantParts.map(p=>(
+
+            <span key={p} style={{...badge('#22c55e',{fontSize:'.8rem',padding:'5px 10px'})}}>{p}</span>
+
+          ))}
+
+        </div>
+
+        <p style={{color:'#9ca3af',fontSize:'.8rem',margin:'10px 0 0'}}>Plants need: 💧 Water · ☀️ Sunlight · 🪨 Soil</p>
+
+      </div>
+
+      <div style={grid('140px','10px')}>
+
+        {PLANTS.map(p=>{
+
+          const isSel=sel?.n===p.n
+
+          return(
+
+            <div key={p.n} onClick={()=>setSel(isSel?null:p)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'14px',
+
+                border:`2px solid ${isSel?'#22c55e':'#1f2937'}`,
+
+                background:isSel?'rgba(34,197,94,0.1)':'#1a2234',transition:'all .15s'})}}>
+
+              <div style={{fontSize:'2.4rem',marginBottom:'6px'}}>{p.e}</div>
+
+              <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.85rem'}}>{p.n}</div>
+
+              <div style={{color:'#5eead4',fontSize:'.72rem'}}>{p.k}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({marginTop:'14px',background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.25)',display:'flex',gap:'16px',alignItems:'center',flexWrap:'wrap'})}}>
+
+          <span style={{fontSize:'3rem'}}>{sel.e}</span>
+
+          <div>
+
+            <div style={{fontWeight:800,color:'#f9fafb',fontSize:'1.1rem'}}>{sel.n} — {sel.k}</div>
+
+            <div style={{color:'#86efac',fontSize:'.85rem'}}>Type: {sel.t} · Use: {sel.u}</div>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── HEALTH & SAFETY ── */
+
+function HealthSafetySection(){
+
+  const [tab,setTab]=useState(0)
+
+  const h=HEALTH_SAFETY[tab]
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Health, Hygiene & Safety — Afya na Usalama</p>
+
+      <div style={{display:'flex',gap:'8px',flexWrap:'wrap',marginBottom:'16px'}}>
+
+        {HEALTH_SAFETY.map((h,i)=>(
+
+          <button key={i} onClick={()=>setTab(i)}
+
+            style={{padding:'8px 14px',borderRadius:'20px',border:`1px solid ${tab===i?'#22c55e':'#374151'}`,
+
+              background:tab===i?'rgba(34,197,94,0.15)':'transparent',
+
+              color:tab===i?'#86efac':'#9ca3af',fontWeight:700,fontSize:'.8rem',cursor:'pointer'}}>
+
+            {h.e} {h.t}
+
+          </button>
+
+        ))}
+
+      </div>
+
+      <div style={{...card({background:'rgba(34,197,94,0.06)',border:'1px solid rgba(34,197,94,0.2)',padding:'20px'})}}>
+
+        <p style={{fontWeight:800,color:'#f9fafb',fontSize:'1.1rem',margin:'0 0 12px'}}>{h.e} {h.t}</p>
+
+        {h.steps&&(
+
+          <>
+
+            <p style={{...label,color:'#86efac',marginBottom:'8px'}}>Steps:</p>
+
+            {h.steps.map((s,i)=>(
+
+              <div key={i} style={{display:'flex',gap:'10px',alignItems:'flex-start',marginBottom:'8px'}}>
+
+                <span style={{...badge('#22c55e',{flexShrink:0}),padding:'2px 8px'}}>{i+1}</span>
+
+                <span style={{color:'#d1fae5',fontSize:'.9rem'}}>{s}</span>
+
+              </div>
+
+            ))}
+
+            <p style={{...label,color:'#86efac',marginTop:'12px',marginBottom:'6px'}}>When to wash hands:</p>
+
+            <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
+
+              {h.when.map(w=><span key={w} style={{...badge('#22c55e',{fontSize:'.78rem'})}}>{w}</span>)}
+
+            </div>
+
+          </>
+
+        )}
+
+        {h.groups&&(
+
+          <>
+
+            <p style={{...label,color:'#86efac',marginBottom:'8px'}}>Food Groups:</p>
+
+            {h.groups.map(g=><div key={g} style={{color:'#d1fae5',fontSize:'.9rem',marginBottom:'4px'}}>• {g}</div>)}
+
+            <div style={{...badge('#22c55e',{display:'inline-block',marginTop:'8px',fontSize:'.8rem'})}}>{h.rule}</div>
+
+          </>
+
+        )}
+
+        {h.rules&&(
+
+          <>
+
+            <p style={{...label,color:'#86efac',marginBottom:'8px'}}>Safety Rules — Sheria za Usalama:</p>
+
+            {h.rules.map((r,i)=>(
+
+              <div key={i} style={{display:'flex',gap:'10px',marginBottom:'8px'}}>
+
+                <span style={{color:'#f87171',flexShrink:0}}>⚠️</span>
+
+                <span style={{color:'#fecaca',fontSize:'.9rem'}}>{r}</span>
+
+              </div>
+
+            ))}
+
+          </>
+
+        )}
+
+        {h.daily&&(
+
+          <>
+
+            <p style={{...label,color:'#86efac',marginBottom:'8px'}}>Daily Hygiene Habits:</p>
+
+            {h.daily.map(d=><div key={d} style={{color:'#d1fae5',fontSize:'.9rem',marginBottom:'4px'}}>✅ {d}</div>)}
+
+            <div style={{marginTop:'10px',padding:'8px 12px',background:'rgba(239,68,68,0.08)',borderRadius:'8px',border:'1px solid rgba(239,68,68,0.2)'}}>
+
+              <span style={{color:'#fca5a5',fontSize:'.8rem'}}>🚫 Never share: {h.shared?.replace('Never share: ','')}</span>
+
+            </div>
+
+          </>
+
+        )}
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── FAMILY ── */
+
+function FamilySection(){
+
+  const [sel,setSel]=useState(null)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>My Family — Familia Yangu</p>
+
+      <div style={grid('140px','10px')}>
+
+        {FAMILY.map(f=>{
+
+          const isSel=sel?.n===f.n
+
+          return(
+
+            <div key={f.n} onClick={()=>setSel(isSel?null:f)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'16px',
+
+                border:`2px solid ${isSel?'#f97316':'#1f2937'}`,
+
+                background:isSel?'rgba(249,115,22,0.1)':'#1a2234',transition:'all .15s'})}}>
+
+              <div style={{fontSize:'2.5rem',marginBottom:'6px'}}>{f.e}</div>
+
+              <div style={{fontWeight:700,color:'#f9fafb'}}>{f.n}</div>
+
+              <div style={{color:'#5eead4',fontSize:'.75rem'}}>{f.k}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({marginTop:'14px',background:'rgba(249,115,22,0.08)',border:'1px solid rgba(249,115,22,0.25)',display:'flex',gap:'16px',alignItems:'center',flexWrap:'wrap'})}}>
+
+          <span style={{fontSize:'3rem'}}>{sel.e}</span>
+
+          <div>
+
+            <div style={{fontWeight:800,color:'#f9fafb',fontSize:'1.1rem'}}>{sel.n} — {sel.k}</div>
+
+            <div style={{color:'#fdba74',fontSize:'.9rem',marginTop:'4px'}}>{sel.r}</div>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── MY SCHOOL ── */
+
+function MySchoolSection(){
+
+  const places=[
+
+    {n:'Classroom',e:'🏫',k:'Darasa',d:'Where we learn every day'},
+
+    {n:'Library',e:'📚',k:'Maktaba',d:'Where we read and borrow books'},
+
+    {n:'Kitchen',e:'🍳',k:'Jikoni',d:'Where meals are prepared'},
+
+    {n:'Toilet',e:'🚻',k:'Choo',d:'Where we go to relieve ourselves'},
+
+    {n:'Playing Field',e:'⚽',k:'Uwanja',d:'Where we play sports and games'},
+
+    {n:'Staffroom',e:'🪑',k:'Chumba cha walimu',d:'Where teachers rest and prepare'},
+
+    {n:'Office',e:'🏢',k:'Ofisi',d:'Where the headteacher works'},
+
+    {n:'Garden',e:'🌱',k:'Bustani',d:'Where we grow plants'},
+
+  ]
+
+  const workers=[
+
+    {n:'Headteacher',e:'🎓',k:'Mkurugenzi',j:'Leads the whole school'},
+
+    {n:'Teacher',e:'👩‍🏫',k:'Mwalimu',j:'Teaches the class every day'},
+
+    {n:'Cook',e:'👨‍🍳',k:'Mpishi',j:'Prepares our meals'},
+
+    {n:'Watchman',e:'💂',k:'Mlinzi',j:'Guards the school at night'},
+
+    {n:'Cleaner',e:'🧹',k:'Msafi',j:'Keeps the school clean'},
+
+  ]
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Our School — Shule Yetu</p>
+
+      <p style={{...label,marginBottom:'8px'}}>Places in School:</p>
+
+      <div style={{...grid('140px','10px'),marginBottom:'16px'}}>
+
+        {places.map(p=>(
+
+          <div key={p.n} style={{...card({textAlign:'center',padding:'12px'})}}>
+
+            <div style={{fontSize:'2rem',marginBottom:'4px'}}>{p.e}</div>
+
+            <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.85rem'}}>{p.n}</div>
+
+            <div style={{color:'#5eead4',fontSize:'.7rem'}}>{p.k}</div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+      <p style={{...label,marginBottom:'8px'}}>People in School:</p>
+
+      <div style={grid('150px','10px')}>
+
+        {workers.map(w=>(
+
+          <div key={w.n} style={{...card({textAlign:'center',padding:'14px'})}}>
+
+            <div style={{fontSize:'2.2rem',marginBottom:'6px'}}>{w.e}</div>
+
+            <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.85rem'}}>{w.n}</div>
+
+            <div style={{color:'#5eead4',fontSize:'.7rem',marginBottom:'4px'}}>{w.k}</div>
+
+            <div style={{color:'#9ca3af',fontSize:'.68rem'}}>{w.j}</div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── COMMUNITY HELPERS ── */
+
+function CommunityHelpersSection(){
+
+  const [sel,setSel]=useState(null)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Community Helpers — Wasaidizi wa Jamii</p>
+
+      <div style={grid('140px','10px')}>
+
+        {COMMUNITY_HELPERS.map(c=>{
+
+          const isSel=sel?.n===c.n
+
+          return(
+
+            <div key={c.n} onClick={()=>setSel(isSel?null:c)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'16px',
+
+                border:`2px solid ${isSel?'#22c55e':'#1f2937'}`,
+
+                background:isSel?'rgba(34,197,94,0.1)':'#1a2234',transition:'all .15s'})}}>
+
+              <div style={{fontSize:'2.5rem',marginBottom:'6px'}}>{c.e}</div>
+
+              <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.85rem'}}>{c.n}</div>
+
+              <div style={{color:'#5eead4',fontSize:'.72rem'}}>{c.k}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({marginTop:'14px',background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.25)',display:'flex',gap:'14px',alignItems:'center',flexWrap:'wrap'})}}>
+
+          <span style={{fontSize:'2.8rem'}}>{sel.e}</span>
+
+          <div>
+
+            <div style={{fontWeight:800,color:'#f9fafb',fontSize:'1.1rem'}}>{sel.n} — {sel.k}</div>
+
+            <div style={{color:'#86efac',fontSize:'.9rem',marginTop:'4px'}}>{sel.j}</div>
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── SIMPLE WORDS ── */
+
+function SimpleWordsSection({level}){
+
+  const words=SIMPLE_WORDS[level]||SIMPLE_WORDS.PP1
+
+  const [sel,setSel]=useState(null)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Simple Words — Maneno Rahisi</p>
+
+      <div style={grid('110px','10px')}>
+
+        {words.map(w=>{
+
+          const isSel=sel?.w===w.w
+
+          return(
+
+            <div key={w.w} onClick={()=>setSel(isSel?null:w)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'12px 8px',
+
+                border:`2px solid ${isSel?'#3b82f6':'#1f2937'}`,
+
+                background:isSel?'rgba(59,130,246,0.12)':'#1a2234',transition:'all .15s'})}}>
+
+              <div style={{fontSize:'2.6rem',marginBottom:'6px'}}>{w.e}</div>
+
+              <div style={{fontWeight:900,color:'#93c5fd',fontSize:'1.3rem',fontFamily:'monospace'}}>{w.w}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+      {sel&&(
+
+        <div style={{...card({marginTop:'14px',background:'rgba(59,130,246,0.08)',border:'1px solid rgba(59,130,246,0.25)',textAlign:'center',padding:'20px'})}}>
+
+          <div style={{fontSize:'3.5rem',marginBottom:'8px'}}>{sel.e}</div>
+
+          <div style={{fontSize:'3.5rem',fontWeight:900,color:'#f9fafb',fontFamily:'monospace',letterSpacing:'6px'}}>{sel.w}</div>
+
+          <div style={{display:'flex',gap:'8px',justifyContent:'center',flexWrap:'wrap',marginTop:'10px'}}>
+
+            {sel.w.split('').map((l,i)=>(
+
+              <span key={i} style={{width:'36px',height:'36px',borderRadius:'8px',display:'flex',alignItems:'center',justifyContent:'center',
+
+                fontWeight:900,fontSize:'1.1rem',
+
+                background:VOWELS.includes(l.toUpperCase())?'rgba(239,68,68,0.2)':'rgba(59,130,246,0.15)',
+
+                border:`1px solid ${VOWELS.includes(l.toUpperCase())?'rgba(239,68,68,0.4)':'rgba(59,130,246,0.3)'}`,
+
+                color:VOWELS.includes(l.toUpperCase())?'#f87171':'#93c5fd'}}>
+
+                {l}
+
+              </span>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── COUNTING FUN ── */
+
+function CountingFun(){
+
+  const [count,setCount]=useState(0)
+
+  const [target]=useState(()=>Math.floor(Math.random()*15)+5)
+
+  const done=count===target
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Counting Fun — Kuhesabu</p>
+
+      <div style={{...card({textAlign:'center',padding:'32px 20px',
+
+        background:done?'rgba(34,197,94,0.1)':'rgba(139,92,246,0.06)',
+
+        border:`2px solid ${done?'#22c55e':'rgba(139,92,246,0.2)'}`,transition:'all .3s',marginBottom:'16px'})}}>
+
+        {done?(
+
+          <>
+
+            <div style={{fontSize:'3rem',marginBottom:'8px'}}>🎉</div>
+
+            <div style={{fontSize:'2rem',fontWeight:900,color:'#4ade80'}}>You reached {target}!</div>
+
+            <div style={{color:'#86efac',marginTop:'6px'}}>Excellent counting! 🌟</div>
+
+            <button onClick={()=>setCount(0)} style={{marginTop:'16px',padding:'10px 20px',borderRadius:'10px',
+
+              background:'linear-gradient(135deg,#22c55e,#16a34a)',color:'#fff',border:'none',fontWeight:700,cursor:'pointer'}}>
+
+              Count again ↺
+
+            </button>
+
+          </>
+
+        ):(
+
+          <>
+
+            <div style={{fontSize:'5rem',fontWeight:900,color:'#c4b5fd',lineHeight:1,marginBottom:'8px'}}>{count}</div>
+
+            <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:'4px',marginBottom:'16px',minHeight:'60px'}}>
+
+              {Array.from({length:count}).map((_,i)=>(
+
+                <span key={i} style={{fontSize:'1.3rem'}}>⭐</span>
+
+              ))}
+
+            </div>
+
+            <div style={{color:'#9ca3af',fontSize:'.85rem',marginBottom:'16px'}}>
+
+              Count to <strong style={{color:'#f9fafb'}}>{target}</strong> · {target-count} more to go!
+
+            </div>
+
+            <div style={{display:'flex',gap:'10px',justifyContent:'center',flexWrap:'wrap'}}>
+
+              <button onClick={()=>setCount(c=>Math.min(c+1,target))}
+
+                style={{padding:'14px 28px',borderRadius:'12px',fontWeight:900,fontSize:'1.4rem',
+
+                  background:'linear-gradient(135deg,#8b5cf6,#6d28d9)',color:'#fff',border:'none',cursor:'pointer'}}>
+
+                + 1
+
+              </button>
+
+              <button onClick={()=>setCount(c=>Math.min(c+5,target))}
+
+                style={{padding:'14px 28px',borderRadius:'12px',fontWeight:900,fontSize:'1.4rem',
+
+                  background:'linear-gradient(135deg,#3b82f6,#2563eb)',color:'#fff',border:'none',cursor:'pointer'}}>
+
+                + 5
+
+              </button>
+
+              <button onClick={()=>setCount(0)}
+
+                style={{padding:'14px 20px',borderRadius:'12px',fontWeight:700,fontSize:'1rem',
+
+                  background:'#1a2234',color:'#9ca3af',border:'1px solid #374151',cursor:'pointer'}}>
+
+                Reset
+
+              </button>
+
+            </div>
+
+          </>
+
+        )}
+
+      </div>
+
+      <div style={grid('80px','6px')}>
+
+        {Array.from({length:20},(_,i)=>i+1).map(n=>(
+
+          <div key={n} style={{...card({padding:'8px',textAlign:'center',
+
+            background:n<=count?'rgba(139,92,246,0.25)':'#1a2234',
+
+            border:`1px solid ${n<=count?'#8b5cf6':'#1f2937'}`,transition:'all .15s'})}}>
+
+            <span style={{fontWeight:700,color:n<=count?'#c4b5fd':'#9ca3af',fontSize:'.9rem'}}>{n}</span>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── MEASUREMENT ── */
+
+function MeasurementSection(){
+
+  const concepts=[
+
+    {t:'Length — Urefu',e:'📏',pairs:[{big:'🐘 Elephant',small:'🐭 Mouse',label:'Longer / Shorter',k:'Ndefu / Fupi'}]},
+
+    {t:'Weight — Uzito',e:'⚖️',pairs:[{big:'🪨 Rock',small:'🍃 Leaf',label:'Heavier / Lighter',k:'Nzito / Nyepesi'}]},
+
+    {t:'Capacity — Ujazo',e:'🫙',pairs:[{big:'🪣 Bucket',small:'☕ Cup',label:'Holds More / Less',k:'Inashikilia zaidi / kidogo'}]},
+
+    {t:'Size — Ukubwa',e:'📐',pairs:[{big:'🏫 School',small:'🏠 House',label:'Bigger / Smaller',k:'Kubwa / Ndogo'}]},
+
+  ]
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Measurement — Kupima</p>
+
+      <div style={grid('200px','12px')}>
+
+        {concepts.map(c=>(
+
+          <div key={c.t} style={{...card({padding:'16px'})}}>
+
+            <p style={{fontWeight:700,color:'#c4b5fd',margin:'0 0 10px',fontSize:'.9rem'}}>{c.e} {c.t}</p>
+
+            {c.pairs.map(p=>(
+
+              <div key={p.label}>
+
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'6px'}}>
+
+                  <span style={{fontSize:'1.6rem'}}>{p.big}</span>
+
+                  <span style={{fontSize:'.7rem',color:'#9ca3af',textAlign:'center'}}>{p.label}</span>
+
+                  <span style={{fontSize:'1.6rem'}}>{p.small}</span>
+
+                </div>
+
+                <div style={{...badge('#8b5cf6',{fontSize:'.7rem'}),display:'block',textAlign:'center'}}>{p.k}</div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        ))}
+
+      </div>
+
+      <div style={{...card({marginTop:'14px',padding:'16px',background:'rgba(139,92,246,0.06)',border:'1px solid rgba(139,92,246,0.2)'})}}>
+
+        <p style={{...label,color:'#c4b5fd',marginBottom:'10px'}}>Non-standard measurement tools:</p>
+
+        <div style={{display:'flex',gap:'10px',flexWrap:'wrap'}}>
+
+          {['Hand span 🤚','Foot steps 👣','String 🧵','Arm length 💪','Sticks 🪵'].map(t=>(
+
+            <span key={t} style={{...badge('#8b5cf6')}}>{t}</span>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── SWAHILI GREETINGS ── */
+
+function SwahiliGreetingsSection(){
+
+  const [sel,setSel]=useState(null)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Salamu — Greetings in Kiswahili</p>
+
+      <div style={{overflowX:'auto',marginBottom:'16px'}}>
+
+        <table style={{width:'100%',borderCollapse:'collapse',fontSize:'.85rem',minWidth:'400px'}}>
+
+          <thead>
+
+            <tr style={{borderBottom:'2px solid #1f2937'}}>
+
+              {['English','Kiswahili','Response — Jibu'].map(h=>(
+
+                <th key={h} style={{padding:'10px',textAlign:'left',color:'#6b7280',fontWeight:700,fontSize:'.72rem',textTransform:'uppercase',letterSpacing:'.5px'}}>{h}</th>
+
+              ))}
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {SWAHILI_GREETINGS.map((g,i)=>(
+
+              <tr key={i} onClick={()=>setSel(sel===i?null:i)}
+
+                style={{borderBottom:'1px solid #111827',cursor:'pointer',background:sel===i?'rgba(20,184,166,0.08)':'transparent',transition:'background .15s'}}>
+
+                <td style={{padding:'10px',color:'#9ca3af'}}>{g.e}</td>
+
+                <td style={{padding:'10px',fontWeight:700,color:'#5eead4',fontSize:'.95rem'}}>{g.k}</td>
+
+                <td style={{padding:'10px',color:'#a5b4fc'}}>{g.r}</td>
+
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div style={{...card({background:'rgba(20,184,166,0.06)',border:'1px solid rgba(20,184,166,0.2)',padding:'14px'})}}>
+
+        <p style={{...label,color:'#5eead4',marginBottom:'8px'}}>🌍 Kiswahili is spoken by over 200 million people in East Africa!</p>
+
+        <p style={{color:'#9ca3af',fontSize:'.8rem',margin:0}}>Kenya · Tanzania · Uganda · Rwanda · DRC · Mozambique</p>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── SWAHILI NUMBERS ── */
+
+function SwahiliNumbersSection(){
+
+  const [sel,setSel]=useState(null)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Nambari — Numbers in Kiswahili</p>
+
+      <div style={grid('130px','8px')}>
+
+        {SWAHILI_NUMBERS.map(n=>{
+
+          const isSel=sel?.n===n.n
+
+          return(
+
+            <div key={n.n} onClick={()=>setSel(isSel?null:n)}
+
+              style={{...card({cursor:'pointer',textAlign:'center',padding:'14px',
+
+                border:`2px solid ${isSel?'#14b8a6':'#1f2937'}`,
+
+                background:isSel?'rgba(20,184,166,0.12)':'#1a2234',transition:'all .15s'})}}>
+
+              <div style={{fontSize:'1.8rem',fontWeight:900,color:'#5eead4'}}>{n.n}</div>
+
+              <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.85rem',marginTop:'4px'}}>{n.k}</div>
+
+            </div>
+
+          )
+
+        })}
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── RE SECTION ── */
+
+function RESection({topic}){
+
+  if(topic.includes('Creation')){
+
+    const creations=['☀️ Sun','🌙 Moon','⭐ Stars','🌍 Earth','💧 Water','🌳 Trees','🐘 Animals','👤 People']
+
+    return(
+
+      <div>
+
+        <p style={sectionTitle('#f9fafb')}>God's Creation — Uumbaji wa Mungu</p>
+
+        <div style={{...card({background:'rgba(99,102,241,0.08)',border:'1px solid rgba(99,102,241,0.25)',marginBottom:'16px',padding:'20px'})}}>
+
+          <p style={{fontWeight:700,color:'#a5b4fc',margin:'0 0 8px',fontSize:'1rem'}}>📖 Genesis 1 — In the beginning, God created…</p>
+
+          <div style={grid('155px','12px')}>
+
+            {creations.map(c=>(
+
+              <div key={c} style={{...card({textAlign:'center',padding:'20px 12px',background:'rgba(99,102,241,0.08)'})}}>
+
+                <span style={{fontSize:'3.2rem',display:'block',marginBottom:'8px'}}>{c.split(' ')[0]}</span>
+
+                <div style={{color:'#a5b4fc',fontSize:'1rem',fontWeight:700,marginTop:'4px'}}>{c.split(' ').slice(1).join(' ')}</div>
+
+              </div>
+
+            ))}
+
+          </div>
+
+          <p style={{color:'#c4b5fd',fontSize:'.9rem',margin:'14px 0 0',fontStyle:'italic'}}>
+
+            "God saw all that He had made, and it was very good." — Genesis 1:31
+
+          </p>
+
+        </div>
+
+        <div style={{...card({background:'rgba(34,197,94,0.06)',border:'1px solid rgba(34,197,94,0.2)',padding:'14px'})}}>
+
+          <p style={{fontWeight:700,color:'#86efac',margin:'0 0 8px'}}>You are special! 🌟</p>
+
+          <p style={{color:'#9ca3af',fontSize:'.85rem',margin:0}}>God made you unique. No one else in the whole world is exactly like you! God loves you and cares for you every day.</p>
+
+        </div>
+
+      </div>
+
+    )
+
+  }
+
+  if(topic.includes('Bible')){
+
+    return(
+
+      <div>
+
+        <p style={sectionTitle('#f9fafb')}>Bible Stories — Hadithi za Biblia</p>
+
+        {BIBLE_STORIES.map((s,i)=>(
+
+          <BibleStoryCard key={i} story={s}/>
+
+        ))}
+
+      </div>
+
+    )
+
+  }
+
+  if(topic.includes('Christian Values')){
+
+    return(
+
+      <div>
+
+        <p style={sectionTitle('#f9fafb')}>Christian Values — Maadili ya Kikristo</p>
+
+        <div style={grid('160px','10px')}>
+
+          {CHRISTIAN_VALUES.map(v=>(
+
+            <div key={v.v} style={{...card({textAlign:'center',padding:'16px'})}}>
+
+              <div style={{fontSize:'2.2rem',marginBottom:'6px'}}>{v.e}</div>
+
+              <div style={{fontWeight:800,color:'#f9fafb',fontSize:'.95rem',marginBottom:'4px'}}>{v.v}</div>
+
+              <div style={{...badge('#6366f1',{fontSize:'.65rem',display:'inline-block',marginBottom:'6px'})}}>{v.b}</div>
+
+              <div style={{color:'#9ca3af',fontSize:'.75rem'}}>{v.d}</div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    )
+
+  }
+
+  if(topic.includes('Jesus')){
+
+    const miracles=[
+
+      {t:'Calming the Storm',e:'⛵',ref:'Mark 4:39',l:'Jesus calmed a big storm just by speaking — He said "Peace! Be still!" This shows Jesus has power over nature.'},
+
+      {t:'Feeding 5,000',e:'🐟🍞',ref:'John 6:1–14',l:'With just 5 loaves of bread and 2 fish, Jesus fed over 5,000 people! There was even food left over.'},
+
+      {t:'Healing the Sick',e:'🙌',ref:'Luke 5:17–26',l:'Jesus healed many sick people — the blind could see, the lame could walk. He showed love and compassion to everyone.'},
+
+      {t:'Turning Water to Wine',e:'🍷',ref:'John 2:1–11',l:'At a wedding where they ran out of drink, Jesus turned water into wine. This was His first miracle.'},
+
+    ]
+
+    return(
+
+      <div>
+
+        <p style={sectionTitle('#f9fafb')}>The Life of Jesus Christ</p>
+
+        <div style={{...card({background:'rgba(99,102,241,0.06)',border:'1px solid rgba(99,102,241,0.25)',marginBottom:'16px',padding:'20px'})}}>
+
+          <p style={{fontWeight:700,color:'#a5b4fc',margin:'0 0 8px'}}>🌟 The Birth of Jesus (Luke 2)</p>
+
+          <p style={{color:'#9ca3af',fontSize:'.85rem',margin:'0 0 10px'}}>Jesus was born in Bethlehem, in a stable, to Mary and Joseph. Angels appeared to shepherds in the fields who came to worship the baby. Wise men from the East followed a star and brought gifts.</p>
+
+          <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
+
+            {['Gold 🪙','Frankincense 🌿','Myrrh 💊'].map(g=><span key={g} style={{...badge('#a5b4fc')}}>{g}</span>)}
+
+          </div>
+
+        </div>
+
+        <p style={{...label,marginBottom:'10px',color:'#a5b4fc'}}>Jesus' Miracles & Acts of Kindness:</p>
+
+        {miracles.map(m=>(
+
+          <div key={m.t} style={{...card({marginBottom:'10px',padding:'14px',background:'rgba(99,102,241,0.04)',border:'1px solid rgba(99,102,241,0.15)'})}}>
+
+            <div style={{display:'flex',gap:'12px',alignItems:'flex-start'}}>
+
+              <span style={{fontSize:'1.8rem',flexShrink:0}}>{m.e}</span>
+
+              <div>
+
+                <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.95rem'}}>{m.t} <span style={{...badge('#6366f1',{fontSize:'.65rem',marginLeft:'4px'})}}>{m.ref}</span></div>
+
+                <div style={{color:'#9ca3af',fontSize:'.82rem',marginTop:'4px'}}>{m.l}</div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    )
+
+  }
+
+  if(topic.includes('Prayer')){
+
+    const prayers=[
+
+      {t:'Morning Prayer',e:'🌅',p:'Dear God, thank You for this new day. Help me to learn, to be kind, and to do what is right. Amen.'},
+
+      {t:'Meal Time Prayer',e:'🍽️',p:'Thank You God for the food we are about to eat. Bless those who prepared it and those who are hungry. Amen.'},
+
+      {t:'Bedtime Prayer',e:'🌙',p:'Dear God, thank You for today. Forgive me where I went wrong. Keep me and my family safe through the night. Amen.'},
+
+      {t:'School Prayer',e:'📚',p:'Lord God, help me to pay attention and learn well today. Give me wisdom, patience and a good heart. Amen.'},
+
+    ]
+
+    return(
+
+      <div>
+
+        <p style={sectionTitle('#f9fafb')}>Prayer & Church — Sala na Kanisa</p>
+
+        <div style={{...card({background:'rgba(99,102,241,0.08)',border:'1px solid rgba(99,102,241,0.25)',marginBottom:'16px',padding:'16px'})}}>
+
+          <p style={{fontWeight:700,color:'#a5b4fc',margin:'0 0 6px'}}>⛪ What is a Church?</p>
+
+          <p style={{color:'#9ca3af',fontSize:'.85rem',margin:0}}>A church is a place where Christians gather to worship God, pray together, sing songs of praise, and listen to God's Word (the Bible). God lives in the hearts of believers — you are the church too!</p>
+
+        </div>
+
+        <p style={{...label,marginBottom:'10px',color:'#a5b4fc'}}>Simple Prayers — Sala Rahisi:</p>
+
+        {prayers.map(p=>(
+
+          <div key={p.t} style={{...card({marginBottom:'10px',padding:'14px'})}}>
+
+            <p style={{fontWeight:700,color:'#f9fafb',margin:'0 0 6px'}}>{p.e} {p.t}</p>
+
+            <p style={{color:'#c4b5fd',fontSize:'.88rem',fontStyle:'italic',margin:0,lineHeight:1.6}}>"{p.p}"</p>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    )
+
+  }
+
+  return <div style={{color:'#9ca3af',textAlign:'center',padding:'40px'}}>Select a topic above ☝️</div>
+
+}
+
+
+
+function BibleStoryCard({story}){
+  const [qIdx,setQIdx]=useState(0)
+  return(
+    <div style={{...card({marginBottom:'20px',padding:'20px'})}}>
+      <div style={{display:'flex',gap:'14px',alignItems:'flex-start',marginBottom:'16px',paddingBottom:'14px',borderBottom:'1px solid #1f2937'}}>
+        <span style={{fontSize:'2.4rem',flexShrink:0}}>{story.emoji}</span>
+        <div style={{flex:1}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:'8px'}}>
+            <div style={{fontWeight:800,color:'#f9fafb',fontSize:'1.1rem'}}>{story.title}</div>
+            <span style={{background:'rgba(99,102,241,0.2)',border:'1px solid rgba(99,102,241,0.4)',borderRadius:'20px',padding:'3px 10px',fontSize:'.72rem',fontWeight:700,color:'#a5b4fc'}}>{story.verse}</span>
+          </div>
+        </div>
+      </div>
+      <p style={{color:'#d1d5db',fontSize:'.92rem',lineHeight:1.8,margin:'0 0 16px'}}>{story.story}</p>
+      <div style={{display:'inline-block',marginBottom:'16px',padding:'8px 16px',background:'rgba(34,197,94,0.12)',border:'1px solid rgba(34,197,94,0.3)',borderRadius:'20px',color:'#4ade80',fontWeight:700,fontSize:'.88rem'}}>
+        💡 Lesson: {story.lesson}
+      </div>
+      <div style={{background:'rgba(99,102,241,0.08)',borderRadius:'12px',padding:'16px',border:'1px solid rgba(99,102,241,0.2)'}}>
+        <p style={{fontSize:'.7rem',fontWeight:700,color:'#a5b4fc',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'10px'}}>❓ Questions to Think About:</p>
+        {story.questions.map((q,i)=>(
+          <div key={i} style={{color:'#c4b5fd',fontSize:'.92rem',marginBottom:'8px',padding:'10px 14px',
+            background:qIdx===i?'rgba(99,102,241,0.2)':'rgba(99,102,241,0.05)',borderRadius:'8px',cursor:'pointer',lineHeight:1.65}}
+            onClick={()=>setQIdx(i)}>
+            Q{i+1}: {q}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+
+function MusicMovementSection(){
+
+  const songs=[
+
+    {t:'Head, Shoulders, Knees & Toes',e:'🎵',actions:'Touch each body part as you sing — head, shoulders, knees, toes, eyes, ears, mouth and nose!'},
+
+    {t:'If You\'re Happy and You Know It',e:'👏',actions:'Clap your hands · Stamp your feet · Shout "Hooray!" · Turn around!'},
+
+    {t:'The Alphabet Song',e:'🎼',actions:'Point to each letter on the chart as you sing A-B-C-D-E-F-G…'},
+
+    {t:'Old MacDonald Had a Farm',e:'🐄',actions:'Moo like a cow · Baa like a sheep · Cluck like a chicken — make the sounds!'},
+
+    {t:'Twinkle Twinkle Little Star',e:'⭐',actions:'Raise hands up for stars · Wave side to side · Open and close hands like twinkling'},
+
+    {t:'Ten Green Bottles',e:'🍾',actions:'Hold up 10 fingers, fold one down as each bottle "falls" — great for counting backwards!'},
+
+  ]
+
+  const movements=[
+
+    {a:'Hop on one foot',e:'🦘',s:'Balance! Strengthens legs and coordination'},
+
+    {a:'Jump with both feet',e:'🐸',s:'Builds strong leg muscles'},
+
+    {a:'Run and stop',e:'🏃',s:'Develops speed control and listening skills'},
+
+    {a:'Walk like an elephant',e:'🐘',s:'Slow, heavy steps — great for body awareness'},
+
+    {a:'Gallop like a horse',e:'🐴',s:'Skip-step movement — develops rhythm'},
+
+    {a:'Crawl like a crab',e:'🦀',s:'Great for core strength'},
+
+    {a:'Stretch up tall',e:'🙆',s:'Reach up high like a giraffe!'},
+
+    {a:'Roll like a log',e:'🪵',s:'Develops spatial awareness'},
+
+  ]
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Music & Movement — Muziki na Harakati</p>
+
+      <p style={{...label,marginBottom:'10px',color:'#fdba74'}}>🎵 Action Songs:</p>
+
+      <div style={grid('200px','10px',)}>
+
+        {songs.map(s=>(
+
+          <div key={s.t} style={{...card({padding:'14px'})}}>
+
+            <div style={{fontWeight:700,color:'#f9fafb',margin:'0 0 4px',fontSize:'.9rem'}}>{s.e} {s.t}</div>
+
+            <div style={{color:'#9ca3af',fontSize:'.75rem'}}>{s.actions}</div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+      <p style={{...label,marginBottom:'10px',color:'#fdba74',marginTop:'16px'}}>🏃 Movement Activities:</p>
+
+      <div style={grid('160px','10px')}>
+
+        {movements.map(m=>(
+
+          <div key={m.a} style={{...card({textAlign:'center',padding:'14px'})}}>
+
+            <div style={{fontSize:'2rem',marginBottom:'6px'}}>{m.e}</div>
+
+            <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.82rem',marginBottom:'4px'}}>{m.a}</div>
+
+            <div style={{color:'#9ca3af',fontSize:'.7rem'}}>{m.s}</div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── ART / CRAFTS ── */
+
+function ArtSection({topic}){
+
+  const items=[
+
+    {t:'Finger Painting',e:'🖐️',steps:['Dip your finger in paint','Press it on the paper','Make dots, lines or shapes!'],mat:'Paint, paper'},
+
+    {t:'Leaf Printing',e:'🍃',steps:['Collect a leaf from outside','Paint one side of the leaf','Press it firmly on paper','Lift to see the print!'],mat:'Leaves, paint, paper'},
+
+    {t:'Playdough Modelling',e:'🎨',steps:['Roll it into a ball','Flatten it to make a pancake','Roll it into a snake','Shape it into animals or pots!'],mat:'Playdough or clay'},
+
+    {t:'Paper Mosaic',e:'🗒️',steps:['Tear coloured paper into small pieces','Draw a simple shape on white paper','Paste the pieces inside the shape'],mat:'Coloured paper, glue'},
+
+    {t:'Bead Threading',e:'📿',steps:['Choose beads of different colours','Thread a needle or string','Create a colour pattern','Tie the ends together'],mat:'Beads, thread'},
+
+    {t:'Origami Folding',e:'🪂',steps:['Start with a square of paper','Fold in half diagonally','Follow the shape step by step','No cutting — just folding!'],mat:'Square paper'},
+
+  ]
+
+  const instruments=[
+
+    {n:'Drum',e:'🥁',k:'Ngoma',s:'Stretched skin over a frame — beat with hands or sticks'},
+
+    {n:'Shaker / Rattle',e:'🪇',k:'Kayamba',s:'Fill a sealed container with seeds or pebbles'},
+
+    {n:'Sticks',e:'🪵',k:'Vijiti',s:'Two sticks tapped together to keep a beat'},
+
+    {n:'Whistle',e:'🎵',k:'Filimbi',s:'Blow to make a high sound'},
+
+    {n:'Hand Clapping',e:'👏',k:'Kupiga makofi',s:'The simplest instrument — your own hands!'},
+
+  ]
+
+  if(topic.includes('Crafts')||topic.includes('Art')){
+
+    return(
+
+      <div>
+
+        <p style={sectionTitle('#f9fafb')}>Art & Crafts — Sanaa na Ufundi</p>
+
+        <div style={grid('200px','10px')}>
+
+          {items.map(it=>(
+
+            <div key={it.t} style={{...card({padding:'14px'})}}>
+
+              <div style={{fontSize:'2rem',marginBottom:'6px'}}>{it.e}</div>
+
+              <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.9rem',marginBottom:'6px'}}>{it.t}</div>
+
+              <div style={{...badge('#f97316',{display:'inline-block',fontSize:'.65rem',marginBottom:'8px'})}}>🧰 {it.mat}</div>
+
+              {it.steps.map((s,i)=>(
+
+                <div key={i} style={{color:'#9ca3af',fontSize:'.75rem',marginBottom:'3px'}}>
+
+                  <span style={{color:'#fdba74',fontWeight:700}}>{i+1}.</span> {s}
+
+                </div>
+
+              ))}
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    )
+
+  }
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>Music Instruments — Vyombo vya Muziki</p>
+
+      <div style={grid('160px','10px')}>
+
+        {instruments.map(i=>(
+
+          <div key={i.n} style={{...card({textAlign:'center',padding:'16px'})}}>
+
+            <div style={{fontSize:'2.4rem',marginBottom:'6px'}}>{i.e}</div>
+
+            <div style={{fontWeight:700,color:'#f9fafb',fontSize:'.9rem'}}>{i.n}</div>
+
+            <div style={{color:'#5eead4',fontSize:'.75rem',marginBottom:'4px'}}>{i.k}</div>
+
+            <div style={{color:'#9ca3af',fontSize:'.7rem'}}>{i.s}</div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/* ── STUDY NOTES ── */
+
+function StudyNotes({subj,cls}){
+
+  const subjectNoteKeys = {
+    'Language Activities':['alphabet','vowels','syllables','fib'],
+    'Mathematical Activities':['numbers','shapes','multiplication'],
+    'Environmental Activities':['animals','body','weather','plants','health'],
+    'Religious Education':['creation','bible'],
+    'English':['alphabet','vowels','syllables','fib'],
+    'Mathematics':['numbers','shapes','multiplication'],
+    'Kiswahili':['alphabet'],
+    'Creative Activities':[],
+    'Creative Arts':[],
+  }
+  const keys = subjectNoteKeys[subj] || Object.keys(CURRICULUM_NOTES)
+  const allNotes = keys.length ? keys.map(k=>CURRICULUM_NOTES[k]).filter(Boolean) : Object.values(CURRICULUM_NOTES)
+
+  return(
+
+    <div>
+
+      <p style={sectionTitle('#f9fafb')}>📋 Study Notes — Maelezo ya Masomo</p>
+
+      <p style={{color:'#9ca3af',fontSize:'.85rem',marginBottom:'16px'}}>
+
+        These are the <strong style={{color:'#f9fafb'}}>Specific Learning Outcomes</strong> and <strong style={{color:'#f9fafb'}}>Key Inquiry Questions</strong> for <span style={{color:'#a5b4fc'}}>{cls} — {subj}</span>
+
+      </p>
+
+      {allNotes.map((n,i)=>(
+
+        <StudyNoteCard key={i} note={n}/>
+
+      ))}
+
+    </div>
+
+  )
+
+}
+
+
+
+function StudyNoteCard({note}){
+  return(
+    <div style={{marginBottom:'32px',paddingBottom:'28px',borderBottom:'1px solid #1f2937'}}>
+      <p style={{fontWeight:900,color:'#f9fafb',fontSize:'1.15rem',margin:'0 0 16px'}}>{note.title}</p>
+      <p style={{fontSize:'.75rem',fontWeight:700,color:'#86efac',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:'12px'}}>✅ Learning Outcomes</p>
+      {note.outcomes.map((o,i)=>(
+        <div key={i} style={{color:'#d1fae5',fontSize:'1rem',marginBottom:'12px',display:'flex',gap:'12px',lineHeight:1.75}}>
+          <span style={{color:'#22c55e',flexShrink:0,fontSize:'1.1rem',marginTop:'1px'}}>•</span>{o}
+        </div>
+      ))}
+      <p style={{fontSize:'.75rem',fontWeight:700,color:'#a5b4fc',textTransform:'uppercase',letterSpacing:'.8px',marginBottom:'12px',marginTop:'20px'}}>❓ Key Inquiry Questions</p>
+      {note.inquiries.map((q,i)=>(
+        <div key={i} style={{color:'#e0e7ff',fontSize:'1rem',marginBottom:'12px',display:'flex',gap:'12px',lineHeight:1.75}}>
+          <span style={{color:'#6366f1',flexShrink:0,fontWeight:800,minWidth:'28px'}}>Q{i+1}.</span>{q}
+        </div>
+      ))}
+      <div style={{marginTop:'18px',borderLeft:'4px solid #fbbf24',paddingLeft:'16px'}}>
+        <span style={{color:'#fde68a',fontSize:'1rem',lineHeight:1.75}}>{note.tip}</span>
+      </div>
+    </div>
+  )
+}
+
+
+function QuizMode({topic, grade, subject, token, onClose}){
+  const qs = QUIZ_QUESTIONS[topic] || []
+  const [idx,setIdx] = useState(0)
+  const [chosen,setChosen] = useState(null)
+  const [score,setScore] = useState(0)
+  const [done,setDone] = useState(false)
+  const [saved,setSaved] = useState(false)
+
+  if(!qs.length) return(
+    <div style={{textAlign:'center',padding:'40px',color:'#6b7280'}}>
+      <div style={{fontSize:'2rem',marginBottom:'8px'}}>??</div>
+      <p>Quiz for this topic coming soon!</p>
+      <button onClick={onClose} style={{marginTop:'12px',padding:'8px 18px',borderRadius:'8px',background:'#1f2937',border:'1px solid #374151',color:'#9ca3af',cursor:'pointer'}}>Close</button>
+    </div>
+  )
+
+  const q = qs[idx]
+  const isLast = idx === qs.length - 1
+
+  const handleAnswer = (opt) => {
+    if(chosen) return
+    const correct = opt === q.a
+    setChosen(opt)
+    if(correct) setScore(s => s+1)
+  }
+
+  const next = async () => {
+    if(isLast){
+      setDone(true)
+      try {
+        await fetch('/api/studytime/quiz', {
+          method:'POST',
+          headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+          body: JSON.stringify({grade, subject, topic, score: chosen===q.a?score+1:score, total: qs.length})
+        })
+        setSaved(true)
+      } catch {}
+    } else {
+      setIdx(i => i+1)
+      setChosen(null)
+    }
+  }
+
+  const finalScore = chosen===q.a ? score+1 : score
+  const pct = Math.round((finalScore/qs.length)*100)
+
+  if(done) return(
+    <div style={{textAlign:'center',padding:'32px 20px'}}>
+      <div style={{fontSize:'3rem',marginBottom:'12px'}}>{pct>=80?'??':pct>=60?'?':'??'}</div>
+      <h3 style={{fontSize:'1.4rem',fontWeight:900,color:'#f9fafb',margin:'0 0 6px'}}>{pct>=80?'Excellent!':pct>=60?'Good job!':'Keep studying!'}</h3>
+      <div style={{fontSize:'3rem',fontWeight:900,color:pct>=80?'#4ade80':pct>=60?'#fbbf24':'#f87171',margin:'12px 0'}}>{finalScore}/{qs.length}</div>
+      <div style={{color:'#6b7280',fontSize:'.85rem',marginBottom:'20px'}}>{pct}% correct{saved?' — Saved ?':''}</div>
+      <div style={{display:'flex',gap:'10px',justifyContent:'center',flexWrap:'wrap'}}>
+        <button onClick={()=>{setIdx(0);setChosen(null);setScore(0);setDone(false)}}
+          style={{padding:'10px 20px',borderRadius:'10px',background:'rgba(99,102,241,0.15)',border:'1px solid #6366f1',color:'#a5b4fc',fontWeight:700,cursor:'pointer'}}>
+          Try Again ?
+        </button>
+        <button onClick={onClose}
+          style={{padding:'10px 20px',borderRadius:'10px',background:'#1f2937',border:'1px solid #374151',color:'#9ca3af',fontWeight:700,cursor:'pointer'}}>
+          Back to Topic
+        </button>
+      </div>
+    </div>
+  )
+
+  return(
+    <div style={{padding:'4px'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+        <span style={{fontSize:'.78rem',fontWeight:700,color:'#6b7280',textTransform:'uppercase',letterSpacing:'.5px'}}>Question {idx+1} of {qs.length}</span>
+        <div style={{display:'flex',gap:'4px'}}>
+          {qs.map((_,i)=>(
+            <div key={i} style={{width:'20px',height:'4px',borderRadius:'2px',background:i<idx?'#22c55e':i===idx?'#6366f1':'#1f2937',transition:'background .2s'}}/>
+          ))}
+        </div>
+        <span style={{fontSize:'.78rem',color:'#22c55e',fontWeight:700}}>{score} correct</span>
+      </div>
+      <div style={{background:'rgba(99,102,241,0.06)',border:'1px solid rgba(99,102,241,0.2)',borderRadius:'14px',padding:'24px',marginBottom:'16px',textAlign:'center'}}>
+        <p style={{fontSize:'1.1rem',fontWeight:700,color:'#f9fafb',margin:0,lineHeight:1.5}}>{q.q}</p>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'16px'}}>
+        {q.o.map(opt=>{
+          const isChosen = chosen===opt
+          const isCorrect = opt===q.a
+          const col = !chosen?'#374151':isChosen?(isCorrect?'#22c55e':'#ef4444'):isCorrect?'#22c55e':'#1f2937'
+          return(
+            <button key={opt} onClick={()=>handleAnswer(opt)} disabled={!!chosen}
+              style={{padding:'14px',borderRadius:'12px',border:'2px solid '+col,
+                background:!chosen?'#111827':isChosen?(isCorrect?'rgba(34,197,94,0.15)':'rgba(239,68,68,0.15)'):isCorrect?'rgba(34,197,94,0.08)':'#0a0e17',
+                color:!chosen?'#f9fafb':isChosen?(isCorrect?'#4ade80':'#f87171'):isCorrect?'#4ade80':'#6b7280',
+                fontWeight:700,fontSize:'.95rem',cursor:chosen?'default':'pointer',transition:'all .15s'}}>
+              {opt}
+            </button>
+          )
+        })}
+      </div>
+      {chosen&&(
+        <div style={{textAlign:'center'}}>
+          <p style={{color:chosen===q.a?'#4ade80':'#f87171',fontWeight:700,marginBottom:'12px',fontSize:'.95rem'}}>
+            {chosen===q.a?'? Correct!':'? Answer: '+q.a}
+          </p>
+          <button onClick={next}
+            style={{padding:'12px 32px',borderRadius:'10px',background:'linear-gradient(135deg,#6366f1,#4f46e5)',color:'#fff',fontWeight:700,border:'none',cursor:'pointer',fontSize:'.95rem'}}>
+            {isLast?'See Results ?':'Next Question ?'}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+function renderTopic(cls, subj, topic){
+
+  const t=topic
+
+  if(t==='Uppercase ABC'||t==='Alphabet Review')return <LetterChart upper={true} showKiswahili={cls==='Grade 1'}/>
+
+  if(t==='Lowercase abc')return <LetterChart upper={false} showKiswahili={false}/>
+
+  if(t.includes('Vowel')||t.includes('Irabu'))return <VowelsConsonants/>
+
+  if(t.includes('Consonant')||t.includes('Konsonanti'))return <VowelsConsonants/>
+
+  if(t==='Syllables'||t==='Syllables & Blends')return <SyllableChart/>
+
+  if(t==='Fill in the Blank')return <FillInBlank level={cls}/>
+
+  if(t==='Simple Words')return <SimpleWordsSection level={cls}/>
+
+  if(t.includes('Numbers 1–50'))return <NumberChart max={50}/>
+  if(t.includes('Numbers 1–20'))return <NumberChart max={20}/>
+
+  if(t.includes('Numbers 1–100'))return <NumberChart max={100}/>
+
+  if(t==='Shapes')return <ShapesSection/>
+
+  if(t.includes('Colour')||t.includes('Color')||t.includes('Rangi — Colours'))return <ColoursSection/>
+
+  if(t==='Patterns')return <PatternsSection/>
+
+  if(t==='Counting Fun')return <CountingFun/>
+
+  if(t==='Measurement')return <MeasurementSection/>
+
+  if(t==='Addition')return <ArithmeticPractice op="+"/>
+
+  if(t==='Subtraction')return <ArithmeticPractice op="-"/>
+
+  if(t==='Multiplication Tables')return <MultiplicationTables/>
+
+  if(t==='Wild Animals')return <AnimalsSection type="wild"/>
+
+  if(t==='Domestic Animals')return <AnimalsSection type="domestic"/>
+
+  if(t==='Wild & Domestic Animals')return <AnimalsSection type="both"/>
+
+  if(t==='Wanyama — Animals')return <AnimalsSection type="both"/>
+
+  if(t==='Body Parts')return <BodyPartsSection/>
+
+  if(t==='Weather')return <WeatherSection/>
+
+  if(t==='Plants & Water'||t==='Plants')return <PlantsSection/>
+
+  if(t==='Health & Safety')return <HealthSafetySection/>
+
+  if(t==='My Family')return <FamilySection/>
+
+  if(t==='My School')return <MySchoolSection/>
+
+  if(t==='Community Helpers')return <CommunityHelpersSection/>
+
+  if(t==='Salamu — Greetings')return <SwahiliGreetingsSection/>
+
+  if(t==='Nambari — Numbers')return <SwahiliNumbersSection/>
+
+  if(t==='Rangi — Colours')return <ColoursSection/>
+
+  if(t==='Music & Movement'||t==='Music & Dance')return <MusicMovementSection/>
+
+  if(t.includes('Crafts')||t==='Colours & Drawing'||t==='Colours Chart'||t==='Art Techniques')return <ArtSection topic={t}/>
+
+  if(t==='Movement Skills')return <MusicMovementSection/>
+
+  if(t==="God's Creation"||t==='Bible Stories'||t==='Christian Values'||t==='Life of Jesus'||t==='Prayer & Church')return <RESection topic={t}/>
+
+  if(t==='Study Notes')return <StudyNotes subj={subj} cls={cls}/>
+
+  if(t==='Mazungumzo')return <SwahiliGreetingsSection/>
+
+  if(t==='Colours Chart')return <ColoursSection/>
+
+  if(t==='Colours')return <ColoursSection/>
+
+  // fallback
+
+  return(
+
+    <div style={{textAlign:'center',padding:'48px',color:'#6b7280'}}>
+
+      <div style={{fontSize:'3rem',marginBottom:'12px'}}>🚀</div>
+
+      <div style={{fontSize:'1rem',fontWeight:700,color:'#9ca3af'}}>Content for "{t}" coming soon!</div>
+
+      <div style={{fontSize:'.8rem',marginTop:'6px'}}>Try another topic above.</div>
+
+    </div>
+
+  )
+
+}
+
+
+
+/*════════════════════════════════════════════════════
+
+  MAIN DASHBOARD COMPONENT WITH HAMBURGER & SIDEBAR
+
+════════════════════════════════════════════════════*/
+
+function Onboarding({onStart}){
+  const [grade,setGrade]=useState('')
+  const [subj,setSubj]=useState('')
+  const subjects=grade?(GRADE_SUBJECTS_MAP[grade]||[]):[]
+  const icons={'Language Activities':'','Mathematical Activities':'','Creative Activities':'','Environmental Activities':'','Religious Education':'','English':'','Mathematics':'','Kiswahili':'','Creative Arts':'','Creative Arts & Sports':'','Science & Technology':'','Social Studies':'','Integrated Science':'','Health Education':'','Agriculture':''}
+  const gradeIcons={'PP1':'','PP2':'','Grade 1':'','Grade 2':'','Grade 3':'','Grade 4':'','Grade 5':'','Grade 6':'','Grade 7':'','Grade 8':'','Grade 9':''}
+  const can=grade&&subj
+  return(
+    <div style={{minHeight:'100vh',background:'#0a0e17',display:'flex',alignItems:'center',justifyContent:'center',padding:'24px'}}>
+      <div style={{width:'100%',maxWidth:'420px'}}>
+        <div style={{textAlign:'center',marginBottom:'40px'}}>
+          <div style={{fontSize:'3rem',marginBottom:'12px'}}></div>
+          <h1 style={{fontSize:'2rem',fontWeight:900,color:'#f9fafb',margin:'0 0 6px',letterSpacing:'-0.5px'}}>Study Time</h1>
+          <p style={{color:'#6b7280',fontSize:'.9rem',margin:0}}>Select your class and subject to begin</p>
+        </div>
+        <div style={{marginBottom:'20px'}}>
+          <label style={{display:'block',fontSize:'.72rem',fontWeight:700,color:'#6b7280',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'8px'}}>Class  Darasa</label>
+          <div style={{position:'relative'}}>
+            <select value={grade} onChange={e=>{setGrade(e.target.value);setSubj('')}}
+              style={{width:'100%',padding:'14px 40px 14px 16px',borderRadius:'12px',background:'#111827',border:'1px solid '+(grade?'#6366f1':'#1f2937'),color:grade?'#f9fafb':'#6b7280',fontSize:'1rem',fontWeight:600,cursor:'pointer',outline:'none',appearance:'none'}}>
+              <option value="">Choose your class...</option>
+              {['PP1','PP2','Grade 1','Grade 2','Grade 3','Grade 4','Grade 5','Grade 6','Grade 7','Grade 8','Grade 9'].map(g=>(
+                <option key={g} value={g}>{gradeIcons[g]} {g}</option>
+              ))}
+            </select>
+            <span style={{position:'absolute',right:'14px',top:'50%',transform:'translateY(-50%)',color:'#6b7280',pointerEvents:'none'}}></span>
+          </div>
+        </div>
+        {grade&&(
+          <div style={{marginBottom:'28px'}}>
+            <label style={{display:'block',fontSize:'.72rem',fontWeight:700,color:'#6b7280',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'8px'}}>Subject  Somo</label>
+            <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+              {subjects.map(s=>{
+                const isSel=subj===s
+                return(
+                  <button key={s} onClick={()=>setSubj(s)}
+                    style={{padding:'12px 16px',borderRadius:'10px',textAlign:'left',border:'1px solid '+(isSel?'#6366f1':'#1f2937'),background:isSel?'rgba(99,102,241,0.15)':'#111827',color:isSel?'#a5b4fc':'#9ca3af',fontWeight:isSel?700:400,fontSize:'.9rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'10px',transition:'all .12s'}}>
+                    <span>{icons[s]||''}</span>{s}{isSel&&<span style={{marginLeft:'auto',color:'#6366f1'}}></span>}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+        <button onClick={()=>can&&onStart(grade,subj)} disabled={!can}
+          style={{width:'100%',padding:'16px',borderRadius:'12px',fontSize:'1rem',fontWeight:700,border:'none',cursor:can?'pointer':'not-allowed',background:can?'linear-gradient(135deg,#6366f1,#4f46e5)':'#1f2937',color:can?'#fff':'#374151',transition:'all .2s'}}>
+          {can?('Start Learning '+gradeIcons[grade]+' '):'Select class and subject to continue'}
+        </button>
+        {can&&<p style={{textAlign:'center',color:'#6b7280',fontSize:'.78rem',marginTop:'12px'}}>{grade}  {subj}</p>}
+      </div>
+    </div>
+  )
+}
+
+export default function StudyTime(){
+
+  const [screen,setScreen]=useState('onboard')
+  const [showSwahili,setShowSwahili]=useState(true)
+  const [showQuiz,setShowQuiz]=useState(false)
+  const [visited,setVisited]=useState({})
+  const [favourites,setFavourites]=useState({})
+  const [quizScores,setQuizScores]=useState({})
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token') || ''
+
+  const api = useCallback(async (url,method='GET',body=null)=>{
+    const opts = {method,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}}
+    if(body) opts.body = JSON.stringify(body)
+    const r = await fetch(url,opts)
+    return r.json()
+  },[token])
+
+  useEffect(()=>{
+    if(!token) return
+    api('/api/studytime/progress').then(rows=>{
+      const map={}
+      rows.forEach(r=>{ map[r.grade+'|'+r.subject+'|'+r.topic]=true })
+      setVisited(map)
+    }).catch(()=>{})
+    api('/api/studytime/favourites').then(rows=>{
+      const map={}
+      rows.forEach(r=>{ map[r.grade+'|'+r.subject+'|'+r.topic]=true })
+      setFavourites(map)
+    }).catch(()=>{})
+    api('/api/studytime/quiz/results').then(rows=>{
+      const map={}
+      rows.forEach(r=>{ map[r.grade+'|'+r.subject+'|'+r.topic]=Math.round((r.best_score/r.total)*100) })
+      setQuizScores(map)
+    }).catch(()=>{})
+  },[api,token])
+
+  const markVisited = useCallback((g,s,t)=>{
+    const key=g+'|'+s+'|'+t
+    if(visited[key]) return
+    setVisited(v=>({...v,[key]:true}))
+    api('/api/studytime/progress','POST',{grade:g,subject:s,topic:t}).catch(()=>{})
+  },[visited,api])
+
+  const toggleFav = useCallback((g,s,t)=>{
+    const key=g+'|'+s+'|'+t
+    setFavourites(f=>({...f,[key]:!f[key]}))
+    api('/api/studytime/favourite','POST',{grade:g,subject:s,topic:t}).catch(()=>{})
+  },[api])
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const [cls, setCls] = useState('PP1')
+
+  const [subj, setSubj] = useState('Language Activities')
+
+  const [topic, setTopic] = useState('Uppercase ABC')
+
+  useEffect(()=>{
+    if(screen==='study') markVisited(cls,subj,topic)
+  },[screen,topic,cls,subj])
+
+
+
+  if(screen==='onboard') return <Onboarding onStart={(g,s)=>{setCls(g);setSubj(s);const t=SUBJECT_TOPICS[g]?.[s];setTopic(t?t[0]:'Study Notes');setScreen('study')}} />
+
+  const handleClassChange = (newCls) => {
+
+    setCls(newCls)
+
+    const firstSubj = CLASS_SUBJECTS[newCls][0]
+
+    setSubj(firstSubj)
+
+    setTopic(SUBJECT_TOPICS[newCls][firstSubj][0])
+
+  }
+
+
+
+  const handleSubjChange = (newSubj) => {
+
+    setSubj(newSubj)
+
+    setTopic(SUBJECT_TOPICS[cls][newSubj][0])
+
+  }
+
+
+
+  const col = SUBJECT_COLORS[subj] || SUBJECT_COLORS['Language Activities']
+
+  const topics = SUBJECT_TOPICS[cls]?.[subj] || []
+
+
+
+  const subjEmojis = {
+
+    'Language Activities':'📖','Mathematical Activities':'🔢','Creative Activities':'🎨',
+
+    'Environmental Activities':'🌿','Religious Education':'✝️',
+
+    'English':'📖','Mathematics':'🔢','Kiswahili':'🌍','Creative Arts':'🎨',
+
+  }
+
+
+
+  return (
+
+    <div style={{ minHeight: '100vh', background: '#0a0e17' }}>
+
+      {/* OVERLAY */}
+
+      {sidebarOpen && (
+
+        <div
+
+          onClick={() => setSidebarOpen(false)}
+
+          style={{
+
+            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+
+            zIndex: 90, backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)'
+
+          }}
+
+        />
+
+      )}
+
+
+
+      {/* SIDEBAR */}
+
+      <aside style={{
+
+        position: 'fixed', top: 0, left: 0, height: '100vh', width: '280px',
+
+        background: '#0d1117', borderRight: '1px solid #1f2937', zIndex: 100,
+
+        transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+
+        transition: 'transform 0.25s ease', overflowY: 'auto', display: 'flex', flexDirection: 'column',
+
+        boxShadow: '4px 0 24px rgba(0,0,0,0.5)'
+
+      }}>
+
+        <div style={{ padding: '16px', borderBottom: '1px solid #1f2937', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
+          <span style={{ fontWeight: 800, fontSize: '1.1rem', color: '#f9fafb' }}>📚 Study Time</span>
+
+          <button onClick={() => setSidebarOpen(false)} style={{
+
+            background: '#111827', border: '1px solid #1f2937', color: '#9ca3af',
+
+            borderRadius: '8px', width: '32px', height: '32px', fontSize: '1.1rem', cursor: 'pointer',
+
+            display: 'flex', alignItems: 'center', justifyContent: 'center'
+
+          }}>✕</button>
+
+        </div>
+
+
+
+        <div style={{ flex: 1, overflowY: 'auto', padding: '14px 14px' }}>
+
+          {/* SUBJECT LIST */}
+
+          <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>Subject — Somo</p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '16px' }}>
+
+            {CLASS_SUBJECTS[cls].map(s => (
+
+              <button key={s} onClick={() => handleSubjChange(s)} style={{
+
+                padding: '10px 12px', borderRadius: '8px', fontWeight: subj===s?700:400, fontSize: '0.8rem',
+
+                cursor: 'pointer', border: `1px solid ${subj===s?col.acc:'transparent'}`,
+
+                background: subj===s?col.bg:'transparent', color: subj===s?col.txt:'#9ca3af',
+
+                textAlign: 'left', transition: 'all 0.12s', display: 'flex', alignItems: 'center', gap: '6px'
+
+              }}>
+
+                <span>{subjEmojis[s]}</span> {s}
+
+              </button>
+
+            ))}
+
+          </div>
+
+
+
+          {/* TOPIC LIST */}
+
+          <p style={{ fontSize: '0.7rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>Topics</p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+
+            {topics.map(t => (
+
+              <button key={t} onClick={() => { setTopic(t); setSidebarOpen(false) }} style={{
+
+                padding: '9px 12px', borderRadius: '8px', fontWeight: topic===t?700:400, fontSize: '0.78rem',
+
+                cursor: 'pointer', border: '1px solid transparent',
+
+                background: topic===t?'rgba(99,102,241,0.1)':'transparent',
+
+                color: topic===t?'#c4b5fd':'#9ca3af', textAlign: 'left', transition: 'all 0.12s'
+
+              }}>
+
+                {t}
+
+              </button>
+
+            ))}
+
+          </div>
+
+        </div>
+
+
+
+        <div style={{ padding: '12px 14px', borderTop: '1px solid #1f2937', fontSize: '0.7rem', color: '#6b7280', lineHeight: 1.5, background: 'rgba(99,102,241,0.03)' }}>
+
+          💡 <strong style={{color:'#9ca3af'}}>Study Tip:</strong> Go through one topic at a time. Read the Study Notes for each section.
+
+        </div>
+
+      </aside>
+
+
+
+      {/* MAIN CONTENT */}
+
+      <div style={{ paddingLeft: sidebarOpen ? '280px' : '0', transition: 'padding-left 0.25s ease' }}>
+
+        {/* TOPBAR */}
+
+        <header style={{
+
+          display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px',
+
+          borderBottom: '1px solid #1f2937', background: '#0a0e17', position: 'sticky', top: 0, zIndex: 50
+
+        }}>
+
+          <button onClick={() => setSidebarOpen(true)} style={{
+
+            width: '40px', height: '40px', borderRadius: '10px', border: '1px solid #1f2937',
+
+            background: '#111827', color: '#9ca3af', fontSize: '1.4rem', cursor: 'pointer',
+
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+
+          }} aria-label="Open menu">
+
+            ☰
+
+          </button>
+
+          <div>
+
+            <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#f9fafb', margin: 0, letterSpacing: '-0.3px' }}>
+
+              📚 Study Time
+
+            </h1>
+
+            <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: 0 }}>
+
+              {cls} · {subj} · {topic}
+
+            </p>
+
+          </div>
+
+        </header>
+
+
+
+        {/* CONTENT PANEL */}
+
+        <div style={{ padding: '20px' }}>
+
+          <div style={{
+
+            background: '#0f1520', border:`1px solid ${col.border}`, borderRadius:'16px',
+
+            padding:'20px', minHeight:'300px'
+
+          }}>
+
+            {showQuiz
+              ? <QuizMode topic={topic} grade={cls} subject={subj} token={token} onClose={()=>setShowQuiz(false)}/>
+              : renderTopic(cls, subj, topic)
+            }
+
+          </div>
+
+
+
+          <div style={{ marginTop:'16px', padding:'10px 14px', background:'rgba(99,102,241,0.05)', borderRadius:'10px',
+
+            border:'1px solid rgba(99,102,241,0.15)', display:'flex', gap:'10px', alignItems:'center', flexWrap:'wrap' }}>
+
+            <span style={{fontSize:'1.2rem'}}>💡</span>
+
+            <span style={{color:'#6b7280', fontSize:'.78rem'}}>
+
+              <strong style={{color:'#9ca3af'}}>Study Tip:</strong> Use the menu ☰ to switch classes, subjects, and topics.
+
+              Content covers PP1 → PP2 → Grade 1.
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

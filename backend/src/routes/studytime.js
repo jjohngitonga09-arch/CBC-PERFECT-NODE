@@ -1,0 +1,13 @@
+﻿const express = require('express');
+const router = express.Router();
+const ctrl = require('../controllers/studytimeController');
+const { requireAuth } = require('../middleware/auth');
+router.use(requireAuth);
+router.post('/progress', ctrl.markVisited);
+router.get('/progress', ctrl.getAllProgress);
+router.post('/favourite', ctrl.toggleFavourite);
+router.get('/favourites', ctrl.getFavourites);
+router.post('/quiz', ctrl.saveQuizResult);
+router.get('/quiz/best/:grade/:subject/:topic', ctrl.getBestScore);
+router.get('/quiz/results', ctrl.getAllQuizResults);
+module.exports = router;

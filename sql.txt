@@ -1,0 +1,548 @@
+                                                                                                                    
+┌──(hackone㉿hackone)-[~]
+└─$ nmap -p 80,443 -sV -sC elimikasasa.co.ke
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-05-01 20:10 -0400
+Nmap scan report for elimikasasa.co.ke (203.161.35.75)
+Host is up (0.075s latency).
+rDNS record for 203.161.35.75: server1.crystalhost.co.ke
+
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     nginx
+|_http-title: Did not follow redirect to https://elimikasasa.co.ke/
+443/tcp open  ssl/http nginx
+|_http-title: 502 Bad Gateway
+|_ssl-date: TLS randomness does not represent time
+| ssl-cert: Subject: commonName=elimikasasa.co.ke
+| Subject Alternative Name: DNS:*.elimikasasa.co.ke, DNS:elimikasasa.co.ke
+| Not valid before: 2026-03-09T07:45:50
+|_Not valid after:  2026-06-07T07:45:49
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 31.46 seconds
+                                                                                                                    
+┌──(hackone㉿hackone)-[~]
+└─$ whatweb https://elimikasasa.co.ke
+https://elimikasasa.co.ke [200 OK] Country[MALAYSIA][MY], Email[support@elimikasasa.co.ke,your@email.com], HTML5, HTTPServer[nginx], IP[203.161.35.75], Meta-Author[Lembur East Africa], Open-Graph-Protocol[website], Script[application/ld+json], Strict-Transport-Security[max-age=63072000; includeSubDomains], Title[Free School Management System Kenya | CBC &amp; 8-4-4 | Elimikasasa | Elimikasasa School Management System], UncommonHeaders[x-content-type-options], X-Frame-Options[SAMEORIGIN], nginx
+                                                                                                                    
+┌──(hackone㉿hackone)-[~]
+└─$ ^[[200~gobuster dir -u https://elimikasasa.co.ke -w /usr/share/wordlists/dirb/common.txt -x php,txt,html,bak,zip,sql,old,tar.gz -t 50~
+                                                                                                                    
+┌──(hackone㉿hackone)-[~]
+└─$ gobuster dir -u https://elimikasasa.co.ke -w /usr/share/wordlists/dirb/common.txt -x php,txt,html,bak,zip,sql,old,tar.gz -t 50
+===============================================================
+Gobuster v3.8.2
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     https://elimikasasa.co.ke
+[+] Method:                  GET
+[+] Threads:                 50
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.8.2
+[+] Extensions:              sql,old,tar.gz,php,txt,html,bak,zip
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+Progress: 0 / 1 (0.00%)
+2026/05/01 20:12:51 the server returns a status code that matches the provided options for non existing urls. https://elimikasasa.co.ke/b38b4d96-2373-48fd-aceb-298fe0e42cf8 => 200 (Length: 13251). Please exclude the response length or the status code or set the wildcard option.. To continue please exclude the status code or the length
+                                                                                                                    
+┌──(hackone㉿hackone)-[~]
+└─$ gobuster dir -u https://elimikasasa.co.ke -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,txt,html,bak,zip,sql -t 50
+===============================================================
+Gobuster v3.8.2
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     https://elimikasasa.co.ke
+[+] Method:                  GET
+[+] Threads:                 50
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.8.2
+[+] Extensions:              sql,php,txt,html,bak,zip
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+Progress: 0 / 1 (0.00%)
+2026/05/01 20:13:59 the server returns a status code that matches the provided options for non existing urls. https://elimikasasa.co.ke/0cea2871-ec05-41b7-b60e-7b963c0ecd21 => 200 (Length: 13251). Please exclude the response length or the status code or set the wildcard option.. To continue please exclude the status code or the length
+                                                                                                
+┌──(hackone㉿hackone)-[~]
+└─$ sqlmap -u "https://elimikasasa.co.ke/product.php?id=1" --batch --dbs
+        ___
+       __H__                                                                                    
+ ___ ___["]_____ ___ ___  {1.10.4#stable}                                                       
+|_ -| . [,]     | .'| . |                                                                       
+|___|_  [(]_|_|_|__,|  _|                                                                       
+      |_|V...       |_|   https://sqlmap.org                                                    
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting @ 20:14:33 /2026-05-01/
+
+[20:14:34] [INFO] testing connection to the target URL
+[20:14:35] [WARNING] the web server responded with an HTTP error code (502) which could interfere with the results of the tests
+[20:14:35] [INFO] checking if the target is protected by some kind of WAF/IPS
+[20:14:36] [INFO] testing if the target URL content is stable
+[20:14:37] [INFO] target URL content is stable
+[20:14:37] [INFO] testing if GET parameter 'id' is dynamic
+[20:14:37] [WARNING] GET parameter 'id' does not appear to be dynamic
+[20:14:38] [WARNING] heuristic (basic) test shows that GET parameter 'id' might not be injectable
+[20:14:39] [INFO] testing for SQL injection on GET parameter 'id'
+[20:14:39] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[20:14:42] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+[20:14:43] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'                                                                            
+[20:14:46] [INFO] testing 'PostgreSQL AND error-based - WHERE or HAVING clause'
+[20:14:50] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (IN)'                                                                                           
+[20:14:53] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (XMLType)'
+[20:14:57] [INFO] testing 'Generic inline queries'
+[20:14:57] [INFO] testing 'PostgreSQL > 8.1 stacked queries (comment)'
+[20:15:00] [INFO] testing 'Microsoft SQL Server/Sybase stacked queries (comment)'
+[20:15:04] [INFO] testing 'Oracle stacked queries (DBMS_PIPE.RECEIVE_MESSAGE - comment)'
+[20:15:07] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+[20:15:11] [INFO] testing 'PostgreSQL > 8.1 AND time-based blind'
+[20:15:14] [INFO] testing 'Microsoft SQL Server/Sybase time-based blind (IF)'
+[20:15:18] [INFO] testing 'Oracle AND time-based blind'
+it is recommended to perform only basic UNION tests if there is not at least one other (potential) technique found. Do you want to reduce the number of requests? [Y/n] Y
+[20:15:21] [INFO] testing 'Generic UNION query (NULL) - 1 to 10 columns'
+[20:15:28] [WARNING] GET parameter 'id' does not seem to be injectable
+[20:15:28] [CRITICAL] all tested parameters do not appear to be injectable. Try to increase values for '--level'/'--risk' options if you wish to perform more tests. If you suspect that there is some kind of protection mechanism involved (e.g. WAF) maybe you could try to use option '--tamper' (e.g. '--tamper=space2comment') and/or switch '--random-agent'                             
+[20:15:28] [WARNING] HTTP error codes detected during run:
+502 (Bad Gateway) - 76 times, 406 (Not Acceptable) - 1 times
+
+[*] ending @ 20:15:28 /2026-05-01/
+
+                                                                                                
+┌──(hackone㉿hackone)-[~]
+└─$ 
+
+
+
+                                                                                                 
+┌──(hackone㉿hackone)-[~]
+└─$ curl -I -k https://elimikasasa.co.ke/admin
+curl -I -k https://elimikasasa.co.ke/login
+curl -I -k https://elimikasasa.co.ke/wp-admin
+curl -I -k https://elimikasasa.co.ke/administrator
+curl -I -k https://elimikasasa.co.ke/phpmyadmin
+curl -I -k https://elimikasasa.co.ke/robots.txt
+curl -I -k https://elimikasasa.co.ke/sitemap.xml
+curl -I -k https://elimikasasa.co.ke/api
+curl -I -k https://elimikasasa.co.ke/dashboard
+curl -I -k https://elimikasasa.co.ke/config.php
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:15 GMT
+Content-Type: text/html
+Content-Length: 13251
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:16 GMT
+Content-Type: text/html
+Content-Length: 74203
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:18 GMT
+Content-Type: text/html
+Content-Length: 13251
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:19 GMT
+Content-Type: text/html
+Content-Length: 13251
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:20 GMT
+Content-Type: text/html
+Content-Length: 13251
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:21 GMT
+Content-Type: text/plain
+Content-Length: 366
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:23 GMT
+Content-Type: application/xml
+Content-Length: 2182
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Vary: Accept-Encoding,User-Agent
+Accept-Ranges: bytes
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:24 GMT
+Content-Type: text/html
+Content-Length: 13251
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:25 GMT
+Content-Type: text/html
+Content-Length: 17392
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sat, 02 May 2026 00:18:26 GMT
+Content-Type: text/html
+Content-Length: 13251
+Connection: keep-alive
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Last-Modified: Thu, 16 Apr 2026 15:02:22 GMT
+Accept-Ranges: bytes
+Vary: Accept-Encoding,User-Agent
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Expires: 0
+
+                                                                                                 
+┌──(hackone㉿hackone)-[~]
+└─$ gobuster dir -u https://elimikasasa.co.ke -w /usr/share/wordlists/dirb/common.txt -x php,txt,html,bak,zip,sql -t 50 --exclude-length 13251
+===============================================================
+Gobuster v3.8.2
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     https://elimikasasa.co.ke
+[+] Method:                  GET
+[+] Threads:                 50
+[+] Wordlist:                /usr/share/wordlists/dirb/common.txt
+[+] Negative Status codes:   404
+[+] Exclude Length:          13251
+[+] User Agent:              gobuster/3.8.2
+[+] Extensions:              html,bak,zip,sql,php,txt
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+.bash_history.html   (Status: 406) [Size: 289]
+.bash_history.php    (Status: 406) [Size: 289]
+.cache.php           (Status: 406) [Size: 289]
+.bashrc.php          (Status: 406) [Size: 289]
+.cache.html          (Status: 406) [Size: 289]
+.config.php          (Status: 406) [Size: 289]
+.bashrc.html         (Status: 406) [Size: 289]
+.config.html         (Status: 406) [Size: 289]
+.forward.html        (Status: 406) [Size: 289]
+.cvsignore.php       (Status: 406) [Size: 289]
+.cvsignore.html      (Status: 406) [Size: 289]
+.cvs.php             (Status: 406) [Size: 289]
+.cvs.html            (Status: 406) [Size: 289]
+.forward.php         (Status: 406) [Size: 289]
+.git/HEAD.php        (Status: 406) [Size: 289]
+.git/HEAD.html       (Status: 406) [Size: 289]
+.history.html        (Status: 406) [Size: 289]
+.hta                 (Status: 403) [Size: 146]
+.hta.sql             (Status: 403) [Size: 146]
+.hta.html            (Status: 403) [Size: 146]
+.history.php         (Status: 406) [Size: 289]
+.hta.txt             (Status: 403) [Size: 146]
+.hta.php             (Status: 403) [Size: 146]
+.hta.bak             (Status: 403) [Size: 146]
+.htaccess            (Status: 403) [Size: 146]
+.hta.zip             (Status: 403) [Size: 146]
+.htaccess.sql        (Status: 403) [Size: 146]
+.htaccess.bak        (Status: 403) [Size: 146]
+.htaccess.txt        (Status: 403) [Size: 146]
+.htaccess.html       (Status: 403) [Size: 146]
+.htaccess.zip        (Status: 403) [Size: 146]
+.htaccess.php        (Status: 403) [Size: 146]
+.htpasswd.txt        (Status: 403) [Size: 146]
+.htpasswd.php        (Status: 403) [Size: 146]
+.htpasswd            (Status: 403) [Size: 146]
+.htpasswd.bak        (Status: 403) [Size: 146]
+.htpasswd.html       (Status: 403) [Size: 146]
+.htpasswd.zip        (Status: 403) [Size: 146]
+.htpasswd.sql        (Status: 403) [Size: 146]
+.listing.html        (Status: 406) [Size: 289]
+.listing.php         (Status: 406) [Size: 289]
+.listings.php        (Status: 406) [Size: 289]
+.mysql_history.php   (Status: 406) [Size: 289]
+.listings.html       (Status: 406) [Size: 289]
+.mysql_history.html  (Status: 406) [Size: 289]
+.passwd.html         (Status: 406) [Size: 289]
+.passwd.php          (Status: 406) [Size: 289]
+.perf.html           (Status: 406) [Size: 289]
+.perf.php            (Status: 406) [Size: 289]
+.profile.html        (Status: 406) [Size: 289]
+.profile.php         (Status: 406) [Size: 289]
+.rhosts.html         (Status: 406) [Size: 289]
+.rhosts.php          (Status: 406) [Size: 289]
+.sh_history.html     (Status: 406) [Size: 289]
+.sh_history.php      (Status: 406) [Size: 289]
+.ssh.php             (Status: 406) [Size: 289]
+.ssh.html            (Status: 406) [Size: 289]
+.subversion.php      (Status: 406) [Size: 289]
+.subversion.html     (Status: 406) [Size: 289]
+.svn.php             (Status: 406) [Size: 289]
+.svn.html            (Status: 406) [Size: 289]
+.svn/entries.html    (Status: 406) [Size: 289]
+.svn/entries.php     (Status: 406) [Size: 289]
+.swf.php             (Status: 406) [Size: 289]
+.swf.html            (Status: 406) [Size: 289]
+.web.html            (Status: 406) [Size: 289]
+.web.php             (Status: 406) [Size: 289]
+_.php                (Status: 406) [Size: 289]
+about.txt            (Status: 200) [Size: 76513]
+about                (Status: 200) [Size: 236910]
+about.html           (Status: 200) [Size: 236910]
+academics.txt        (Status: 200) [Size: 102047]
+academics            (Status: 200) [Size: 203691]
+academics.html       (Status: 200) [Size: 203691]
+activities           (Status: 200) [Size: 16645]
+activities.txt       (Status: 200) [Size: 10713]
+activities.html      (Status: 200) [Size: 16645]
+admin.php.bak        (Status: 406) [Size: 289]
+cgi-bin/.php         (Status: 406) [Size: 289]
+cgi-bin/.html        (Status: 403) [Size: 146]
+cgi-sys              (Status: 301) [Size: 282] [--> https://elimikasasa.co.ke/cgi-sys/]
+class.php            (Status: 406) [Size: 289]
+communications.html  (Status: 200) [Size: 17144]
+communications.txt   (Status: 200) [Size: 11030]
+communications       (Status: 200) [Size: 17144]
+configuration.php    (Status: 406) [Size: 289]
+contact.txt          (Status: 200) [Size: 57975]
+contact.html         (Status: 200) [Size: 129286]
+contact              (Status: 200) [Size: 129286]
+controlpanel         (Status: 200) [Size: 34674]
+cpanel               (Status: 200) [Size: 34674]
+dashboard            (Status: 200) [Size: 17392]
+dashboard.txt        (Status: 200) [Size: 11184]
+dashboard.html       (Status: 200) [Size: 17392]
+favicon.ico          (Status: 200) [Size: 1483]
+faq.txt              (Status: 200) [Size: 75384]
+faq                  (Status: 200) [Size: 177219]
+faq.html             (Status: 200) [Size: 177219]
+finance              (Status: 200) [Size: 245854]
+finance.txt          (Status: 200) [Size: 123276]
+finance.html         (Status: 200) [Size: 245854]
+help.txt             (Status: 200) [Size: 10845]
+help                 (Status: 200) [Size: 16865]
+help.html            (Status: 200) [Size: 16865]
+index.php            (Status: 301) [Size: 274] [--> https://elimikasasa.co.ke/]
+index.php            (Status: 301) [Size: 274] [--> https://elimikasasa.co.ke/]
+index.php.bak        (Status: 406) [Size: 289]
+index.txt            (Status: 200) [Size: 100160]
+info.php.bak         (Status: 406) [Size: 289]
+index.html           (Status: 200) [Size: 313973]
+index.html           (Status: 200) [Size: 313973]
+index                (Status: 200) [Size: 313973]
+inventory            (Status: 200) [Size: 17134]
+inventory.txt        (Status: 200) [Size: 11020]
+inventory.html       (Status: 200) [Size: 17134]
+library              (Status: 200) [Size: 16639]
+library.txt          (Status: 200) [Size: 10707]
+library.html         (Status: 200) [Size: 16639]
+login.txt            (Status: 200) [Size: 29951]
+login                (Status: 200) [Size: 74203]
+login.html           (Status: 200) [Size: 74203]
+mailman              (Status: 301) [Size: 282] [--> https://elimikasasa.co.ke/mailman/]
+modules.txt          (Status: 200) [Size: 165189]
+modules              (Status: 200) [Size: 325232]
+modules.html         (Status: 200) [Size: 325232]
+notifications        (Status: 200) [Size: 16126]
+notifications.html   (Status: 200) [Size: 16126]
+notifications.txt    (Status: 200) [Size: 10332]
+partners.txt         (Status: 200) [Size: 72588]
+partners             (Status: 200) [Size: 161914]
+partners.html        (Status: 200) [Size: 161914]
+phpinfo.php.bak      (Status: 406) [Size: 289]
+pipermail            (Status: 301) [Size: 284] [--> https://elimikasasa.co.ke/pipermail/]
+pricing.txt          (Status: 200) [Size: 99348]
+pricing              (Status: 200) [Size: 239294]
+pricing.html         (Status: 200) [Size: 239294]
+register.txt         (Status: 200) [Size: 30053]
+register             (Status: 200) [Size: 85981]
+register.html        (Status: 200) [Size: 85981]
+reports              (Status: 200) [Size: 16638]
+reports.txt          (Status: 200) [Size: 10706]
+reports.html         (Status: 200) [Size: 16638]
+robots.txt           (Status: 200) [Size: 366]
+robots.txt           (Status: 200) [Size: 366]
+schools              (Status: 200) [Size: 16639]
+schools.txt          (Status: 200) [Size: 10707]
+schools.html         (Status: 200) [Size: 16639]
+settings.txt         (Status: 200) [Size: 17948]
+settings             (Status: 200) [Size: 24832]
+settings.html        (Status: 200) [Size: 24832]
+shell.php            (Status: 406) [Size: 289]
+sitemap.xml          (Status: 200) [Size: 2182]
+Progress: 26389 / 32291 (81.72%)
+Progress: 26433 / 32291 (81.86%)
+staff.html           (Status: 200) [Size: 17126]
+staff.txt            (Status: 200) [Size: 11012]
+staff                (Status: 200) [Size: 17126]
+student              (Status: 200) [Size: 16639]
+student.html         (Status: 200) [Size: 16639]
+student.txt          (Status: 200) [Size: 10707]
+students.txt         (Status: 200) [Size: 11018]
+students.html        (Status: 200) [Size: 17132]
+students             (Status: 200) [Size: 17132]
+transport            (Status: 200) [Size: 16875]
+transport.txt        (Status: 200) [Size: 10855]
+transport.html       (Status: 200) [Size: 16875]
+Progress: 29090 / 32291 (90.09%)[ERROR] error on word txt.txt: timeout occurred during the request
+
+
+
+                                                                                                                    
+┌──(hackone㉿hackone)-[~]
+└─$ nikto -h https://elimikasasa.co.ke
+- Nikto v2.6.0
+---------------------------------------------------------------------------
++ Your Nikto installation is out of date.
++ Target IP:          203.161.35.75
++ Target Hostname:    elimikasasa.co.ke
++ Target Port:        443
+---------------------------------------------------------------------------
++ SSL Info:           Subject:  /CN=elimikasasa.co.ke
+                      CN:       elimikasasa.co.ke
+                      SAN:      *.elimikasasa.co.ke, elimikasasa.co.ke
+                      Ciphers:  TLS_AES_256_GCM_SHA384
+                      Issuer:   /C=US/O=Let's Encrypt/CN=R13
++ Platform:           Unknown
++ Start Time:         2026-05-01 20:11:44 (GMT-4)
+---------------------------------------------------------------------------
++ Server: nginx
++ No CGI Directories found (use '-C all' to force check all possible dirs). CGI tests skipped.
++ [999997] /robots.txt: Entry '/api/' is returned a non-forbidden or redirect HTTP code (200). Seger.net/kb/issues/00600600_robots-txt-file
++ [999996] /robots.txt: contains 15 entries which should be manually viewed. See: https://developS/docs/Glossary/Robots.txt
++ [000427] /elimikasasaco.war: Link header(s) found with value(s): <https://aboveboardinsurancebr; rel="https://api.w.org/". See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link
+
+                                                                                                
+                                                                                                
++ ERROR: *** Error limit (20) reached for host, giving up. Last error: opening stream: can't connect (timeout): Interrupted system call. ***                                                      
++ ERROR: *** Consider using mitmproxy to avoid TLS fingerprinting. ***                           
+- STATUS: Completed 281 requests (~4% complete, ~6.0 hours left): currently in plugin 'Site Files'                                                                                                
+- STATUS: Running average: Not enough data.
++ Scan terminated: 20 errors and 3 items reported on the remote host
++ End Time:           2026-05-01 20:26:07 (GMT-4) (863 seconds)
+---------------------------------------------------------------------------
++ 1 host(s) tested
+                                                                                                 
+┌──(hackone㉿hackone)-[~]
+└─$ 
+                                                                                                 
+┌
+
+
+
+
+
+
+
+──(hackone㉿hackone)-[~]
+└─$ # understand the login form     
+                                                                                                 
+┌──(hackone㉿hackone)-[~]
+└─$ curl -k https://elimikasasa.co.ke/login | grep -i 'input\|form\|password\|username'
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0           00:20              0
+curl: (7) Failed to connect to elimikasasa.co.ke port 443 after 21205 ms: Could not connect to server
+                                                                                                 
+┌──(hackone㉿hackone)-[~]
+└─$ 
+
+
+
+
+

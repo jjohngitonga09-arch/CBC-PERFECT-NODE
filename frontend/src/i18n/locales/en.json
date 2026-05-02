@@ -1,0 +1,43 @@
+{
+  "menu": {
+    "home": "Home",
+    "profile": "Profile",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "language": "Language",
+    "darkMode": "Dark Mode",
+    "logout": "Sign Out",
+    "uploadVideo": "Upload Video",
+    "assignments": "Assignments",
+    "childProgress": "Child Progress",
+    "userManagement": "Users",
+    "systemLogs": "System Logs",
+    "settings": "Settings",
+    "subscription": "Subscription",
+    "progress": "Progress",
+    "badges": "Badges",
+    "studentView": "Student View",
+    "parentView": "Parent View"
+  },
+  "auth": {
+    "login": "Sign In",
+    "signup": "Create Account",
+    "email": "Email or Phone",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "sendOtp": "Send OTP",
+    "verifyOtp": "Verify Code",
+    "resetPassword": "Reset Password",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "back": "Back",
+    "error": "Something went wrong",
+    "success": "Done!"
+  }
+}

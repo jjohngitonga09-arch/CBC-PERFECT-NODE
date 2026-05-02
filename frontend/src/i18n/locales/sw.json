@@ -1,0 +1,43 @@
+{
+  "menu": {
+    "home": "Nyumbani",
+    "profile": "Wasifu",
+    "messages": "Ujumbe",
+    "notifications": "Arifa",
+    "language": "Lugha",
+    "darkMode": "Hali ya Giza",
+    "logout": "Toka",
+    "uploadVideo": "Pakia Video",
+    "assignments": "Kazi za Nyumbani",
+    "childProgress": "Maendeleo ya Mtoto",
+    "userManagement": "Watumiaji",
+    "systemLogs": "Kumbukumbu za Mfumo",
+    "settings": "Mipangilio",
+    "subscription": "Usajili",
+    "progress": "Maendeleo",
+    "badges": "Tuzo",
+    "studentView": "Mtazamo wa Mwanafunzi",
+    "parentView": "Mtazamo wa Mzazi"
+  },
+  "auth": {
+    "login": "Ingia",
+    "signup": "Fungua Akaunti",
+    "email": "Barua pepe au Simu",
+    "password": "Nywila",
+    "forgotPassword": "Umesahau Nywila?",
+    "sendOtp": "Tuma Msimbo",
+    "verifyOtp": "Thibitisha Msimbo",
+    "resetPassword": "Weka Upya Nywila",
+    "noAccount": "Huna akaunti?",
+    "hasAccount": "Una akaunti tayari?"
+  },
+  "common": {
+    "loading": "Inapakia…",
+    "save": "Hifadhi",
+    "cancel": "Ghairi",
+    "submit": "Tuma",
+    "back": "Rudi",
+    "error": "Hitilafu imetokea",
+    "success": "Imefanikiwa!"
+  }
+}
