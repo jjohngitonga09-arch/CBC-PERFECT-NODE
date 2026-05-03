@@ -301,7 +301,7 @@ export default function AdminUsers() {
 
  <span style={S.badge(sc)}>{u.status}</span>
 
- <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+ <div style={{ display:'flex', gap:6, flexWrap:'wrap', justifyContent:'flex-end' }}>
  {u.status === 'pending' && <button onClick={() => act(u.id,'approve')} style={S.btn(SC.active)}>Approve</button>}
  {u.status === 'active' && <button onClick={() => act(u.id,'lock')} style={S.btn(SC.locked)}> Lock</button>}
  {u.status === 'locked' && <button onClick={() => act(u.id,'unlock')} style={S.btn(SC.active)}> Unlock</button>}

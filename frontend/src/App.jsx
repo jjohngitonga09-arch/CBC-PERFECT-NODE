@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+﻿import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './context/ThemeContext'
 import { useEffect } from 'react'
@@ -39,6 +39,8 @@ import PaymentHistory from './pages/guardian/PaymentHistory'
 import AdminPayments from './pages/admin/Payments'
 import TeacherStudents from './pages/teacher/Students'
 import Leaderboard from './pages/student/Leaderboard'
+import StudentNotes from './pages/student/Notes'
+import JuniorBasics from './pages/student/JuniorBasics'
 // Parent
 import ParentHome from './pages/parent/Home'
 import ParentProgress from './pages/parent/Progress'
@@ -108,6 +110,8 @@ function AppRoutes() {
  <Route path="/student/settings" element={<StudentSettings />} />
  <Route path="/student/notifications" element={<Notifications />} />
  <Route path="/student/leaderboard" element={<Leaderboard />} />
+                <Route path="/student/notes" element={<StudentNotes />} />
+                <Route path="/student/junior-basics" element={<JuniorBasics />} />
  <Route path="/student/profile" element={<Profile />} />
  {/* Parent */}
  <Route path="/parent/home" element={<ParentHome />} />
@@ -162,6 +166,7 @@ export default function App() {
  </ThemeProvider>
  )
 }
+
 
 
 

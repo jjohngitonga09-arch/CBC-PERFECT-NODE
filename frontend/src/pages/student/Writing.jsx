@@ -1,6 +1,6 @@
 ﻿import { useState } from 'react'
 
-const bg = '#0a0e17'
+const bg = 'var(--bg)'
 
 const ENGLISH = {
  Personal: {
@@ -158,7 +158,7 @@ const KISWAHILI = {
  }
 }
 
-function Modal({ item, lang, onClose }) {
+function Modal({ item, lang, onClose, onNext, onPrev, hasNext, hasPrev }) {
  const [tab, setTab] = useState('sample')
  const [copied, setCopied] = useState(false)
  const copy = () => {
@@ -173,25 +173,35 @@ function Modal({ item, lang, onClose }) {
  display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
  }}>
  <div onClick={e => e.stopPropagation()} style={{
- background: '#111827', border: '1px solid #1f2937', borderRadius: '18px',
+ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '18px',
  width: '100%', maxWidth: '680px', maxHeight: '88vh',
  display: 'flex', flexDirection: 'column', overflow: 'hidden'
  }}>
- <div style={{ padding: '20px 24px 16px', borderBottom: '1px solid #1f2937', flexShrink: 0 }}>
+ <div style={{ padding: '20px 24px 16px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
  <div>
- <p style={{ fontWeight: 800, color: '#f9fafb', margin: '0 0 3px', fontSize: '1.1rem' }}>{item.label}</p>
- <p style={{ color: '#6b7280', fontSize: '.78rem', margin: 0 }}>{item.desc}</p>
+ <p style={{ fontWeight: 800, color: 'var(--text)', margin: '0 0 3px', fontSize: '1.1rem' }}>{item.label}</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.78rem', margin: 0 }}>{item.desc}</p>
  </div>
  <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
  <button onClick={copy} style={{
- padding: '7px 14px', borderRadius: '8px', border: '1px solid #374151',
+ padding: '7px 14px', borderRadius: '8px', border: '1px solid var(--surface-hover)',
  background: copied ? 'rgba(34,197,94,0.15)' : '#0f1520',
- color: copied ? '#4ade80' : '#9ca3af', fontWeight: 600, fontSize: '.75rem', cursor: 'pointer'
+ color: copied ? '#4ade80' : 'var(--sub)', fontWeight: 600, fontSize: '.75rem', cursor: 'pointer'
  }}>{copied ? ' Copied!' : 'Copy'}</button>
+ <button onClick={onPrev} disabled={!hasPrev} style={{
+ padding: '7px 12px', borderRadius: '8px', border: '1px solid var(--surface-hover)',
+ background: hasPrev ? '#0f1520' : 'transparent', color: hasPrev ? '#a5b4fc' : 'var(--surface-hover)',
+ fontWeight: 700, fontSize: '.75rem', cursor: hasPrev ? 'pointer' : 'default'
+ }}>&larr; Prev</button>
+ <button onClick={onNext} disabled={!hasNext} style={{
+ padding: '7px 14px', borderRadius: '8px', border: 'none',
+ background: hasNext ? '#6366f1' : 'var(--surface)', color: hasNext ? '#fff' : 'var(--surface-hover)',
+ fontWeight: 700, fontSize: '.75rem', cursor: hasNext ? 'pointer' : 'default'
+ }}>Next &rarr;</button>
  <button onClick={onClose} style={{
- padding: '7px 12px', borderRadius: '8px', border: '1px solid #374151',
- background: '#0f1520', color: '#9ca3af', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', lineHeight: 1
+ padding: '7px 12px', borderRadius: '8px', border: '1px solid var(--surface-hover)',
+ background: '#0f1520', color: 'var(--sub)', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', lineHeight: 1
  }}>x</button>
  </div>
  </div>
@@ -199,9 +209,9 @@ function Modal({ item, lang, onClose }) {
  {['sample', 'structure'].map(t => (
  <button key={t} onClick={() => setTab(t)} style={{
  padding: '6px 16px', borderRadius: '8px', border: '1px solid',
- borderColor: tab === t ? '#6366f1' : '#1f2937',
+ borderColor: tab === t ? '#6366f1' : 'var(--surface-hover)',
  background: tab === t ? 'rgba(99,102,241,0.15)' : 'transparent',
- color: tab === t ? '#a5b4fc' : '#6b7280',
+ color: tab === t ? '#a5b4fc' : 'var(--sub)',
  fontWeight: 700, fontSize: '.75rem', cursor: 'pointer'
  }}>
  {t === 'sample' ? (lang === 'sw' ? 'Mfano Kamili' : 'Full Sample') : (lang === 'sw' ? 'Muundo' : 'Structure')}
@@ -211,26 +221,26 @@ function Modal({ item, lang, onClose }) {
  </div>
  <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1 }}>
  {tab === 'sample' ? (
- <div style={{ background: '#0d1117', border: '1px solid #1f2937', borderRadius: '10px', padding: '20px 24px' }}>
+ <div style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '10px', padding: '20px 24px' }}>
  {item.sample.split('\n\n').map((para, i) => (
- <p key={i} style={{ color: '#d1d5db', fontSize: '.88rem', lineHeight: 1.9, margin: '0 0 14px', whiteSpace: 'pre-line' }}>{para}</p>
+ <p key={i} style={{ color: 'var(--text)', fontSize: '.88rem', lineHeight: 1.9, margin: '0 0 14px', whiteSpace: 'pre-line' }}>{para}</p>
  ))}
  </div>
  ) : (
  <div>
- <p style={{ fontSize: '.7rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: '12px' }}>
+ <p style={{ fontSize: '.7rem', fontWeight: 700, color: 'var(--sub)', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: '12px' }}>
  {lang === 'sw' ? 'Muundo wa Kuandika' : 'Writing Structure'}
  </p>
  {item.structure.map((s, i) => (
  <div key={i} style={{
  display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '10px 0',
- borderBottom: i < item.structure.length - 1 ? '1px solid #1f2937' : 'none'
+ borderBottom: i < item.structure.length - 1 ? '1px solid var(--border)' : 'none'
  }}>
  <span style={{
  background: 'rgba(99,102,241,0.2)', color: '#a5b4fc', borderRadius: '6px',
  padding: '2px 8px', fontSize: '.7rem', fontWeight: 800, flexShrink: 0, minWidth: '24px', textAlign: 'center'
  }}>{i + 1}</span>
- <span style={{ color: '#d1d5db', fontSize: '.88rem', lineHeight: 1.5 }}>{s}</span>
+ <span style={{ color: 'var(--text)', fontSize: '.88rem', lineHeight: 1.5 }}>{s}</span>
  </div>
  ))}
  </div>
@@ -251,8 +261,8 @@ function LangSection({ langLabel, langKey, data, onSelect, accent, flag }) {
  }}>
  <span style={{ fontSize: '1.8rem' }}>{flag}</span>
  <div style={{ flex: 1 }}>
- <h2 style={{ fontWeight: 900, color: '#f9fafb', margin: 0, fontSize: '1.5rem' }}>{langLabel}</h2>
- <p style={{ color: '#6b7280', fontSize: '.78rem', margin: 0 }}>
+ <h2 style={{ fontWeight: 900, color: 'var(--text)', margin: 0, fontSize: '1.5rem' }}>{langLabel}</h2>
+ <p style={{ color: 'var(--sub)', fontSize: '.78rem', margin: 0 }}>
  {Object.values(data).reduce((a, c) => a + c.types.length, 0)} types &nbsp;.&nbsp; {Object.keys(data).length} categories
  </p>
  </div>
@@ -263,7 +273,7 @@ function LangSection({ langLabel, langKey, data, onSelect, accent, flag }) {
  <span style={{ fontSize: '1.1rem' }}>{catVal.emoji}</span>
  <div style={{ flex: 1 }}>
  <h3 style={{ fontWeight: 800, color: '#e5e7eb', margin: 0, fontSize: '1rem' }}>{catKey}</h3>
- <p style={{ color: '#6b7280', fontSize: '.72rem', margin: 0 }}>{catVal.desc}</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.72rem', margin: 0 }}>{catVal.desc}</p>
  </div>
  <span style={{
  background: `${accent}22`, color: accent,
@@ -275,14 +285,14 @@ function LangSection({ langLabel, langKey, data, onSelect, accent, flag }) {
  {catVal.types.map(t => (
  <button key={t.id} onClick={() => onSelect(t, langKey)}
  onMouseEnter={e => { e.currentTarget.style.borderColor = accent; e.currentTarget.style.background = `${accent}11` }}
- onMouseLeave={e => { e.currentTarget.style.borderColor = '#1f2937'; e.currentTarget.style.background = '#0d1117' }}
+ onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--surface-hover)'; e.currentTarget.style.background = 'var(--bg)' }}
  style={{
- background: '#0d1117', border: '1px solid #1f2937', borderRadius: '12px',
+ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '12px',
  padding: '14px 16px', cursor: 'pointer', textAlign: 'left',
  transition: 'border-color .15s, background .15s', width: '100%'
  }}>
- <p style={{ fontWeight: 700, color: '#f9fafb', fontSize: '.88rem', margin: '0 0 4px' }}>{t.label}</p>
- <p style={{ color: '#6b7280', fontSize: '.7rem', margin: 0 }}>{t.desc}</p>
+ <p style={{ fontWeight: 700, color: 'var(--text)', fontSize: '.88rem', margin: '0 0 4px' }}>{t.label}</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.7rem', margin: 0 }}>{t.desc}</p>
  </button>
  ))}
  </div>
@@ -292,23 +302,45 @@ function LangSection({ langLabel, langKey, data, onSelect, accent, flag }) {
  )
 }
 
+// flat list for Prev / Next navigation across all writing types
+const ALL_WRITING = [
+ ...Object.values(ENGLISH).flatMap(cat => cat.types.map(t => ({ item: t, lang: 'en' }))),
+ ...Object.values(KISWAHILI).flatMap(cat => cat.types.map(t => ({ item: t, lang: 'sw' }))),
+]
+
 export default function Writing() {
- const [modal, setModal] = useState(null)
+ const [modalIdx, setModalIdx] = useState(null)
+ const modal = modalIdx !== null ? ALL_WRITING[modalIdx] : null
+
+ function openWriting(item, lang) {
+  const idx = ALL_WRITING.findIndex(w => w.item.id === item.id && w.lang === lang)
+  setModalIdx(idx >= 0 ? idx : 0)
+ }
 
  return (
  <div style={{ background: bg, minHeight: '100vh', padding: '28px 24px' }}>
- {modal && <Modal item={modal.item} lang={modal.lang} onClose={() => setModal(null)} />}
+ {modal && (
+  <Modal
+   item={modal.item}
+   lang={modal.lang}
+   onClose={() => setModalIdx(null)}
+   hasPrev={modalIdx > 0}
+   hasNext={modalIdx < ALL_WRITING.length - 1}
+   onPrev={() => setModalIdx(i => i - 1)}
+   onNext={() => setModalIdx(i => i + 1)}
+  />
+ )}
  <div style={{ maxWidth: '780px', margin: '0 auto' }}>
  <div style={{ marginBottom: '40px' }}>
- <h1 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#f9fafb', margin: '0 0 8px' }}> Writing</h1>
- <p style={{ color: '#6b7280', margin: 0, fontSize: '.88rem' }}>
- Click any card to view a full sample and writing structure guide
+ <h1 style={{ fontSize: '2.2rem', fontWeight: 900, color: 'var(--text)', margin: '0 0 8px' }}> Writing</h1>
+ <p style={{ color: 'var(--sub)', margin: 0, fontSize: '.88rem' }}>
+  Click any card to view a full sample and writing structure guide
  </p>
  </div>
  <LangSection langLabel="English" langKey="en" data={ENGLISH}
- onSelect={(item, lang) => setModal({ item, lang })} accent="#6366f1" flag="" />
+  onSelect={openWriting} accent="#6366f1" flag="" />
  <LangSection langLabel="Kiswahili" langKey="sw" data={KISWAHILI}
- onSelect={(item, lang) => setModal({ item, lang })} accent="#10b981" flag="" />
+  onSelect={openWriting} accent="#10b981" flag="" />
  </div>
  </div>
  )

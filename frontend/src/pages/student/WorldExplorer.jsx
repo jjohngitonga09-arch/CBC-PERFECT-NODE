@@ -1,6 +1,6 @@
 ﻿import { useState } from 'react'
 
-const bg = '#0a0e17'
+const bg = 'var(--bg)'
 
 const CONTINENTS = [
  {
@@ -79,18 +79,18 @@ function CountryModal({ country, continent, onClose }) {
  display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
  }}>
  <div onClick={e => e.stopPropagation()} style={{
- background: '#111827', border: '1px solid #1f2937', borderRadius: '18px',
+ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '18px',
  width: '100%', maxWidth: '560px', overflow: 'hidden'
  }}>
  <div style={{ background: continent.color + '15', borderBottom: `2px solid ${continent.color}44`, padding: '24px' }}>
  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
  <div>
- <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#f9fafb', margin: '0 0 4px' }}>{country.name}</h2>
+ <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--text)', margin: '0 0 4px' }}>{country.name}</h2>
  <p style={{ color: continent.color, fontWeight: 700, margin: 0, fontSize: '.85rem' }}>{continent.emoji} {continent.name}</p>
  </div>
  <button onClick={onClose} style={{
- padding: '7px 12px', borderRadius: '8px', border: '1px solid #374151',
- background: '#0f1520', color: '#9ca3af', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', lineHeight: 1
+ padding: '7px 12px', borderRadius: '8px', border: '1px solid var(--surface-hover)',
+ background: '#0f1520', color: 'var(--sub)', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', lineHeight: 1
  }}>x</button>
  </div>
  </div>
@@ -102,15 +102,15 @@ function CountryModal({ country, continent, onClose }) {
  { label: 'AREA', value: country.area },
  { label: 'LANGUAGE(S)', value: country.lang },
  ].map(item => (
- <div key={item.label} style={{ background: '#0f1421', borderRadius: '10px', padding: '14px' }}>
- <p style={{ color: '#6b7280', fontSize: '.68rem', fontWeight: 700, margin: '0 0 4px', textTransform: 'uppercase', letterSpacing: '.5px' }}>{item.label}</p>
- <p style={{ color: '#f9fafb', fontWeight: 700, margin: 0, fontSize: '.88rem' }}>{item.value}</p>
+ <div key={item.label} style={{ background: 'var(--bg)', borderRadius: '10px', padding: '14px' }}>
+ <p style={{ color: 'var(--sub)', fontSize: '.68rem', fontWeight: 700, margin: '0 0 4px', textTransform: 'uppercase', letterSpacing: '.5px' }}>{item.label}</p>
+ <p style={{ color: 'var(--text)', fontWeight: 700, margin: 0, fontSize: '.88rem' }}>{item.value}</p>
  </div>
  ))}
  </div>
  <div style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: '10px', padding: '16px' }}>
  <p style={{ color: '#a5b4fc', fontWeight: 700, fontSize: '.7rem', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '.5px' }}> DID YOU KNOW?</p>
- <p style={{ color: '#d1d5db', fontSize: '.88rem', margin: 0, lineHeight: 1.7 }}>{country.fact}</p>
+ <p style={{ color: 'var(--text)', fontSize: '.88rem', margin: 0, lineHeight: 1.7 }}>{country.fact}</p>
  </div>
  </div>
  </div>
@@ -126,7 +126,7 @@ function WonderModal({ wonder, onClose }) {
  display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
  }}>
  <div onClick={e => e.stopPropagation()} style={{
- background: '#111827', border: '1px solid #1f2937', borderRadius: '18px',
+ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '18px',
  width: '100%', maxWidth: '500px', overflow: 'hidden'
  }}>
  <div style={{ background: 'rgba(245,158,11,0.1)', borderBottom: '2px solid rgba(245,158,11,0.3)', padding: '24px' }}>
@@ -134,24 +134,24 @@ function WonderModal({ wonder, onClose }) {
  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
  <span style={{ fontSize: '2.8rem' }}>{wonder.emoji}</span>
  <div>
- <h2 style={{ fontSize: '1.3rem', fontWeight: 900, color: '#f9fafb', margin: '0 0 3px' }}>{wonder.name}</h2>
+ <h2 style={{ fontSize: '1.3rem', fontWeight: 900, color: 'var(--text)', margin: '0 0 3px' }}>{wonder.name}</h2>
  <p style={{ color: '#f59e0b', fontWeight: 700, margin: 0, fontSize: '.82rem' }}> {wonder.location}</p>
  </div>
  </div>
  <button onClick={onClose} style={{
- padding: '7px 12px', borderRadius: '8px', border: '1px solid #374151',
- background: '#0f1520', color: '#9ca3af', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', lineHeight: 1
+ padding: '7px 12px', borderRadius: '8px', border: '1px solid var(--surface-hover)',
+ background: '#0f1520', color: 'var(--sub)', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', lineHeight: 1
  }}>x</button>
  </div>
  </div>
  <div style={{ padding: '24px' }}>
- <div style={{ background: '#0f1421', borderRadius: '10px', padding: '14px', marginBottom: '14px' }}>
- <p style={{ color: '#6b7280', fontSize: '.68rem', fontWeight: 700, margin: '0 0 4px', textTransform: 'uppercase', letterSpacing: '.5px' }}>BUILT</p>
- <p style={{ color: '#f9fafb', fontWeight: 700, margin: 0 }}>{wonder.built}</p>
+ <div style={{ background: 'var(--bg)', borderRadius: '10px', padding: '14px', marginBottom: '14px' }}>
+ <p style={{ color: 'var(--sub)', fontSize: '.68rem', fontWeight: 700, margin: '0 0 4px', textTransform: 'uppercase', letterSpacing: '.5px' }}>BUILT</p>
+ <p style={{ color: 'var(--text)', fontWeight: 700, margin: 0 }}>{wonder.built}</p>
  </div>
  <div style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: '10px', padding: '16px' }}>
  <p style={{ color: '#fbbf24', fontWeight: 700, fontSize: '.7rem', margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '.5px' }}> WONDER FACT</p>
- <p style={{ color: '#d1d5db', fontSize: '.88rem', margin: 0, lineHeight: 1.7 }}>{wonder.fact}</p>
+ <p style={{ color: 'var(--text)', fontSize: '.88rem', margin: 0, lineHeight: 1.7 }}>{wonder.fact}</p>
  </div>
  </div>
  </div>
@@ -169,8 +169,8 @@ function ContinentSection({ continent, onSelect }) {
  }}>
  <span style={{ fontSize: '1.8rem' }}>{continent.emoji}</span>
  <div style={{ flex: 1 }}>
- <h2 style={{ fontWeight: 900, color: '#f9fafb', margin: 0, fontSize: '1.4rem' }}>{continent.name}</h2>
- <p style={{ color: '#6b7280', fontSize: '.78rem', margin: 0 }}>{continent.desc}</p>
+ <h2 style={{ fontWeight: 900, color: 'var(--text)', margin: 0, fontSize: '1.4rem' }}>{continent.name}</h2>
+ <p style={{ color: 'var(--sub)', fontSize: '.78rem', margin: 0 }}>{continent.desc}</p>
  </div>
  <span style={{
  background: continent.color + '22', color: continent.color,
@@ -182,14 +182,14 @@ function ContinentSection({ continent, onSelect }) {
  {continent.countries.map(c => (
  <button key={c.name} onClick={() => onSelect(c)}
  onMouseEnter={e => { e.currentTarget.style.borderColor = continent.color; e.currentTarget.style.background = continent.color + '11' }}
- onMouseLeave={e => { e.currentTarget.style.borderColor = '#1f2937'; e.currentTarget.style.background = '#0d1117' }}
+ onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--surface-hover)'; e.currentTarget.style.background = 'var(--bg)' }}
  style={{
- background: '#0d1117', border: '1px solid #1f2937', borderRadius: '12px',
+ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '12px',
  padding: '14px 16px', cursor: 'pointer', textAlign: 'left',
  transition: 'border-color .15s, background .15s', width: '100%'
  }}>
- <p style={{ fontWeight: 700, color: '#f9fafb', fontSize: '.88rem', margin: '0 0 4px' }}>{c.name}</p>
- <p style={{ color: '#6b7280', fontSize: '.72rem', margin: 0 }}>Capital: {c.capital}</p>
+ <p style={{ fontWeight: 700, color: 'var(--text)', fontSize: '.88rem', margin: '0 0 4px' }}>{c.name}</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.72rem', margin: 0 }}>Capital: {c.capital}</p>
  </button>
  ))}
  </div>
@@ -209,18 +209,18 @@ export default function WorldExplorer() {
 
  <div style={{ maxWidth: '780px', margin: '0 auto' }}>
  <div style={{ marginBottom: '40px' }}>
- <h1 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#f9fafb', margin: '0 0 8px' }}> World Explorer</h1>
- <p style={{ color: '#6b7280', margin: 0, fontSize: '.88rem' }}>
+ <h1 style={{ fontSize: '2.2rem', fontWeight: 900, color: 'var(--text)', margin: '0 0 8px' }}> World Explorer</h1>
+ <p style={{ color: 'var(--sub)', margin: 0, fontSize: '.88rem' }}>
  Click any country or wonder to learn more
  </p>
  </div>
 
  {/* Tabs */}
- <div style={{ display: 'flex', gap: '8px', marginBottom: '40px', background: '#111827', padding: '5px', borderRadius: '12px' }}>
+ <div style={{ display: 'flex', gap: '8px', marginBottom: '40px', background: 'var(--bg)', padding: '5px', borderRadius: '12px' }}>
  {[['continents', ' Continents & Countries'], ['wonders', ' World Wonders']].map(([id, label]) => (
  <button key={id} onClick={() => setTab(id)}
  style={{ flex: 1, padding: '10px', borderRadius: '9px', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '.82rem',
- background: tab === id ? '#6366f1' : 'transparent', color: tab === id ? '#fff' : '#6b7280' }}>
+ background: tab === id ? '#6366f1' : 'transparent', color: tab === id ? '#fff' : 'var(--sub)' }}>
  {label}
  </button>
  ))}
@@ -233,21 +233,21 @@ export default function WorldExplorer() {
 
  {tab === 'wonders' && (
  <div>
- <p style={{ color: '#9ca3af', fontSize: '.875rem', marginBottom: '24px' }}>
+ <p style={{ color: 'var(--sub)', fontSize: '.875rem', marginBottom: '24px' }}>
  The Seven Wonders of the Modern World -- voted by over 100 million people. Click any to learn more.
  </p>
  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '10px' }}>
  {WONDERS.map(w => (
  <button key={w.name} onClick={() => setModal({ type: 'wonder', data: w })}
  onMouseEnter={e => { e.currentTarget.style.borderColor = '#f59e0b'; e.currentTarget.style.background = 'rgba(245,158,11,0.08)' }}
- onMouseLeave={e => { e.currentTarget.style.borderColor = '#1f2937'; e.currentTarget.style.background = '#0d1117' }}
+ onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--surface-hover)'; e.currentTarget.style.background = 'var(--bg)' }}
  style={{
- background: '#0d1117', border: '1px solid #1f2937', borderRadius: '12px',
+ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '12px',
  padding: '16px', cursor: 'pointer', textAlign: 'left',
  transition: 'border-color .15s, background .15s', width: '100%'
  }}>
  <span style={{ fontSize: '2rem', display: 'block', marginBottom: '10px' }}>{w.emoji}</span>
- <p style={{ fontWeight: 700, color: '#f9fafb', margin: '0 0 4px', fontSize: '.9rem' }}>{w.name}</p>
+ <p style={{ fontWeight: 700, color: 'var(--text)', margin: '0 0 4px', fontSize: '.9rem' }}>{w.name}</p>
  <p style={{ color: '#f59e0b', fontSize: '.72rem', margin: 0, fontWeight: 600 }}> {w.location}</p>
  </button>
  ))}

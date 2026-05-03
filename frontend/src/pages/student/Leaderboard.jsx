@@ -36,8 +36,8 @@ export default function Leaderboard() {
  if (loading) return <Spinner />;
 
  const card = {
- background: "#161b27",
- border: "1px solid #1f2937",
+ background: "var(--surface)",
+ border: "1px solid var(--border)",
  borderRadius: "14px",
  padding: "14px 18px",
  marginBottom: "8px",
@@ -47,8 +47,8 @@ export default function Leaderboard() {
  <div>
  {/* Header */}
  <div style={{ marginBottom: "24px" }}>
- <h1 style={{ fontSize: "1.7rem", fontWeight: 800, color: "#f9fafb", margin: "0 0 4px" }}>Leaderboard</h1>
- <p style={{ fontSize: ".875rem", color: "#6b7280", margin: 0 }}>
+ <h1 style={{ fontSize: "1.7rem", fontWeight: 800, color: "var(--text)", margin: "0 0 4px" }}>Leaderboard</h1>
+ <p style={{ fontSize: ".875rem", color: "var(--sub)", margin: 0 }}>
  {board.length} students ranked -- story quizzes, badges and stars
  </p>
  </div>
@@ -61,7 +61,7 @@ export default function Leaderboard() {
  <p style={{ color: "#a5b4fc", fontWeight: 800, fontSize: "1rem", margin: "0 0 4px" }}>
  Your Rank: #{myRank}
  </p>
- <p style={{ color: "#6b7280", fontSize: ".78rem", margin: 0 }}>
+ <p style={{ color: "var(--sub)", fontSize: ".78rem", margin: 0 }}>
  {myStats.total_stars || 0} stars . {myStats.story_count || 0} stories . {myStats.total_correct || 0} correct answers
  </p>
  </div>
@@ -74,7 +74,7 @@ export default function Leaderboard() {
 
  {/* Board */}
  {board.length === 0 ? (
- <div style={{ textAlign: "center", padding: "48px", color: "#6b7280" }}>
+ <div style={{ textAlign: "center", padding: "48px", color: "var(--sub)" }}>
  <p style={{ fontSize: "2.5rem", margin: "0 0 8px" }}></p>
  <p style={{ fontWeight: 600, margin: 0 }}>No entries yet -- complete a story quiz to appear here!</p>
  </div>
@@ -84,15 +84,15 @@ export default function Leaderboard() {
  return (
  <div key={s.student_id} style={{
  ...card,
- border: isMe ? "1px solid rgba(99,102,241,0.5)" : "1px solid #1f2937",
- background: isMe ? "rgba(99,102,241,0.07)" : "#161b27",
+ border: isMe ? "1px solid rgba(99,102,241,0.5)" : "1px solid var(--border)",
+ background: isMe ? "rgba(99,102,241,0.07)" : "var(--surface)",
  }}>
  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
  {/* Rank */}
  <span style={{
  fontSize: i < 3 ? "1.6rem" : ".9rem",
  width: "32px", textAlign: "center", flexShrink: 0,
- color: i >= 3 ? "#4b5563" : undefined, fontWeight: 700,
+ color: i >= 3 ? "var(--sub)" : undefined, fontWeight: 700,
  }}>
  {i < 3 ? MEDALS[i] : `#${i + 1}`}
  </span>
@@ -100,7 +100,7 @@ export default function Leaderboard() {
  {/* Avatar */}
  <div style={{
  width: 38, height: 38, borderRadius: "50%", flexShrink: 0,
- background: isMe ? "#6366f1" : "#1f2937",
+ background: isMe ? "#6366f1" : "var(--surface-hover)",
  display: "flex", alignItems: "center", justifyContent: "center",
  fontSize: ".9rem", fontWeight: 800, color: "#fff",
  overflow: "hidden",
@@ -115,13 +115,13 @@ export default function Leaderboard() {
  <div style={{ flex: 1, minWidth: 0 }}>
  <p style={{
  fontWeight: 700,
- color: isMe ? "#a5b4fc" : "#f9fafb",
+ color: isMe ? "#a5b4fc" : "var(--text)",
  margin: "0 0 2px",
  overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
  }}>
  {s.name} {isMe && <span style={{ fontSize: ".72rem", color: "#818cf8" }}>(You)</span>}
  </p>
- <p style={{ color: "#6b7280", fontSize: ".72rem", margin: 0 }}>
+ <p style={{ color: "var(--sub)", fontSize: ".72rem", margin: 0 }}>
  {s.story_count || 0} stories . {s.total_correct || 0} correct
  </p>
  </div>
@@ -131,7 +131,7 @@ export default function Leaderboard() {
  <p style={{ color: "#f59e0b", fontWeight: 800, margin: "0 0 2px", fontSize: "1rem" }}>
  {s.total_stars || 0}
  </p>
- <p style={{ color: "#6b7280", fontSize: ".7rem", margin: 0 }}>stars</p>
+ <p style={{ color: "var(--sub)", fontSize: ".7rem", margin: 0 }}>stars</p>
  </div>
  </div>
  </div>

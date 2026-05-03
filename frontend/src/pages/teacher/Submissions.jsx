@@ -4,7 +4,7 @@ import useAuthStore from '../../store/authStore'
 import Spinner from '../../components/common/Spinner'
 import toast from 'react-hot-toast'
 
-const card = { background: '#161b27', border: '1px solid #1f2937', borderRadius: '16px', padding: '20px' }
+const card = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '16px', padding: '20px' }
 
 const FILE_ICONS = {
  pdf: '', doc: '', docx: '', txt: '', default: ''
@@ -50,10 +50,10 @@ function FilePreviewModal({ file, onClose }) {
  >
  <div
  onClick={e => e.stopPropagation()}
- style={{ background: '#161b27', border: '1px solid #1f2937', borderRadius: '18px', width: '100%', maxWidth: '760px', maxHeight: '80vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
+ style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '18px', width: '100%', maxWidth: '760px', maxHeight: '80vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
  >
- <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid #1f2937' }}>
- <p style={{ color: '#f9fafb', fontWeight: 600, margin: 0, fontSize: '.9rem' }}>{file.file_name}</p>
+ <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid var(--border)' }}>
+ <p style={{ color: 'var(--text)', fontWeight: 600, margin: 0, fontSize: '.9rem' }}>{file.file_name}</p>
  <div style={{ display: 'flex', gap: '8px' }}>
  <a
  href={url}
@@ -64,7 +64,7 @@ function FilePreviewModal({ file, onClose }) {
  </a>
  <button
  onClick={onClose}
- style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid #374151', color: '#9ca3af', borderRadius: '8px', padding: '5px 10px', cursor: 'pointer', fontSize: '.85rem' }}
+ style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--surface-hover)', color: 'var(--sub)', borderRadius: '8px', padding: '5px 10px', cursor: 'pointer', fontSize: '.85rem' }}
  ></button>
  </div>
  </div>
@@ -72,14 +72,14 @@ function FilePreviewModal({ file, onClose }) {
  {ext === 'pdf' ? (
  <iframe src={url} title="PDF Preview" style={{ width: '100%', height: '60vh', border: 'none', display: 'block' }} />
  ) : ext === 'txt' ? (
- <pre style={{ color: '#d1d5db', padding: '20px', fontFamily: 'monospace', fontSize: '.85rem', whiteSpace: 'pre-wrap', margin: 0 }}>
+ <pre style={{ color: 'var(--text)', padding: '20px', fontFamily: 'monospace', fontSize: '.85rem', whiteSpace: 'pre-wrap', margin: 0 }}>
  {file.text_content || 'Loading'}
  </pre>
  ) : (
  <div style={{ textAlign: 'center', padding: '48px 20px' }}>
  <p style={{ fontSize: '3rem', margin: '0 0 12px' }}>{fileIcon(file.file_name)}</p>
- <p style={{ color: '#f9fafb', fontWeight: 600, margin: '0 0 6px' }}>{file.file_name}</p>
- <p style={{ color: '#6b7280', fontSize: '.85rem', margin: '0 0 20px' }}>Preview not available for this file type.</p>
+ <p style={{ color: 'var(--text)', fontWeight: 600, margin: '0 0 6px' }}>{file.file_name}</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.85rem', margin: '0 0 20px' }}>Preview not available for this file type.</p>
  <a
  href={url}
  download={file.file_name}
@@ -132,8 +132,8 @@ export default function TeacherSubmissions() {
  {/* Header */}
  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px', flexWrap: 'wrap', marginBottom: '10px' }}>
  <div style={{ flex: 1, minWidth: '140px' }}>
- <p style={{ fontWeight: 700, color: '#f9fafb', margin: '0 0 3px', fontSize: '.95rem' }}>{s.assignment_title || 'Assignment'}</p>
- <p style={{ fontSize: '.75rem', color: '#6b7280', margin: 0 }}>
+ <p style={{ fontWeight: 700, color: 'var(--text)', margin: '0 0 3px', fontSize: '.95rem' }}>{s.assignment_title || 'Assignment'}</p>
+ <p style={{ fontSize: '.75rem', color: 'var(--sub)', margin: 0 }}>
  {s.student_name || s.student_id?.slice(0, 10)} {new Date(s.created_at || s.submitted_at || Date.now()).toLocaleDateString()}
  </p>
  </div>
@@ -149,7 +149,7 @@ export default function TeacherSubmissions() {
  placeholder="Optional feedback"
  value={feedback[s.id] || ''}
  onChange={e => setFeedback(p => ({ ...p, [s.id]: e.target.value }))}
- style={{ background: '#0f1421', border: '1px solid #374151', color: '#d1d5db', borderRadius: '8px', padding: '6px 10px', fontSize: '.78rem', width: '220px' }}
+ style={{ background: 'var(--bg)', border: '1px solid var(--surface-hover)', color: 'var(--text)', borderRadius: '8px', padding: '6px 10px', fontSize: '.78rem', width: '220px' }}
  />
  </div>
  ) : (
@@ -164,7 +164,7 @@ export default function TeacherSubmissions() {
 
  {/* Text answer */}
  {s.answer && (
- <p style={{ fontSize: '.82rem', color: '#9ca3af', margin: '0 0 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', padding: '10px', lineHeight: 1.55 }}>
+ <p style={{ fontSize: '.82rem', color: 'var(--sub)', margin: '0 0 10px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', padding: '10px', lineHeight: 1.55 }}>
  {s.answer}
  </p>
  )}
@@ -175,7 +175,7 @@ export default function TeacherSubmissions() {
  <span style={{ fontSize: '1.4rem' }}>{fileIcon(s.file_name)}</span>
  <div style={{ flex: 1, minWidth: 0 }}>
  <p style={{ color: '#a5b4fc', fontWeight: 600, margin: 0, fontSize: '.82rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.file_name || 'Attachment'}</p>
- {s.file_size && <p style={{ color: '#6b7280', fontSize: '.72rem', margin: 0 }}>{(s.file_size / 1024).toFixed(0)} KB</p>}
+ {s.file_size && <p style={{ color: 'var(--sub)', fontSize: '.72rem', margin: 0 }}>{(s.file_size / 1024).toFixed(0)} KB</p>}
  </div>
  <button
  onClick={() => setPreview(s)}
@@ -188,7 +188,7 @@ export default function TeacherSubmissions() {
 
  {/* Feedback shown after graded */}
  {s.status === 'graded' && s.feedback && (
- <p style={{ fontSize: '.78rem', color: '#6b7280', margin: '8px 0 0', fontStyle: 'italic' }}>Feedback: {s.feedback}</p>
+ <p style={{ fontSize: '.78rem', color: 'var(--sub)', margin: '8px 0 0', fontStyle: 'italic' }}>Feedback: {s.feedback}</p>
  )}
  </div>
  )
@@ -197,15 +197,15 @@ export default function TeacherSubmissions() {
  return (
  <div>
  <div style={{ marginBottom: '24px' }}>
- <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#f9fafb', margin: '0 0 4px', letterSpacing: '-0.4px' }}>Submissions</h1>
- <p style={{ fontSize: '.875rem', color: '#6b7280', margin: 0 }}>{pending.length} pending {graded.length} marked</p>
+ <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: 'var(--text)', margin: '0 0 4px', letterSpacing: '-0.4px' }}>Submissions</h1>
+ <p style={{ fontSize: '.875rem', color: 'var(--sub)', margin: 0 }}>{pending.length} pending {graded.length} marked</p>
  </div>
 
  {subs.length === 0 ? (
  <div style={{ ...card, textAlign: 'center', padding: '56px 20px' }}>
  <p style={{ fontSize: '3rem', margin: '0 0 12px' }}></p>
- <p style={{ fontWeight: 700, color: '#f9fafb', margin: '0 0 6px' }}>No submissions yet</p>
- <p style={{ color: '#6b7280', fontSize: '.875rem', margin: 0 }}>Student submissions will appear here once they submit work.</p>
+ <p style={{ fontWeight: 700, color: 'var(--text)', margin: '0 0 6px' }}>No submissions yet</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.875rem', margin: 0 }}>Student submissions will appear here once they submit work.</p>
  </div>
  ) : (
  <>

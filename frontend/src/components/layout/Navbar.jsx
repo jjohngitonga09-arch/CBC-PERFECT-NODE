@@ -1,4 +1,4 @@
-﻿import { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import useAuthStore from '../../store/authStore'
 import HamburgerMenu from './HamburgerMenu'
@@ -7,157 +7,157 @@ import api from '../../services/api'
 import toast from 'react-hot-toast'
 import { useTheme } from '../../context/ThemeContext'
 
-const RC = {
- admin: { bg:'rgba(239,68,68,0.12)', fg:'#ef4444', label:'Admin' },
- teacher: { bg:'rgba(99,102,241,0.12)', fg:'#6366f1', label:'Teacher' },
- student: { bg:'rgba(16,185,129,0.12)', fg:'#10b981', label:'Student' },
- guardian: { bg:'rgba(245,158,11,0.12)', fg:'#f59e0b', label:'Parent' },
+const HOME = { student: '/student/home', teacher: '/teacher/home', guardian: '/parent/home', admin: '/admin/home' }
+
+const ROLE_STYLES = {
+  admin:    { bg: 'rgba(239,68,68,0.15)',  fg: '#ef4444', dot: '#ef4444' },
+  teacher:  { bg: 'rgba(99,102,241,0.15)', fg: '#818cf8', dot: '#6366f1' },
+  student:  { bg: 'rgba(16,185,129,0.15)', fg: '#34d399', dot: '#10b981' },
+  guardian: { bg: 'rgba(245,158,11,0.15)', fg: '#fbbf24', dot: '#f59e0b' },
 }
-const HOME = { student:'/student/home', teacher:'/teacher/home', guardian:'/parent/home', admin:'/admin/home' }
 
 export default function Navbar() {
- const { role, viewAs, toggleView, logout, user, setUser } = useAuthStore()
- const { dark, toggle } = useTheme()
- const [open, setOpen] = useState(false)
- const [uploading, setUploading] = useState(false)
- const fileRef = useRef()
- const nav = useNavigate()
- const location = useLocation()
- const isSubscriptionPage = location.pathname === '/student/subscription'
- const rc = RC[role] || RC.student
+  const { role, viewAs, toggleView, logout, user, setUser } = useAuthStore()
+  const { dark, toggle } = useTheme()
+  const [open, setOpen] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const fileRef = useRef()
+  const nav = useNavigate()
+  const location = useLocation()
+  const isSubscriptionPage = location.pathname === '/student/subscription'
+  const rs = ROLE_STYLES[role] || ROLE_STYLES.student
+  const roleLabel = role === 'guardian' ? 'Parent' : role?.charAt(0).toUpperCase() + role?.slice(1)
 
- async function handleAvatarChange(e) {
- const file = e.target.files[0]
- if (!file) return
- setUploading(true)
- try {
- const form = new FormData()
- form.append('avatar', file)
- const { data } = await api.post('/users/avatar', form, {
- headers: { 'Content-Type': 'multipart/form-data' }
- })
- setUser({ ...user, avatar_url: data.avatar_url })
- toast.success('Profile picture updated!')
- } catch {
- toast.error('Upload failed')
- } finally {
- setUploading(false)
- e.target.value = ''
- }
- }
+  async function handleAvatarChange(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    setUploading(true)
+    try {
+      const form = new FormData()
+      form.append('avatar', file)
+      const { data } = await api.post('/users/avatar', form, { headers: { 'Content-Type': 'multipart/form-data' } })
+      setUser({ ...user, avatar_url: data.avatar_url })
+      toast.success('Profile picture updated!')
+    } catch { toast.error('Upload failed') }
+    finally { setUploading(false); e.target.value = '' }
+  }
 
- const iconBtn = {
- background: 'transparent',
- border: '1px solid var(--border)',
- borderRadius: '10px',
- padding: '7px',
- cursor: 'pointer',
- display: 'flex',
- alignItems: 'center',
- justifyContent: 'center',
- lineHeight: 0,
- transition: 'background 0.15s',
- color: 'var(--sub)',
- }
+  return (
+    <>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg) } }
+        .nav-icon-btn {
+          background: transparent;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 8px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--sub);
+          transition: background 0.15s, border-color 0.15s;
+          flex-shrink: 0;
+        }
+        .nav-icon-btn:hover { background: var(--bg); border-color: var(--accent); color: var(--accent); }
+        .hamburger-line {
+          display: block;
+          width: 18px;
+          height: 2px;
+          background: currentColor;
+          border-radius: 2px;
+          transition: transform 0.3s, opacity 0.3s, width 0.3s;
+          transform-origin: center;
+        }
+        .ham-open .line1 { transform: translateY(6px) rotate(45deg); }
+        .ham-open .line2 { opacity: 0; width: 0; }
+        .ham-open .line3 { transform: translateY(-6px) rotate(-45deg); }
+        @media(max-width:360px) { .hide-xs { display: none !important; } }
+      `}</style>
 
- return (
- <>
- <nav style={{
- background: 'var(--surface)',
- borderBottom: '1px solid var(--border)',
- position: 'sticky',
- top: 0,
- zIndex: 40,
- boxShadow: 'var(--shadow)',
- transition: 'background 0.3s, box-shadow 0.3s',
- }}>
- <div style={{
- maxWidth: '1100px',
- margin: '0 auto',
- padding: '0 16px',
- height: '60px',
- display: 'flex',
- alignItems: 'center',
- justifyContent: 'space-between',
- }}>
+      <nav style={{
+        background: 'var(--surface)',
+        borderBottom: '1px solid var(--border)',
+        position: 'sticky', top: 0, zIndex: 40,
+        boxShadow: 'var(--shadow)',
+        transition: 'background 0.3s',
+      }}>
+        <div style={{
+          maxWidth: '1100px', margin: '0 auto',
+          padding: '0 14px', height: '58px',
+          display: 'flex', alignItems: 'center',
+          justifyContent: 'space-between', gap: '8px',
+        }}>
 
- {/* LEFT: Hamburger + Logo */}
- <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
- <button
- onClick={() => setOpen(v => !v)}
- style={{ ...iconBtn, visibility: isSubscriptionPage ? 'hidden' : 'visible' }}
- onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
- onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
- >
- <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16"/>
- </svg>
- </button>
+          {/* LEFT */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
 
- <Link to={HOME[role] || '/'} style={{ display:'flex', alignItems:'center', gap:'8px', textDecoration:'none' }}>
- <span style={{ fontSize: '1.4rem' }}></span>
- <span style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--accent)', letterSpacing: '-0.3px' }}>
- EduApp
- </span>
- </Link>
- </div>
+            {/* Animated hamburger button */}
+            {!isSubscriptionPage && (
+              <button
+                className={`nav-icon-btn ${open ? 'ham-open' : ''}`}
+                onClick={() => setOpen(v => !v)}
+                aria-label="Toggle menu"
+                style={{ gap: 0, flexDirection: 'column', rowGap: '4px', padding: '10px 9px', border: open ? '1px solid var(--accent)' : '1px solid var(--border)', background: open ? 'rgba(99,102,241,0.08)' : 'transparent' }}
+              >
+                <span className="hamburger-line line1" />
+                <span className="hamburger-line line2" />
+                <span className="hamburger-line line3" />
+              </button>
+            )}
 
- {/* RIGHT: role badge, guardian toggle, theme, avatar */}
- <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
- <span style={{
- background: rc.bg,
- color: rc.fg,
- padding: '3px 10px',
- borderRadius: '20px',
- fontSize: '.72rem',
- fontWeight: 700,
- letterSpacing: '.3px',
- }}>
- {rc.label}
- </span>
+            {/* Logo */}
+            <Link to={HOME[role] || '/'} style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', minWidth: 0 }}>
+              <div style={{ width: 30, height: 30, borderRadius: '8px', background: 'linear-gradient(135deg,#6366f1,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 }}>
+                📚
+              </div>
+              <span style={{ fontWeight: 800, fontSize: '1.05rem', color: 'var(--accent)', letterSpacing: '-0.3px', whiteSpace: 'nowrap' }}>
+                EduApp
+              </span>
+            </Link>
+          </div>
 
- {role === 'guardian' && (
- <button
- onClick={toggleView}
- style={{ ...iconBtn, padding: '4px 10px', fontSize: '.72rem', fontWeight: 600, color: 'var(--accent)' }}
- onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
- onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
- >
- {viewAs === 'guardian' ? ' Child' : ' Parent'}
- </button>
- )}
+          {/* RIGHT */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
 
- {/* Dark / Light toggle */}
- <button
- onClick={toggle}
- title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
- style={iconBtn}
- onMouseEnter={e => e.currentTarget.style.background = 'var(--bg)'}
- onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
- >
- {dark
- ? <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-9h-1M4.34 12h-1m15.07-5.66-.71.71M6.34 17.66l-.71.71m12.02 0-.71-.71M6.34 6.34l-.71-.71M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7z"/></svg>
- : <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
- }
- </button>
+            {/* Role pill */}
+            <div className="hide-xs" style={{ display: 'flex', alignItems: 'center', gap: '5px', background: rs.bg, borderRadius: '20px', padding: '4px 10px 4px 6px' }}>
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: rs.dot }} />
+              <span style={{ fontSize: '.72rem', fontWeight: 700, color: rs.fg }}>{roleLabel}</span>
+            </div>
 
- {/* Avatar */}
- <div style={{ position: 'relative' }} title="Click to change profile picture">
- <div onClick={() => !uploading && fileRef.current.click()} style={{ cursor: 'pointer' }}>
- <Avatar user={user} size={34} clickable={false} />
- </div>
- {uploading && (
- <div style={{ position:'absolute', inset:0, borderRadius:'50%', background:'rgba(0,0,0,0.5)', display:'flex', alignItems:'center', justifyContent:'center' }}>
- <div style={{ width:14, height:14, border:'2px solid #fff', borderTopColor:'transparent', borderRadius:'50%', animation:'spin 0.7s linear infinite' }} />
- </div>
- )}
- <input ref={fileRef} type="file" accept="image/*" style={{ display:'none' }} onChange={handleAvatarChange} />
- </div>
- </div>
- </div>
- </nav>
+            {/* Guardian toggle */}
+            {role === 'guardian' && (
+              <button className="nav-icon-btn" onClick={toggleView} style={{ fontSize: '.72rem', fontWeight: 700, padding: '6px 10px', color: 'var(--accent)' }}>
+                {viewAs === 'guardian' ? '👶 Child' : '👤 Parent'}
+              </button>
+            )}
 
- <HamburgerMenu open={open} onClose={() => setOpen(false)} onLogout={() => { logout(); nav('/login') }} />
- </>
- )
+            {/* Theme toggle */}
+            <button className="nav-icon-btn" onClick={toggle} title={dark ? 'Light mode' : 'Dark mode'}>
+              {dark
+                ? <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-9h-1M4.34 12h-1m15.07-5.66-.71.71M6.34 17.66l-.71.71m12.02 0-.71-.71M6.34 6.34l-.71-.71M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7z"/></svg>
+                : <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+              }
+            </button>
+
+            {/* Avatar with upload */}
+            <div style={{ position: 'relative', cursor: 'pointer' }} title="Click to change photo" onClick={() => !uploading && fileRef.current?.click()}>
+              <Avatar user={user} size={34} clickable={false} />
+              {uploading && (
+                <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 13, height: 13, border: '2px solid #fff', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                </div>
+              )}
+              {/* Online indicator */}
+              <div style={{ position: 'absolute', bottom: 0, right: 0, width: 9, height: 9, borderRadius: '50%', background: '#10b981', border: '2px solid var(--surface)' }} />
+            </div>
+            <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleAvatarChange} />
+          </div>
+        </div>
+      </nav>
+
+      <HamburgerMenu open={open} onClose={() => setOpen(false)} onLogout={() => { logout(); nav('/login') }} />
+    </>
+  )
 }

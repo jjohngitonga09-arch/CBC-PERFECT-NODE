@@ -3,7 +3,7 @@ import api from '../../services/api'
 import useAuthStore from '../../store/authStore'
 import toast from 'react-hot-toast'
 
-const card = { background: '#161b27', border: '1px solid #1f2937', borderRadius: '16px', padding: '20px' }
+const card = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '16px', padding: '20px' }
 const MAX_MB = 50
 const MAX_BYTES = MAX_MB * 1024 * 1024
 
@@ -82,8 +82,8 @@ export default function TeacherUploadVideo() {
  return (
  <div>
  <div style={{ marginBottom: '24px' }}>
- <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#f9fafb', margin: '0 0 4px', letterSpacing: '-0.4px' }}>Upload Video</h1>
- <p style={{ fontSize: '.875rem', color: '#6b7280', margin: 0 }}>Max {MAX_MB} MB Students will see videos on their dashboard</p>
+ <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: 'var(--text)', margin: '0 0 4px', letterSpacing: '-0.4px' }}>Upload Video</h1>
+ <p style={{ fontSize: '.875rem', color: 'var(--sub)', margin: 0 }}>Max {MAX_MB} MB Students will see videos on their dashboard</p>
  </div>
 
  {/* Upload card */}
@@ -92,13 +92,13 @@ export default function TeacherUploadVideo() {
  {!preview ? (
  <div
  onClick={() => fileRef.current?.click()}
- style={{ border: '2px dashed #374151', borderRadius: '14px', padding: '48px 20px', textAlign: 'center', cursor: 'pointer', transition: 'border-color .2s' }}
+ style={{ border: '2px dashed var(--surface-hover)', borderRadius: '14px', padding: '48px 20px', textAlign: 'center', cursor: 'pointer', transition: 'border-color .2s' }}
  onMouseEnter={e => e.currentTarget.style.borderColor = '#6366f1'}
- onMouseLeave={e => e.currentTarget.style.borderColor = '#374151'}
+ onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--surface-hover)'}
  >
  <p style={{ fontSize: '2.8rem', margin: '0 0 10px' }}></p>
- <p style={{ color: '#f9fafb', fontWeight: 600, margin: '0 0 4px' }}>Click to choose a video</p>
- <p style={{ color: '#6b7280', fontSize: '.8rem', margin: 0 }}>MP4, MOV, WebM Max {MAX_MB} MB</p>
+ <p style={{ color: 'var(--text)', fontWeight: 600, margin: '0 0 4px' }}>Click to choose a video</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.8rem', margin: 0 }}>MP4, MOV, WebM Max {MAX_MB} MB</p>
  </div>
  ) : (
  <div style={{ position: 'relative', marginBottom: '16px' }}>
@@ -109,9 +109,9 @@ export default function TeacherUploadVideo() {
  />
  <button
  onClick={clearFile}
- style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,.7)', border: 'none', color: '#f9fafb', borderRadius: '8px', padding: '4px 10px', cursor: 'pointer', fontSize: '.8rem' }}
+ style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,.7)', border: 'none', color: 'var(--text)', borderRadius: '8px', padding: '4px 10px', cursor: 'pointer', fontSize: '.8rem' }}
  > Remove</button>
- <p style={{ color: '#6b7280', fontSize: '.78rem', margin: '8px 0 0' }}>
+ <p style={{ color: 'var(--sub)', fontSize: '.78rem', margin: '8px 0 0' }}>
  {file?.name} {(file?.size / (1024 * 1024)).toFixed(1)} MB
  </p>
  </div>
@@ -124,21 +124,21 @@ export default function TeacherUploadVideo() {
  <select
  value={form.grade}
  onChange={e => setForm(f => ({ ...f, grade: e.target.value }))}
- style={{ background: '#0f1421', border: '1px solid #1f2937', color: '#f9fafb', borderRadius: '10px', padding: '10px 12px', fontSize: '.875rem' }}
+ style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: '10px', padding: '10px 12px', fontSize: '.875rem' }}
  >
  {['1', '2', '3'].map(g => <option key={g} value={g}>Grade {g}</option>)}
  </select>
  <select
  value={form.subject}
  onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
- style={{ background: '#0f1421', border: '1px solid #1f2937', color: '#f9fafb', borderRadius: '10px', padding: '10px 12px', fontSize: '.875rem' }}
+ style={{ background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: '10px', padding: '10px 12px', fontSize: '.875rem' }}
  >
  {['English', 'Kiswahili', 'Mathematics', 'Science'].map(s => <option key={s}>{s}</option>)}
  </select>
  </div>
 
  <input
- style={{ width: '100%', marginTop: '10px', background: '#0f1421', border: '1px solid #1f2937', color: '#f9fafb', borderRadius: '10px', padding: '10px 12px', fontSize: '.875rem', boxSizing: 'border-box' }}
+ style={{ width: '100%', marginTop: '10px', background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: '10px', padding: '10px 12px', fontSize: '.875rem', boxSizing: 'border-box' }}
  placeholder="Video title"
  value={form.title}
  onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
@@ -147,29 +147,29 @@ export default function TeacherUploadVideo() {
  {/* Progress bar */}
  {uploading && (
  <div style={{ marginTop: '14px' }}>
- <div style={{ background: '#1f2937', borderRadius: '99px', height: '6px', overflow: 'hidden' }}>
+ <div style={{ background: 'var(--surface-hover)', borderRadius: '99px', height: '6px', overflow: 'hidden' }}>
  <div style={{ height: '100%', background: 'linear-gradient(90deg,#6366f1,#8b5cf6)', width: `${progress}%`, transition: 'width .3s' }} />
  </div>
- <p style={{ color: '#6b7280', fontSize: '.75rem', marginTop: '4px' }}>{progress}% uploading</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.75rem', marginTop: '4px' }}>{progress}% uploading</p>
  </div>
  )}
 
  <button
  onClick={handleUpload}
  disabled={uploading || !file}
- style={{ width: '100%', marginTop: '14px', background: uploading || !file ? '#1f2937' : 'linear-gradient(135deg,#6366f1,#4f46e5)', color: uploading || !file ? '#6b7280' : '#fff', border: 'none', borderRadius: '10px', padding: '11px', fontWeight: 700, fontSize: '.875rem', cursor: uploading || !file ? 'default' : 'pointer' }}
+ style={{ width: '100%', marginTop: '14px', background: uploading || !file ? 'var(--surface-hover)' : 'linear-gradient(135deg,#6366f1,#4f46e5)', color: uploading || !file ? 'var(--sub)' : '#fff', border: 'none', borderRadius: '10px', padding: '11px', fontWeight: 700, fontSize: '.875rem', cursor: uploading || !file ? 'default' : 'pointer' }}
  >
  {uploading ? `Uploading ${progress}%` : 'Upload Video'}
  </button>
  </div>
 
  {/* Uploaded videos list */}
- <h2 style={{ color: '#f9fafb', fontWeight: 700, fontSize: '1.1rem', margin: '0 0 14px' }}>Uploaded Videos</h2>
+ <h2 style={{ color: 'var(--text)', fontWeight: 700, fontSize: '1.1rem', margin: '0 0 14px' }}>Uploaded Videos</h2>
  {loadingList ? (
- <p style={{ color: '#6b7280' }}>Loading</p>
+ <p style={{ color: 'var(--sub)' }}>Loading</p>
  ) : videos.length === 0 ? (
  <div style={{ ...card, textAlign: 'center', padding: '40px 20px' }}>
- <p style={{ color: '#6b7280' }}>No videos uploaded yet.</p>
+ <p style={{ color: 'var(--sub)' }}>No videos uploaded yet.</p>
  </div>
  ) : (
  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -177,8 +177,8 @@ export default function TeacherUploadVideo() {
  <div key={v.id} style={{ ...card, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
  <span style={{ fontSize: '1.6rem', flexShrink: 0 }}></span>
  <div style={{ flex: 1, minWidth: '120px' }}>
- <p style={{ fontWeight: 600, color: '#f9fafb', margin: '0 0 3px' }}>{v.title}</p>
- <p style={{ fontSize: '.75rem', color: '#6b7280', margin: 0 }}>
+ <p style={{ fontWeight: 600, color: 'var(--text)', margin: '0 0 3px' }}>{v.title}</p>
+ <p style={{ fontSize: '.75rem', color: 'var(--sub)', margin: 0 }}>
  Grade {v.grade} {v.subject} {v.view_count || 0} views
  </p>
  </div>

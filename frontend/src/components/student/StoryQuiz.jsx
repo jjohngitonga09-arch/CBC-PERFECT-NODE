@@ -57,16 +57,16 @@ export default function StoryQuiz({ storyId, storyTitle, questions, genre, onDon
 
  /* -- RESULT SCREEN -- */
  if (submitted && result !== null) return (
- <div style={{ marginTop:32, background:'#111827', border:'1px solid #1f2937', borderRadius:'16px', padding:'28px' }}>
+ <div style={{ marginTop:32, background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'16px', padding:'28px' }}>
  <div style={{ textAlign:'center', marginBottom:24 }}>
  <div style={{ fontSize:'3.5rem', marginBottom:8 }}>
  {pct===100?'':pct>=60?'':''}
  </div>
- <h2 style={{ color:'#f9fafb', fontWeight:800, fontSize:'1.4rem', margin:'0 0 4px' }}>
+ <h2 style={{ color:'var(--text)', fontWeight:800, fontSize:'1.4rem', margin:'0 0 4px' }}>
  {pct===100?'Perfect!':pct>=60?'Well done!':'Keep Reading!'}
  </h2>
- <p style={{ color:'#9ca3af', fontSize:'.9rem', margin:'0 0 16px' }}>
- You scored <strong style={{color:'#f9fafb'}}>{correct}/{total}</strong> -- {pct}%
+ <p style={{ color:'var(--sub)', fontSize:'.9rem', margin:'0 0 16px' }}>
+ You scored <strong style={{color:'var(--text)'}}>{correct}/{total}</strong> -- {pct}%
  </p>
 
  {/* Stars */}
@@ -89,7 +89,7 @@ export default function StoryQuiz({ storyId, storyTitle, questions, genre, onDon
  {result.badges.map(b => (
  <div key={b.id} style={{ background:'rgba(99,102,241,0.15)', border:'1px solid rgba(99,102,241,0.3)', borderRadius:10, padding:'8px 14px', textAlign:'center' }}>
  <div style={{ fontSize:'1.8rem' }}>{b.icon}</div>
- <div style={{ color:'#f9fafb', fontWeight:700, fontSize:'.75rem' }}>{b.label}</div>
+ <div style={{ color:'var(--text)', fontWeight:700, fontSize:'.75rem' }}>{b.label}</div>
  </div>
  ))}
  </div>
@@ -98,19 +98,19 @@ export default function StoryQuiz({ storyId, storyTitle, questions, genre, onDon
  </div>
 
  {/* Review answers */}
- <div style={{ borderTop:'1px solid #1f2937', paddingTop:20, marginBottom:20 }}>
- <p style={{ color:'#6b7280', fontWeight:700, fontSize:'.78rem', margin:'0 0 12px' }}>REVIEW</p>
+ <div style={{ borderTop:'1px solid var(--border)', paddingTop:20, marginBottom:20 }}>
+ <p style={{ color:'var(--sub)', fontWeight:700, fontSize:'.78rem', margin:'0 0 12px' }}>REVIEW</p>
  {questions.map((q, i) => {
  const mine = answers[i]
  const correct = q.answer
  const right = mine === correct
  return (
  <div key={i} style={{ marginBottom:14, background: right?'rgba(16,185,129,0.06)':'rgba(239,68,68,0.06)', border:`1px solid ${right?'rgba(16,185,129,0.2)':'rgba(239,68,68,0.2)'}`, borderRadius:10, padding:'12px 14px' }}>
- <p style={{ color:'#f9fafb', fontWeight:600, fontSize:'.875rem', margin:'0 0 6px' }}>
+ <p style={{ color:'var(--text)', fontWeight:600, fontSize:'.875rem', margin:'0 0 6px' }}>
  {right?'':''} {i+1}. {q.q}
  </p>
  {!right && (
- <p style={{ color:'#6b7280', fontSize:'.78rem', margin:'0 0 2px' }}>
+ <p style={{ color:'var(--sub)', fontSize:'.78rem', margin:'0 0 2px' }}>
  Your answer: <span style={{color:'#f87171'}}>{q.options[mine]}</span>
  </p>
  )}
@@ -133,7 +133,7 @@ export default function StoryQuiz({ storyId, storyTitle, questions, genre, onDon
 
  /* -- SUBMITTED but saving -- */
  if (submitted) return (
- <div style={{ marginTop:32, textAlign:'center', padding:40, color:'#9ca3af' }}>
+ <div style={{ marginTop:32, textAlign:'center', padding:40, color:'var(--sub)' }}>
  <div style={{ fontSize:'2rem', marginBottom:8 }}></div>
  <p>Saving your result...</p>
  </div>
@@ -147,33 +147,33 @@ export default function StoryQuiz({ storyId, storyTitle, questions, genre, onDon
  {/* Header */}
  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20 }}>
  <div>
- <h2 style={{ color:'#f9fafb', fontWeight:800, fontSize:'1.1rem', margin:'0 0 2px' }}>Story Quiz</h2>
- <p style={{ color:'#6b7280', fontSize:'.78rem', margin:0 }}>{answered}/{total} answered</p>
+ <h2 style={{ color:'var(--text)', fontWeight:800, fontSize:'1.1rem', margin:'0 0 2px' }}>Story Quiz</h2>
+ <p style={{ color:'var(--sub)', fontSize:'.78rem', margin:0 }}>{answered}/{total} answered</p>
  </div>
  <div style={{ display:'flex', gap:'4px' }}>
  {questions.map((_,i) => (
  <div key={i} onClick={() => setCurrent(i)} style={{
  width:28, height:28, borderRadius:8, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center',
  fontSize:'.72rem', fontWeight:700,
- background: answers[i]!==undefined ? (current===i?'#6366f1':'rgba(99,102,241,0.3)') : (current===i?'#1f2937':'#111827'),
- border: current===i ? '2px solid #6366f1' : '1px solid #1f2937',
- color: answers[i]!==undefined ? '#fff' : '#6b7280',
+ background: answers[i]!==undefined ? (current===i?'#6366f1':'rgba(99,102,241,0.3)') : (current===i?'var(--surface-hover)':'var(--bg)'),
+ border: current===i ? '2px solid #6366f1' : '1px solid var(--border)',
+ color: answers[i]!==undefined ? '#fff' : 'var(--sub)',
  }}>{i+1}</div>
  ))}
  </div>
  </div>
 
  {/* Progress bar */}
- <div style={{ height:4, background:'#1f2937', borderRadius:4, marginBottom:24, overflow:'hidden' }}>
+ <div style={{ height:4, background:'var(--surface-hover)', borderRadius:4, marginBottom:24, overflow:'hidden' }}>
  <div style={{ height:'100%', width:`${(answered/total)*100}%`, background:'#6366f1', borderRadius:4, transition:'width .3s' }}/>
  </div>
 
  {/* Question */}
- <div style={{ background:'#111827', border:'1px solid #1f2937', borderRadius:'14px', padding:'20px 22px', marginBottom:16 }}>
- <p style={{ color:'#9ca3af', fontSize:'.72rem', fontWeight:700, margin:'0 0 8px', textTransform:'uppercase' }}>
+ <div style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'14px', padding:'20px 22px', marginBottom:16 }}>
+ <p style={{ color:'var(--sub)', fontSize:'.72rem', fontWeight:700, margin:'0 0 8px', textTransform:'uppercase' }}>
  Question {current+1} of {total}
  </p>
- <p style={{ color:'#f9fafb', fontWeight:700, fontSize:'1rem', margin:0, lineHeight:1.5 }}>{q.q}</p>
+ <p style={{ color:'var(--text)', fontWeight:700, fontSize:'1rem', margin:0, lineHeight:1.5 }}>{q.q}</p>
  </div>
 
  {/* Options */}
@@ -184,14 +184,14 @@ export default function StoryQuiz({ storyId, storyTitle, questions, genre, onDon
  <button key={oi} onClick={() => pick(current, oi)}
  style={{
  textAlign:'left', padding:'12px 16px', borderRadius:12, cursor:'pointer',
- border: chosen ? '2px solid #6366f1' : '1px solid #1f2937',
- background: chosen ? 'rgba(99,102,241,0.12)' : '#111827',
+ border: chosen ? '2px solid #6366f1' : '1px solid var(--border)',
+ background: chosen ? 'rgba(99,102,241,0.12)' : 'var(--bg)',
  color: chosen ? '#a5b4fc' : '#d1d5db',
  fontWeight: chosen ? 700 : 400, fontSize:'.875rem',
  transition:'all .15s',
  }}>
  <span style={{ display:'inline-block', width:24, height:24, borderRadius:'50%', marginRight:10, textAlign:'center', lineHeight:'24px', fontSize:'.72rem', fontWeight:800,
- background: chosen ? '#6366f1' : '#1f2937', color: chosen ? '#fff' : '#6b7280',
+ background: chosen ? '#6366f1' : 'var(--surface-hover)', color: chosen ? '#fff' : 'var(--sub)',
  }}>
  {['A','B','C','D'][oi]}
  </span>
@@ -204,20 +204,20 @@ export default function StoryQuiz({ storyId, storyTitle, questions, genre, onDon
  {/* Navigation */}
  <div style={{ display:'flex', gap:'10px', alignItems:'center' }}>
  <button onClick={() => setCurrent(c => Math.max(0,c-1))} disabled={current===0}
- style={{ padding:'10px 20px', borderRadius:10, border:'1px solid #1f2937', background:'transparent', color: current===0?'#374151':'#9ca3af', cursor:current===0?'default':'pointer', fontWeight:600 }}>
+ style={{ padding:'10px 20px', borderRadius:10, border:'1px solid var(--border)', background:'transparent', color: current===0?'var(--surface-hover)':'var(--sub)', cursor:current===0?'default':'pointer', fontWeight:600 }}>
  Prev
  </button>
 
  {current < total-1 ? (
  <button onClick={() => setCurrent(c => c+1)}
- style={{ flex:1, padding:'10px', borderRadius:10, border:'none', background:'#1f2937', color:'#f9fafb', cursor:'pointer', fontWeight:700 }}>
+ style={{ flex:1, padding:'10px', borderRadius:10, border:'none', background:'var(--surface-hover)', color:'var(--text)', cursor:'pointer', fontWeight:700 }}>
  Next Question
  </button>
  ) : (
  <button onClick={submit} disabled={answered < total}
  style={{ flex:1, padding:'10px', borderRadius:10, border:'none',
- background: answered===total ? 'linear-gradient(135deg,#6366f1,#4f46e5)' : '#1f2937',
- color: answered===total ? '#fff' : '#6b7280',
+ background: answered===total ? 'linear-gradient(135deg,#6366f1,#4f46e5)' : 'var(--surface-hover)',
+ color: answered===total ? '#fff' : 'var(--sub)',
  cursor: answered===total ? 'pointer' : 'default', fontWeight:700 }}>
  {answered < total ? `Answer ${total-answered} more` : 'Submit Quiz'}
  </button>

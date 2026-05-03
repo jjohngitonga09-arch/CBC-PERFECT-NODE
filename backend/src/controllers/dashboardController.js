@@ -96,11 +96,14 @@ exports.teacherKpis = async (req, res, next) => {
 exports.studentKpis = async (req, res, next) => {
   try {
     const { studentId } = req.params;
+    const redis = getRedis();
+    await redis.del(`kpi:student:${studentId}`).catch(() => {});
     const data = await cached(`kpi:student:${studentId}`, 60, async () => {
-      const [streak, stars, next_, videos, totalA, doneA] = await Promise.all([
+      const [streak, stars, next_, videos, totalA, doneA, badges] = await Promise.all([
+        // daily streak: distinct days with any log activity in last 30 days
         query(
           `SELECT COUNT(DISTINCT DATE(timestamp)) n FROM logs
-           WHERE user_id=$1 AND action='card_view' AND timestamp > NOW()-INTERVAL'30 days'`,
+           WHERE user_id=$1 AND timestamp > NOW()-INTERVAL'30 days'`,
           [studentId]
         ),
         query(`SELECT COALESCE(SUM(stars),0) total FROM submissions WHERE student_id=$1`, [studentId]),
@@ -111,26 +114,29 @@ exports.studentKpis = async (req, res, next) => {
            ORDER BY due_date LIMIT 1`,
           [studentId]
         ),
-        query(
-          `SELECT COUNT(*) n FROM telemetry
-           WHERE user_id=$1 AND event_type='card_view' AND timestamp > NOW()-INTERVAL'7 days'`,
-          [studentId]
-        ),
+        // total videos in the system
+        query(`SELECT COUNT(*) n FROM videos`),
         query(
           `SELECT COUNT(*) n FROM assignments
            WHERE EXISTS (SELECT 1 FROM jsonb_array_elements_text(assigned_to) v WHERE v=$1)`,
           [studentId]
         ),
         query(`SELECT COUNT(*) n FROM submissions WHERE student_id=$1`, [studentId]),
+        // badges: count graded submissions with 4+ stars
+        query(
+          `SELECT COUNT(*) n FROM submissions WHERE student_id=$1 AND status='graded' AND stars >= 4`,
+          [studentId]
+        ),
       ]);
       return {
         dailyStreak: +streak.rows[0].n,
         starsEarned: +stars.rows[0].total,
         nextAssignmentDue: next_.rows[0]?.due_date || null,
         nextAssignmentTitle: next_.rows[0]?.title || null,
-        videosWatched7d: +videos.rows[0].n,
+        videosWatched7d: +videos.rows[0].n, // total videos in system
         totalAssignments: +totalA.rows[0].n,
         submittedAssignments: +doneA.rows[0].n,
+        badges: +badges.rows[0].n,
       };
     });
     res.json(data);

@@ -273,9 +273,9 @@ export default function AdminHome() {
           <h1 style={{ fontSize:'1.65rem', fontWeight:800, color:'var(--text)', margin:'0 0 4px', letterSpacing:'-0.4px' }}>
             Admin Dashboard
           </h1>
-          <p style={{ fontSize:'.875rem', color:'var(--sub)', margin:0 }}>System overview &amp; controls</p>
+          <p style={{ fontSize:'.875rem', color:'var(--text)', margin:0 }}>System overview &amp; controls</p>
         </div>
-        <div style={{ display:'flex', gap:8, flexWrap:'wrap', alignItems:'center' }}>
+        <div style={{ display:'flex', gap:6, flexWrap:'wrap', alignItems:'center', justifyContent:'flex-end' }}>
           {lastRefresh && <span style={{ fontSize:'.72rem', color:'var(--sub)' }}>{refreshLabel()}</span>}
           <button onClick={fetchAll} style={{ background:'var(--surface)', border:'1px solid var(--border)',
             color:'var(--text)', padding:'7px 12px', borderRadius:10, fontSize:'.8rem', fontWeight:600, cursor:'pointer' }}>
@@ -322,7 +322,7 @@ export default function AdminHome() {
 
       <div>
         <p style={h2}>System Overview</p>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:14 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(min(45%,160px),1fr))', gap:14 }}>
           <KpiCard icon="A" label="Active" value={tu.active} color="green" />
           <KpiCard icon="P" label="Pending" value={tu.pending} color="yellow" />
           <KpiCard icon="L" label="Locked" value={tu.locked} color="red" />
@@ -485,7 +485,7 @@ export default function AdminHome() {
 
       <div>
         <p style={h2}>Quick Actions</p>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(130px,1fr))', gap:10 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(min(45%,130px),1fr))', gap:10 }}>
           {QUICK.map(a => (
             <Link key={a.to} to={a.to}
               style={{ ...card, display:'flex', flexDirection:'column', alignItems:'center', gap:8,

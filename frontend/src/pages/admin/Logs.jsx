@@ -14,7 +14,7 @@ const ACTION_COLORS = {
 
 function Badge({ action }) {
  const key = Object.keys(ACTION_COLORS).find(k => action?.startsWith(k)) || 'other'
- const cfg = ACTION_COLORS[key] || { bg:'#1f2937', color:'#9ca3af', label: (action||'').toUpperCase().replace(/_/g,' ') }
+ const cfg = ACTION_COLORS[key] || { bg:'var(--surface-hover)', color:'var(--sub)', label: (action||'').toUpperCase().replace(/_/g,' ') }
  return (
  <span style={{
  background: cfg.bg, color: cfg.color,
@@ -27,8 +27,8 @@ function Badge({ action }) {
 
 function RoleBadge({ role }) {
  const colors = { admin:'#a78bfa', teacher:'#60a5fa', student:'#4ade80', parent:'#fb923c' }
- if (!role) return <span style={{color:'#4b5563'}}></span>
- return <span style={{ color: colors[role]||'#9ca3af', fontWeight:600, textTransform:'capitalize', fontSize:'.8rem' }}>{role}</span>
+ if (!role) return <span style={{color:'var(--sub)'}}></span>
+ return <span style={{ color: colors[role]||'var(--sub)', fontWeight:600, textTransform:'capitalize', fontSize:'.8rem' }}>{role}</span>
 }
 
 export default function AdminLogs() {
@@ -75,8 +75,8 @@ export default function AdminLogs() {
  }
 
  const inputStyle = {
- background:'#111827', border:'1px solid #1f2937', borderRadius:'8px',
- color:'#f9fafb', padding:'7px 12px', fontSize:'.82rem', outline:'none'
+ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'8px',
+ color:'var(--text)', padding:'7px 12px', fontSize:'.82rem', outline:'none'
  }
 
  return (
@@ -84,10 +84,10 @@ export default function AdminLogs() {
 
  {/* Header */}
  <div style={{ marginBottom:'24px' }}>
- <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'#f9fafb', margin:'0 0 4px', letterSpacing:'-0.4px' }}>
+ <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'var(--text)', margin:'0 0 4px', letterSpacing:'-0.4px' }}>
  System Logs
  </h1>
- <p style={{ fontSize:'.875rem', color:'#6b7280', margin:0 }}>
+ <p style={{ fontSize:'.875rem', color:'var(--sub)', margin:0 }}>
  Real-time audit trail all logins, logouts, failures and admin actions
  </p>
  </div>
@@ -101,15 +101,15 @@ export default function AdminLogs() {
  { label:'Blocked', value:stats.blocked, color:'#f87171' },
  { label:'Logouts', value:stats.logouts, color:'#60a5fa' },
  ].map(s => (
- <div key={s.label} style={{ background:'#111827', border:'1px solid #1f2937', borderRadius:'12px', padding:'16px' }}>
- <p style={{ margin:'0 0 4px', fontSize:'.75rem', color:'#6b7280', textTransform:'uppercase', letterSpacing:'.4px' }}>{s.label}</p>
+ <div key={s.label} style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'12px', padding:'16px' }}>
+ <p style={{ margin:'0 0 4px', fontSize:'.75rem', color:'var(--sub)', textTransform:'uppercase', letterSpacing:'.4px' }}>{s.label}</p>
  <p style={{ margin:0, fontSize:'1.6rem', fontWeight:800, color:s.color }}>{s.value}</p>
  </div>
  ))}
  </div>
 
  {/* Filters */}
- <div style={{ background:'#111827', border:'1px solid #1f2937', borderRadius:'12px', padding:'16px', marginBottom:'16px', display:'flex', flexWrap:'wrap', gap:'10px', alignItems:'center' }}>
+ <div style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'12px', padding:'16px', marginBottom:'16px', display:'flex', flexWrap:'wrap', gap:'10px', alignItems:'center' }}>
  <input style={{...inputStyle, flex:'1', minWidth:'160px'}}
  placeholder=" Search name, action, IP"
  value={search} onChange={e=>setSearch(e.target.value)} />
@@ -152,26 +152,26 @@ export default function AdminLogs() {
 
  {(search||action||role||from||to) && (
  <button onClick={()=>{setSearch('');setAction('');setRole('');setFrom('');setTo('')}} style={{
- background:'#1f2937', color:'#9ca3af', border:'none', borderRadius:'8px',
+ background:'var(--surface-hover)', color:'var(--sub)', border:'none', borderRadius:'8px',
  padding:'7px 12px', cursor:'pointer', fontSize:'.82rem'
  }}> Clear</button>
  )}
  </div>
 
  {/* Table */}
- <div style={{ background:'#111827', border:'1px solid #1f2937', borderRadius:'16px', overflow:'hidden' }}>
+ <div style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'16px', overflow:'hidden' }}>
  {loading ? (
  <div style={{ padding:'48px', display:'flex', justifyContent:'center' }}><Spinner /></div>
  ) : logs.length === 0 ? (
- <div style={{ padding:'48px', textAlign:'center', color:'#6b7280' }}>No log entries found.</div>
+ <div style={{ padding:'48px', textAlign:'center', color:'var(--sub)' }}>No log entries found.</div>
  ) : (
  <div style={{ overflowX:'auto' }}>
  <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.82rem' }}>
  <thead>
- <tr style={{ borderBottom:'1px solid #1f2937' }}>
+ <tr style={{ borderBottom:'1px solid var(--border)' }}>
  {['Time','Event','User','Role','Email','IP','Attempts'].map(h=>(
  <th key={h} style={{
- padding:'11px 14px', textAlign:'left', color:'#6b7280',
+ padding:'11px 14px', textAlign:'left', color:'var(--sub)',
  fontWeight:600, fontSize:'.72rem', textTransform:'uppercase',
  letterSpacing:'.4px', whiteSpace:'nowrap'
  }}>{h}</th>
@@ -184,29 +184,29 @@ export default function AdminLogs() {
  return (
  <tr key={l.id||i}
  style={{
- borderBottom:'1px solid #1f2937',
+ borderBottom:'1px solid var(--border)',
  background: isAlert ? 'rgba(239,68,68,.04)' : 'transparent',
  transition:'background .1s'
  }}
- onMouseEnter={e=>e.currentTarget.style.background = isAlert?'rgba(239,68,68,.09)':'#161b27'}
+ onMouseEnter={e=>e.currentTarget.style.background = isAlert?'rgba(239,68,68,.09)':'var(--surface)'}
  onMouseLeave={e=>e.currentTarget.style.background = isAlert?'rgba(239,68,68,.04)':'transparent'}>
 
- <td style={{ padding:'10px 14px', color:'#6b7280', whiteSpace:'nowrap', fontFamily:'monospace', fontSize:'.75rem' }}>
+ <td style={{ padding:'10px 14px', color:'var(--sub)', whiteSpace:'nowrap', fontFamily:'monospace', fontSize:'.75rem' }}>
  {new Date(l.timestamp).toLocaleString()}
  </td>
  <td style={{ padding:'10px 14px' }}>
  <Badge action={l.action} />
  </td>
- <td style={{ padding:'10px 14px', color:'#e5e7eb', fontWeight:500 }}>
- {l.user_name || <span style={{color:'#4b5563'}}></span>}
+ <td style={{ padding:'10px 14px', color:'var(--text)', fontWeight:500 }}>
+ {l.user_name || <span style={{color:'var(--sub)'}}></span>}
  </td>
  <td style={{ padding:'10px 14px' }}>
  <RoleBadge role={l.role} />
  </td>
- <td style={{ padding:'10px 14px', color:'#6b7280', fontSize:'.75rem' }}>
+ <td style={{ padding:'10px 14px', color:'var(--sub)', fontSize:'.75rem' }}>
  {l.email || ''}
  </td>
- <td style={{ padding:'10px 14px', color:'#6b7280', fontFamily:'monospace', fontSize:'.75rem' }}>
+ <td style={{ padding:'10px 14px', color:'var(--sub)', fontFamily:'monospace', fontSize:'.75rem' }}>
  {l.ip || ''}
  </td>
  <td style={{ padding:'10px 14px', textAlign:'center' }}>
@@ -214,7 +214,7 @@ export default function AdminLogs() {
  ? <span style={{ color:'#f87171', fontWeight:700 }}>
  {l.meta?.attempts || ''}/3
  </span>
- : <span style={{color:'#4b5563'}}></span>}
+ : <span style={{color:'var(--sub)'}}></span>}
  </td>
  </tr>
  )
@@ -225,7 +225,7 @@ export default function AdminLogs() {
  )}
  </div>
 
- <p style={{ marginTop:'10px', color:'#4b5563', fontSize:'.75rem', textAlign:'right' }}>
+ <p style={{ marginTop:'10px', color:'var(--sub)', fontSize:'.75rem', textAlign:'right' }}>
  Showing {logs.length} entries
  </p>
  </div>

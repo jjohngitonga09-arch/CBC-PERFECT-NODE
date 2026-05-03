@@ -68,19 +68,19 @@ export default function StudentSettings() {
  finally { setSaving(false) }
  }
 
- const card = { background:'#111827', border:'1px solid #1f2937', borderRadius:'16px', padding:'24px', marginBottom:'16px' }
- const inp = { width:'100%', padding:'10px 14px', borderRadius:'10px', border:'1px solid #374151', background:'#0f1421', color:'#f9fafb', fontSize:'.875rem', outline:'none', boxSizing:'border-box' }
- const lbl = { color:'#6b7280', fontSize:'.75rem', fontWeight:600, display:'block', marginBottom:'6px' }
+ const card = { background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'16px', padding:'24px', marginBottom:'16px' }
+ const inp = { width:'100%', padding:'10px 14px', borderRadius:'10px', border:'1px solid var(--surface-hover)', background:'var(--bg)', color:'var(--text)', fontSize:'.875rem', outline:'none', boxSizing:'border-box' }
+ const lbl = { color:'var(--sub)', fontSize:'.75rem', fontWeight:600, display:'block', marginBottom:'6px' }
 
  return (
  <div style={{ maxWidth:'560px' }}>
  <div style={{ marginBottom:'24px' }}>
- <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'#f9fafb', margin:'0 0 4px' }}>Settings</h1>
- <p style={{ fontSize:'.875rem', color:'#6b7280', margin:0 }}>Manage your profile and account</p>
+ <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'var(--text)', margin:'0 0 4px' }}>Settings</h1>
+ <p style={{ fontSize:'.875rem', color:'var(--sub)', margin:0 }}>Manage your profile and account</p>
  </div>
 
  <div style={card}>
- <p style={{ fontWeight:700, color:'#f9fafb', margin:'0 0 20px' }}>Profile Picture</p>
+ <p style={{ fontWeight:700, color:'var(--text)', margin:'0 0 20px' }}>Profile Picture</p>
  <div style={{ display:'flex', alignItems:'center', gap:'20px', flexWrap:'wrap' }}>
  <div style={{ position:'relative' }}>
  <Avatar user={user} size={80} clickable={true} />
@@ -105,13 +105,13 @@ export default function StudentSettings() {
  )}
  </div>
  </div>
- <p style={{ color:'#4b5563', fontSize:'.72rem', marginTop:'12px', marginBottom:0 }}>
+ <p style={{ color:'var(--sub)', fontSize:'.72rem', marginTop:'12px', marginBottom:0 }}>
  Max 5MB. JPG, PNG or GIF. Visible in chats, leaderboard and across the app.
  </p>
  </div>
 
  <div style={card}>
- <p style={{ fontWeight:700, color:'#f9fafb', margin:'0 0 20px' }}>Profile Info</p>
+ <p style={{ fontWeight:700, color:'var(--text)', margin:'0 0 20px' }}>Profile Info</p>
  <div style={{ marginBottom:'14px' }}>
  <label style={lbl}>Full Name</label>
  <input style={inp} value={name} onChange={e => setName(e.target.value)} placeholder="Your name"/>
@@ -122,16 +122,16 @@ export default function StudentSettings() {
  </div>
  <div style={{ marginBottom:'14px' }}>
  <label style={lbl}>Email</label>
- <input style={{ ...inp, color:'#6b7280' }} value={user?.email || ''} disabled/>
+ <input style={{ ...inp, color:'var(--sub)' }} value={user?.email || ''} disabled/>
  </div>
  <div style={{ marginBottom:'14px' }}>
  <label style={lbl}>Role</label>
- <input style={{ ...inp, color:'#6b7280', textTransform:'capitalize' }} value={user?.role || ''} disabled/>
+ <input style={{ ...inp, color:'var(--sub)', textTransform:'capitalize' }} value={user?.role || ''} disabled/>
  </div>
  </div>
 
  <div style={card}>
- <p style={{ fontWeight:700, color:'#f9fafb', margin:'0 0 20px' }}>Change Password</p>
+ <p style={{ fontWeight:700, color:'var(--text)', margin:'0 0 20px' }}>Change Password</p>
  <div style={{ marginBottom:'14px' }}>
  <label style={lbl}>Current Password</label>
  <input style={inp} type="password" value={curPw} onChange={e => setCurPw(e.target.value)} placeholder="Current password"/>
@@ -144,13 +144,13 @@ export default function StudentSettings() {
 
  <button onClick={saveProfile} disabled={saving}
  style={{ width:'100%', padding:'13px', borderRadius:'12px', border:'none',
- background: saving ? '#374151' : 'linear-gradient(135deg,#6366f1,#4f46e5)',
+ background: saving ? 'var(--surface-hover)' : 'linear-gradient(135deg,#6366f1,#4f46e5)',
  color:'#fff', fontWeight:800, fontSize:'1rem', cursor: saving ? 'wait' : 'pointer', marginBottom:'16px' }}>
  {saving ? 'Saving...' : 'Save Changes'}
  </button>
 
  <div style={card}>
- <p style={{ fontWeight:700, color:'#f9fafb', margin:'0 0 16px' }}>Parent Link</p>
+ <p style={{ fontWeight:700, color:'var(--text)', margin:'0 0 16px' }}>Parent Link</p>
  <LinkParent />
  </div>
  </div>

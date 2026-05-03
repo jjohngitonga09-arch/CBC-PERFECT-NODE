@@ -33,16 +33,16 @@ export default function StudentBadges() {
  return (
  <div>
  <div style={{marginBottom:'24px'}}>
- <h1 style={{fontSize:'1.7rem',fontWeight:800,color:'#f9fafb',margin:'0 0 4px',letterSpacing:'-0.4px'}}>Badges</h1>
- <p style={{fontSize:'.875rem',color:'#6b7280',margin:0}}>{count} of {DEFS.length} earned</p>
+ <h1 style={{fontSize:'1.7rem',fontWeight:800,color:'var(--text)',margin:'0 0 4px',letterSpacing:'-0.4px'}}>Badges</h1>
+ <p style={{fontSize:'.875rem',color:'var(--sub)',margin:0}}>{count} of {DEFS.length} earned</p>
  </div>
 
- <div style={{background:'#161b27',border:'1px solid #1f2937',borderRadius:'16px',padding:'20px',marginBottom:'24px'}}>
+ <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'16px',padding:'20px',marginBottom:'24px'}}>
  <div style={{display:'flex',justifyContent:'space-between',marginBottom:'8px'}}>
- <span style={{fontSize:'.875rem',fontWeight:600,color:'#f9fafb'}}>Collection Progress</span>
+ <span style={{fontSize:'.875rem',fontWeight:600,color:'var(--text)'}}>Collection Progress</span>
  <span style={{fontSize:'.875rem',color:'#6366f1',fontWeight:700}}>{count}/{DEFS.length}</span>
  </div>
- <div style={{height:'8px',background:'#1f2937',borderRadius:'99px',overflow:'hidden'}}>
+ <div style={{height:'8px',background:'var(--surface-hover)',borderRadius:'99px',overflow:'hidden'}}>
  <div style={{height:'100%',width:`${(count/DEFS.length)*100}%`,background:'linear-gradient(90deg,#6366f1,#818cf8)',borderRadius:'99px',transition:'width 0.6s'}} />
  </div>
  </div>
@@ -51,10 +51,10 @@ export default function StudentBadges() {
  {DEFS.map(b => {
  const has = b.req(kpis)
  return (
- <div key={b.id} style={{background:has?'rgba(99,102,241,0.08)':'#161b27',border:`1px solid ${has?'rgba(99,102,241,0.3)':'#1f2937'}`,borderRadius:'16px',padding:'20px 16px',textAlign:'center',opacity:has?1:0.4,transition:'opacity 0.2s'}}>
+ <div key={b.id} style={{background:has?'rgba(99,102,241,0.08)':'var(--surface)',border:`1px solid ${has?'rgba(99,102,241,0.3)':'var(--surface-hover)'}`,borderRadius:'16px',padding:'20px 16px',textAlign:'center',opacity:has?1:0.4,transition:'opacity 0.2s'}}>
  <p style={{fontSize:'2.5rem',margin:'0 0 10px',filter:has?'none':'grayscale(1)'}}>{b.icon}</p>
- <p style={{fontSize:'.875rem',fontWeight:700,color:has?'#a5b4fc':'#6b7280',margin:'0 0 4px'}}>{b.label}</p>
- <p style={{fontSize:'.75rem',color:'#6b7280',margin:0}}>{b.desc}</p>
+ <p style={{fontSize:'.875rem',fontWeight:700,color:has?'#a5b4fc':'var(--sub)',margin:'0 0 4px'}}>{b.label}</p>
+ <p style={{fontSize:'.75rem',color:'var(--sub)',margin:0}}>{b.desc}</p>
  {has && <p style={{fontSize:'.7rem',color:'#6366f1',fontWeight:700,margin:'8px 0 0',textTransform:'uppercase',letterSpacing:'.5px'}}> Earned</p>}
  </div>
  )

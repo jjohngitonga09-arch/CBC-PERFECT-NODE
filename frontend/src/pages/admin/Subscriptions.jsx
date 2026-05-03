@@ -11,13 +11,13 @@ export default function AdminSubscriptions() {
  return (
  <div>
  <div style={{ marginBottom:'24px' }}>
- <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'#f9fafb', margin:'0 0 4px' }}>Subscriptions</h1>
- <p style={{ color:'#6b7280', margin:0, fontSize:'.875rem' }}>Manage plans, payments and user access</p>
+ <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'var(--text)', margin:'0 0 4px' }}>Subscriptions</h1>
+ <p style={{ color:'var(--sub)', margin:0, fontSize:'.875rem' }}>Manage plans, payments and user access</p>
  </div>
  <div style={{ display:'flex', gap:'8px', marginBottom:'24px', flexWrap:'wrap' }}>
  {TABS.map((t,i)=>(
  <button key={i} onClick={()=>setTab(i)}
- style={{ padding:'9px 18px', borderRadius:'10px', cursor:'pointer', fontWeight:600, fontSize:'.85rem', background: tab===i ? '#6366f1' : '#161b27', color: tab===i ? '#fff' : '#9ca3af', border: tab===i ? 'none' : '1px solid #1f2937' }}>
+ style={{ padding:'9px 18px', borderRadius:'10px', cursor:'pointer', fontWeight:600, fontSize:'.85rem', background: tab===i ? '#6366f1' : 'var(--surface)', color: tab===i ? '#fff' : 'var(--sub)', border: tab===i ? 'none' : '1px solid var(--border)' }}>
  {t}
  </button>
  ))}
@@ -69,29 +69,29 @@ function PlansTab() {
  finally { setSaving(null) }
  }
 
- const card = { background:'#111827', border:'1px solid #1f2937', borderRadius:'16px', padding:'24px', marginBottom:'16px' }
- const inp = { width:'100%', background:'#0f1421', border:'1px solid #1f2937', color:'#f9fafb', borderRadius:'8px', padding:'8px 12px', fontSize:'.85rem', boxSizing:'border-box' }
+ const card = { background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'16px', padding:'24px', marginBottom:'16px' }
+ const inp = { width:'100%', background:'var(--bg)', border:'1px solid var(--border)', color:'var(--text)', borderRadius:'8px', padding:'8px 12px', fontSize:'.85rem', boxSizing:'border-box' }
 
  if (loading) return <Spinner />
 
  return (
  <div>
- <p style={{ color:'#6b7280', fontSize:'.82rem', marginBottom:'20px' }}>Edit plans here changes reflect immediately on parent and student subscription pages.</p>
+ <p style={{ color:'var(--sub)', fontSize:'.82rem', marginBottom:'20px' }}>Edit plans here changes reflect immediately on parent and student subscription pages.</p>
  {plans.map(plan => {
  const e = editing[plan.id] || plan
  return (
  <div key={plan.id} style={{ ...card, borderTop:`3px solid ${e.color||'#6366f1'}` }}>
  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr auto', gap:'10px', marginBottom:'16px', alignItems:'end' }}>
  <div>
- <p style={{ color:'#9ca3af', fontSize:'.72rem', margin:'0 0 4px', textTransform:'uppercase' }}>Plan Name</p>
+ <p style={{ color:'var(--sub)', fontSize:'.72rem', margin:'0 0 4px', textTransform:'uppercase' }}>Plan Name</p>
  <input style={inp} value={e.name||''} onChange={ev=>updateField(plan.id,'name',ev.target.value)} />
  </div>
  <div>
- <p style={{ color:'#9ca3af', fontSize:'.72rem', margin:'0 0 4px', textTransform:'uppercase' }}>Price (KES)</p>
+ <p style={{ color:'var(--sub)', fontSize:'.72rem', margin:'0 0 4px', textTransform:'uppercase' }}>Price (KES)</p>
  <input style={inp} type="number" value={e.price||''} onChange={ev=>updateField(plan.id,'price',ev.target.value)} />
  </div>
  <div>
- <p style={{ color:'#9ca3af', fontSize:'.72rem', margin:'0 0 4px', textTransform:'uppercase' }}>Color</p>
+ <p style={{ color:'var(--sub)', fontSize:'.72rem', margin:'0 0 4px', textTransform:'uppercase' }}>Color</p>
  <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
  <input type="color" value={e.color||'#6366f1'} onChange={ev=>updateField(plan.id,'color',ev.target.value)} style={{ width:'40px', height:'36px', borderRadius:'6px', border:'none', cursor:'pointer', background:'none' }} />
  <input style={{ ...inp, flex:1 }} value={e.color||''} onChange={ev=>updateField(plan.id,'color',ev.target.value)} />
@@ -102,7 +102,7 @@ function PlansTab() {
  {saving===plan.id?'Saving':'Save Plan'}
  </button>
  </div>
- <p style={{ color:'#9ca3af', fontSize:'.72rem', margin:'0 0 8px', textTransform:'uppercase' }}>Features</p>
+ <p style={{ color:'var(--sub)', fontSize:'.72rem', margin:'0 0 8px', textTransform:'uppercase' }}>Features</p>
  {(e.features||[]).map((feat,fi)=>(
  <div key={fi} style={{ display:'flex', gap:'8px', alignItems:'center', marginBottom:'8px' }}>
  <select value={feat.included?'yes':'no'} onChange={ev=>updateFeature(plan.id,fi,'included',ev.target.value==='yes')}
@@ -114,7 +114,7 @@ function PlansTab() {
  <button onClick={()=>removeFeature(plan.id,fi)} style={{ background:'rgba(239,68,68,.1)', color:'#f87171', border:'none', borderRadius:'6px', padding:'6px 10px', cursor:'pointer', fontSize:'.8rem' }}></button>
  </div>
  ))}
- <button onClick={()=>addFeature(plan.id)} style={{ background:'#1f2937', color:'#9ca3af', border:'1px dashed #374151', borderRadius:'8px', padding:'7px 14px', cursor:'pointer', fontSize:'.8rem', marginTop:'4px' }}>
+ <button onClick={()=>addFeature(plan.id)} style={{ background:'var(--surface-hover)', color:'var(--sub)', border:'1px dashed var(--surface-hover)', borderRadius:'8px', padding:'7px 14px', cursor:'pointer', fontSize:'.8rem', marginTop:'4px' }}>
  + Add Feature
  </button>
  </div>
@@ -169,33 +169,33 @@ function MessagesTab() {
  return (
  <div>
  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px' }}>
- <p style={{ color:'#6b7280', fontSize:'.82rem', margin:0 }}>{msgs.length} message{msgs.length!==1?'s':''}</p>
- <button onClick={load} style={{ background:'#1f2937', color:'#9ca3af', border:'none', borderRadius:'8px', padding:'7px 14px', cursor:'pointer', fontSize:'.8rem' }}> Refresh</button>
+ <p style={{ color:'var(--sub)', fontSize:'.82rem', margin:0 }}>{msgs.length} message{msgs.length!==1?'s':''}</p>
+ <button onClick={load} style={{ background:'var(--surface-hover)', color:'var(--sub)', border:'none', borderRadius:'8px', padding:'7px 14px', cursor:'pointer', fontSize:'.8rem' }}> Refresh</button>
  </div>
  {msgs.length === 0 ? (
- <div style={{ background:'#111827', border:'1px solid #1f2937', borderRadius:'16px', padding:'48px', textAlign:'center' }}>
- <p style={{ color:'#6b7280', margin:0 }}>No payment messages yet.</p>
+ <div style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'16px', padding:'48px', textAlign:'center' }}>
+ <p style={{ color:'var(--sub)', margin:0 }}>No payment messages yet.</p>
  </div>
  ) : msgs.map(m=>(
- <div key={m.id} style={{ background:'#111827', border:'1px solid #1f2937', borderRadius:'16px', padding:'20px', marginBottom:'12px' }}>
+ <div key={m.id} style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'16px', padding:'20px', marginBottom:'12px' }}>
  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:'10px', marginBottom:'12px' }}>
  <div>
  <div style={{ display:'flex', gap:'10px', alignItems:'center', marginBottom:'4px' }}>
- <p style={{ fontWeight:700, color:'#f9fafb', margin:0 }}>{m.user_name}</p>
+ <p style={{ fontWeight:700, color:'var(--text)', margin:0 }}>{m.user_name}</p>
  <span style={{ fontSize:'.7rem', fontWeight:600, padding:'2px 8px', borderRadius:'99px', background:'rgba(99,102,241,.15)', color:'#a5b4fc', textTransform:'capitalize' }}>{m.user_role}</span>
- <span style={{ fontSize:'.7rem', fontWeight:700, padding:'2px 8px', borderRadius:'99px', background:`${statusColor[m.status]||'#6b7280'}22`, color:statusColor[m.status]||'#9ca3af', textTransform:'capitalize' }}>{m.status}</span>
+ <span style={{ fontSize:'.7rem', fontWeight:700, padding:'2px 8px', borderRadius:'99px', background:`${statusColor[m.status]||'var(--sub)'}22`, color:statusColor[m.status]||'var(--sub)', textTransform:'capitalize' }}>{m.status}</span>
  </div>
- <p style={{ color:'#6b7280', fontSize:'.78rem', margin:0 }}>
+ <p style={{ color:'var(--sub)', fontSize:'.78rem', margin:0 }}>
  {m.email} {m.phone || m.user_phone} {new Date(m.created_at).toLocaleString()}
  </p>
  </div>
  <div style={{ textAlign:'right' }}>
  <p style={{ fontWeight:800, color:'#4ade80', margin:'0 0 2px', fontSize:'1.1rem' }}>KES {Number(m.amount||0).toLocaleString()}</p>
- <p style={{ color:'#9ca3af', fontSize:'.75rem', margin:0 }}>{m.plan_name}</p>
+ <p style={{ color:'var(--sub)', fontSize:'.75rem', margin:0 }}>{m.plan_name}</p>
  </div>
  </div>
  {m.mpesa_ref && <p style={{ background:'rgba(74,222,128,.05)', border:'1px solid rgba(74,222,128,.15)', borderRadius:'8px', padding:'8px 12px', color:'#4ade80', fontFamily:'monospace', fontSize:'.8rem', margin:'0 0 10px' }}>M-Pesa Ref: {m.mpesa_ref}</p>}
- {m.message && <p style={{ color:'#9ca3af', fontSize:'.82rem', margin:'0 0 12px', fontStyle:'italic' }}>"{m.message}"</p>}
+ {m.message && <p style={{ color:'var(--sub)', fontSize:'.82rem', margin:'0 0 12px', fontStyle:'italic' }}>"{m.message}"</p>}
  {m.status === 'pending' && (
  <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
  <button onClick={()=>confirm(m.id)} disabled={acting===m.id+'c'}
@@ -257,42 +257,42 @@ function HistoryTab() {
  catch { toast.error('Failed') } finally { setActing(null) }
  }
 
- const statusColor = { active:'#34d399', locked:'#f87171', expired:'#fbbf24', pending:'#9ca3af' }
+ const statusColor = { active:'#34d399', locked:'#f87171', expired:'#fbbf24', pending:'var(--sub)' }
  if (loading) return <Spinner />
 
  return (
  <div>
  <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'16px' }}>
- <p style={{ color:'#6b7280', fontSize:'.82rem', margin:0 }}>{subs.length} subscribers</p>
- <button onClick={load} style={{ background:'#1f2937', color:'#9ca3af', border:'none', borderRadius:'8px', padding:'7px 14px', cursor:'pointer', fontSize:'.8rem' }}> Refresh</button>
+ <p style={{ color:'var(--sub)', fontSize:'.82rem', margin:0 }}>{subs.length} subscribers</p>
+ <button onClick={load} style={{ background:'var(--surface-hover)', color:'var(--sub)', border:'none', borderRadius:'8px', padding:'7px 14px', cursor:'pointer', fontSize:'.8rem' }}> Refresh</button>
  </div>
- <div style={{ background:'#111827', border:'1px solid #1f2937', borderRadius:'16px', overflow:'hidden' }}>
+ <div style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'16px', overflow:'hidden' }}>
  <div style={{ overflowX:'auto' }}>
  <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.82rem' }}>
  <thead>
- <tr style={{ borderBottom:'1px solid #1f2937' }}>
+ <tr style={{ borderBottom:'1px solid var(--border)' }}>
  {['User','Role','Plan','Amount','Status','Last Payment','Expires','Actions'].map(h=>(
- <th key={h} style={{ padding:'11px 14px', textAlign:'left', color:'#6b7280', fontWeight:600, fontSize:'.72rem', textTransform:'uppercase', whiteSpace:'nowrap' }}>{h}</th>
+ <th key={h} style={{ padding:'11px 14px', textAlign:'left', color:'var(--sub)', fontWeight:600, fontSize:'.72rem', textTransform:'uppercase', whiteSpace:'nowrap' }}>{h}</th>
  ))}
  </tr>
  </thead>
  <tbody>
  {subs.map((s,i)=>(
- <tr key={s.id||i} style={{ borderBottom:'1px solid #1f2937' }}
- onMouseEnter={e=>e.currentTarget.style.background='#161b27'}
+ <tr key={s.id||i} style={{ borderBottom:'1px solid var(--border)' }}
+ onMouseEnter={e=>e.currentTarget.style.background='var(--surface)'}
  onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
  <td style={{ padding:'10px 14px' }}>
- <p style={{ fontWeight:600, color:'#f9fafb', margin:'0 0 2px' }}>{s.name||''}</p>
- <p style={{ color:'#6b7280', fontSize:'.72rem', margin:0 }}>{s.email||''}</p>
+ <p style={{ fontWeight:600, color:'var(--text)', margin:'0 0 2px' }}>{s.name||''}</p>
+ <p style={{ color:'var(--sub)', fontSize:'.72rem', margin:0 }}>{s.email||''}</p>
  </td>
- <td style={{ padding:'10px 14px', color:'#9ca3af', textTransform:'capitalize' }}>{s.role||''}</td>
+ <td style={{ padding:'10px 14px', color:'var(--sub)', textTransform:'capitalize' }}>{s.role||''}</td>
  <td style={{ padding:'10px 14px', color:'#a5b4fc', fontWeight:600 }}>{s.plan_name||s.plan_id||''}</td>
  <td style={{ padding:'10px 14px', color:'#4ade80', fontWeight:700 }}>{s.amount ? 'KES '+Number(s.amount).toLocaleString() : ''}</td>
  <td style={{ padding:'10px 14px' }}>
- <span style={{ color:statusColor[s.status]||'#9ca3af', fontWeight:700, fontSize:'.75rem', textTransform:'uppercase' }}>{s.status}</span>
+ <span style={{ color:statusColor[s.status]||'var(--sub)', fontWeight:700, fontSize:'.75rem', textTransform:'uppercase' }}>{s.status}</span>
  </td>
- <td style={{ padding:'10px 14px', color:'#6b7280', fontSize:'.75rem', whiteSpace:'nowrap' }}>{s.last_payment_date ? new Date(s.last_payment_date).toLocaleDateString() : ''}</td>
- <td style={{ padding:'10px 14px', color:'#6b7280', fontSize:'.75rem', whiteSpace:'nowrap' }}>{s.expiry_date ? new Date(s.expiry_date).toLocaleDateString() : ''}</td>
+ <td style={{ padding:'10px 14px', color:'var(--sub)', fontSize:'.75rem', whiteSpace:'nowrap' }}>{s.last_payment_date ? new Date(s.last_payment_date).toLocaleDateString() : ''}</td>
+ <td style={{ padding:'10px 14px', color:'var(--sub)', fontSize:'.75rem', whiteSpace:'nowrap' }}>{s.expiry_date ? new Date(s.expiry_date).toLocaleDateString() : ''}</td>
  <td style={{ padding:'10px 14px' }}>
  <div style={{ display:'flex', gap:'6px' }}>
  {s.status !== 'locked'

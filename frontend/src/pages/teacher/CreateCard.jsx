@@ -12,7 +12,7 @@ const ALLOWED_TYPES = [
 const ALLOWED_EXT = ['.pdf', '.doc', '.docx', '.txt']
 const MAX_FILE_MB = 10
 
-const card = { background: '#161b27', border: '1px solid #1f2937', borderRadius: '16px', padding: '20px' }
+const card = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '16px', padding: '20px' }
 
 const FILE_ICONS = { pdf: '', doc: '', docx: '', txt: '' }
 function fIcon(name = '') {
@@ -118,13 +118,13 @@ export default function TeacherCreateCard() {
  return (
  <div>
  <div style={{ marginBottom: '24px' }}>
- <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#f9fafb', margin: '0 0 4px', letterSpacing: '-0.4px' }}>Create Assignment</h1>
- <p style={{ fontSize: '.875rem', color: '#6b7280', margin: 0 }}>Send text or file assignments Students see them in Assignments</p>
+ <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: 'var(--text)', margin: '0 0 4px', letterSpacing: '-0.4px' }}>Create Assignment</h1>
+ <p style={{ fontSize: '.875rem', color: 'var(--sub)', margin: 0 }}>Send text or file assignments Students see them in Assignments</p>
  </div>
 
  <div style={{ ...card, marginBottom: '28px' }}>
  {/* Tab toggle */}
- <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', background: '#0f1421', borderRadius: '10px', padding: '4px' }}>
+ <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', background: 'var(--bg)', borderRadius: '10px', padding: '4px' }}>
  {[['text', ' Text / Card'], ['file', ' File Upload']].map(([val, label]) => (
  <button
  key={val}
@@ -133,7 +133,7 @@ export default function TeacherCreateCard() {
  flex: 1, padding: '8px', borderRadius: '8px', border: 'none', fontWeight: 700,
  fontSize: '.82rem', cursor: 'pointer', transition: 'all .15s',
  background: tab === val ? '#6366f1' : 'transparent',
- color: tab === val ? '#fff' : '#6b7280',
+ color: tab === val ? '#fff' : 'var(--sub)',
  }}
  >{label}</button>
  ))}
@@ -160,7 +160,7 @@ export default function TeacherCreateCard() {
  placeholder="Content / Model text (max 120 words)"
  value={form.modelText} onChange={setF('modelText')}
  />
- <p style={{ color: wordCount > 120 ? '#f87171' : '#6b7280', fontSize: '.75rem', margin: '0 0 10px' }}>{wordCount}/120 words</p>
+ <p style={{ color: wordCount > 120 ? '#f87171' : 'var(--sub)', fontSize: '.75rem', margin: '0 0 10px' }}>{wordCount}/120 words</p>
  <textarea
  style={{ ...inp, marginBottom: '10px', resize: 'vertical' }} rows={2}
  placeholder="Practice instructions for student"
@@ -175,24 +175,24 @@ export default function TeacherCreateCard() {
  {!file ? (
  <div
  onClick={() => fileRef.current?.click()}
- style={{ border: '2px dashed #374151', borderRadius: '12px', padding: '36px 20px', textAlign: 'center', cursor: 'pointer' }}
+ style={{ border: '2px dashed var(--surface-hover)', borderRadius: '12px', padding: '36px 20px', textAlign: 'center', cursor: 'pointer' }}
  onMouseEnter={e => e.currentTarget.style.borderColor = '#6366f1'}
- onMouseLeave={e => e.currentTarget.style.borderColor = '#374151'}
+ onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--surface-hover)'}
  >
  <p style={{ fontSize: '2rem', margin: '0 0 8px' }}></p>
- <p style={{ color: '#f9fafb', fontWeight: 600, margin: '0 0 4px', fontSize: '.9rem' }}>Click to attach a file</p>
- <p style={{ color: '#6b7280', fontSize: '.78rem', margin: 0 }}>PDF, DOC, DOCX, TXT Max {MAX_FILE_MB} MB</p>
+ <p style={{ color: 'var(--text)', fontWeight: 600, margin: '0 0 4px', fontSize: '.9rem' }}>Click to attach a file</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.78rem', margin: 0 }}>PDF, DOC, DOCX, TXT Max {MAX_FILE_MB} MB</p>
  </div>
  ) : (
  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(99,102,241,0.07)', border: '1px solid rgba(99,102,241,0.25)', borderRadius: '12px', padding: '12px 16px' }}>
  <span style={{ fontSize: '1.6rem' }}>{fIcon(file.name)}</span>
  <div style={{ flex: 1 }}>
  <p style={{ color: '#a5b4fc', fontWeight: 600, margin: '0 0 2px', fontSize: '.85rem' }}>{file.name}</p>
- <p style={{ color: '#6b7280', fontSize: '.72rem', margin: 0 }}>{(file.size / 1024).toFixed(0)} KB</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.72rem', margin: 0 }}>{(file.size / 1024).toFixed(0)} KB</p>
  </div>
  <button
  onClick={() => { setFile(null); if (fileRef.current) fileRef.current.value = '' }}
- style={{ background: 'none', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '1.1rem' }}
+ style={{ background: 'none', border: 'none', color: 'var(--sub)', cursor: 'pointer', fontSize: '1.1rem' }}
  ></button>
  </div>
  )}
@@ -205,7 +205,7 @@ export default function TeacherCreateCard() {
  {/* Assign to students */}
  {students.length > 0 && (
  <div style={{ marginBottom: '14px' }}>
- <p style={{ color: '#9ca3af', fontWeight: 600, fontSize: '.8rem', margin: '0 0 8px' }}>ASSIGN TO (leave empty = all students)</p>
+ <p style={{ color: 'var(--sub)', fontWeight: 600, fontSize: '.8rem', margin: '0 0 8px' }}>ASSIGN TO (leave empty = all students)</p>
  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
  {students.map(s => {
  const sel2 = selectedStudents.includes(s.id)
@@ -214,8 +214,8 @@ export default function TeacherCreateCard() {
  key={s.id}
  onClick={() => toggleStudent(s.id)}
  style={{
- padding: '5px 12px', borderRadius: '20px', fontSize: '.78rem', fontWeight: 600, cursor: 'pointer', border: `1px solid ${sel2 ? '#6366f1' : '#374151'}`,
- background: sel2 ? 'rgba(99,102,241,0.2)' : 'transparent', color: sel2 ? '#a5b4fc' : '#6b7280',
+ padding: '5px 12px', borderRadius: '20px', fontSize: '.78rem', fontWeight: 600, cursor: 'pointer', border: `1px solid ${sel2 ? '#6366f1' : 'var(--surface-hover)'}`,
+ background: sel2 ? 'rgba(99,102,241,0.2)' : 'transparent', color: sel2 ? '#a5b4fc' : 'var(--sub)',
  }}
  >
  {s.name || s.email}
@@ -229,24 +229,24 @@ export default function TeacherCreateCard() {
  <button
  onClick={handleSubmit}
  disabled={loading}
- style={{ width: '100%', background: loading ? '#1f2937' : 'linear-gradient(135deg,#6366f1,#4f46e5)', color: loading ? '#6b7280' : '#fff', border: 'none', borderRadius: '10px', padding: '11px', fontWeight: 700, fontSize: '.875rem', cursor: loading ? 'default' : 'pointer' }}
+ style={{ width: '100%', background: loading ? 'var(--surface-hover)' : 'linear-gradient(135deg,#6366f1,#4f46e5)', color: loading ? 'var(--sub)' : '#fff', border: 'none', borderRadius: '10px', padding: '11px', fontWeight: 700, fontSize: '.875rem', cursor: loading ? 'default' : 'pointer' }}
  >
  {loading ? 'Sending' : ' Send Assignment to Students'}
  </button>
  </div>
 
  {/* Past assignments */}
- <h2 style={{ color: '#f9fafb', fontWeight: 700, fontSize: '1.1rem', margin: '0 0 12px' }}>Sent Assignments</h2>
- {loadingList ? <p style={{ color: '#6b7280' }}>Loading</p> : assignments.length === 0 ? (
- <p style={{ color: '#6b7280', fontSize: '.875rem' }}>No assignments sent yet.</p>
+ <h2 style={{ color: 'var(--text)', fontWeight: 700, fontSize: '1.1rem', margin: '0 0 12px' }}>Sent Assignments</h2>
+ {loadingList ? <p style={{ color: 'var(--sub)' }}>Loading</p> : assignments.length === 0 ? (
+ <p style={{ color: 'var(--sub)', fontSize: '.875rem' }}>No assignments sent yet.</p>
  ) : (
  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
  {assignments.map(a => (
  <div key={a.id} style={{ ...card, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
  <span style={{ fontSize: '1.4rem' }}>{a.file_url ? fIcon(a.file_name) : ''}</span>
  <div style={{ flex: 1, minWidth: '120px' }}>
- <p style={{ fontWeight: 600, color: '#f9fafb', margin: '0 0 3px', fontSize: '.9rem' }}>{a.title}</p>
- <p style={{ fontSize: '.75rem', color: '#6b7280', margin: 0 }}>
+ <p style={{ fontWeight: 600, color: 'var(--text)', margin: '0 0 3px', fontSize: '.9rem' }}>{a.title}</p>
+ <p style={{ fontSize: '.75rem', color: 'var(--sub)', margin: 0 }}>
  Grade {a.grade} {a.subject}{a.due_date ? ` Due ${new Date(a.due_date).toLocaleDateString()}` : ''}
  </p>
  </div>
@@ -262,5 +262,5 @@ export default function TeacherCreateCard() {
  )
 }
 
-const sel = { background: '#0f1421', border: '1px solid #1f2937', color: '#f9fafb', borderRadius: '10px', padding: '10px 12px', fontSize: '.875rem', width: '100%' }
+const sel = { background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: '10px', padding: '10px 12px', fontSize: '.875rem', width: '100%' }
 const inp = { ...sel, display: 'block', width: '100%', boxSizing: 'border-box', outline: 'none' }

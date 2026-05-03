@@ -1,6 +1,43 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── Global responsive reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+input, button, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ── Scrollbar (desktop) ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #374151; border-radius: 8px; }
+
+/* ── Responsive typography ── */
+@media (max-width: 480px) {
+  html { font-size: 15px; }
+}
 
 @layer components {
   .card {
@@ -12,4 +49,81 @@
   .input {
     @apply w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition;
   }
+}
+
+/* ── Touch targets: min 44px on mobile ── */
+@media (max-width: 600px) {
+  button, a, select {
+    min-height: 40px;
+  }
+  input, textarea, select {
+    font-size: 16px !important; /* prevents iOS zoom on focus */
+  }
+}
+
+/* ── Modals fit on small phones ── */
+@media (max-width: 480px) {
+  [style*="maxWidth:'520px'"],
+  [style*="maxWidth: 520px"],
+  [style*="maxWidth:'860px'"],
+  [style*="maxWidth: 860px"] {
+    margin: 0 8px !important;
+  }
+}
+
+/* ── Video player responsive ── */
+video { max-width: 100%; }
+
+/* ── Prevent long words breaking layout ── */
+p, h1, h2, h3, span, td, th {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ── Tables always scroll horizontally ── */
+table {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Theme variables (light + dark) ── */
+:root, [data-theme="light"] {
+  --bg:             #f0f2f5;
+  --surface:        #ffffff;
+  --surface-hover:  #f3f4f6;
+  --surface-deep:   #f9fafb;
+  --border:         #e5e7eb;
+  --border-hover:   #d1d5db;
+  --text:           #111827;
+  --text-dim:       #374151;
+  --sub:            #6b7280;
+  --input-bg:       #ffffff;
+  --input-border:   #d1d5db;
+  --shadow:         0 1px 4px rgba(0,0,0,0.08);
+  --shadow-hover:   0 4px 14px rgba(0,0,0,0.13);
+  --radius:         16px;
+}
+
+[data-theme="dark"] {
+  --bg:             #0a0e17;
+  --surface:        #161b27;
+  --surface-hover:  #1a2234;
+  --surface-deep:   #0f1421;
+  --border:         #1f2937;
+  --border-hover:   #374151;
+  --text:           #f9fafb;
+  --text-dim:       #e5e7eb;
+  --sub:            #6b7280;
+  --input-bg:       #0f1421;
+  --input-border:   #374151;
+  --shadow:         none;
+  --shadow-hover:   none;
+  --radius:         16px;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
 }

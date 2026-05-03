@@ -52,7 +52,7 @@ export default function VerifyOtp() {
  {!done ? (<>
  <div style={{textAlign:"center",marginBottom:24}}>
  <div style={{fontSize:"2.5rem",marginBottom:8}}></div>
- <h2 style={{fontWeight:800,fontSize:"1.3rem",color:"#1e293b",marginBottom:4}}>Reset Password</h2>
+ <h2 style={{fontWeight:800,fontSize:"1.3rem",color:"var(--surface)",marginBottom:4}}>Reset Password</h2>
  <p style={{color:"#64748b",fontSize:".85rem"}}>Enter the code sent to <strong>{email}</strong> and your new password.</p>
  </div>
 
@@ -82,7 +82,7 @@ export default function VerifyOtp() {
  </>) : (
  <div style={{textAlign:"center",padding:"20px 0"}}>
  <div style={{fontSize:"3rem",marginBottom:12}}></div>
- <h2 style={{fontWeight:800,color:"#1e293b",marginBottom:8}}>Password Reset!</h2>
+ <h2 style={{fontWeight:800,color:"var(--surface)",marginBottom:8}}>Password Reset!</h2>
  <p style={{color:"#64748b",fontSize:".9rem",marginBottom:20}}>Your password has been updated successfully.</p>
  <button className="btn" onClick={()=>navigate("/login")}>Go to Login</button>
  </div>

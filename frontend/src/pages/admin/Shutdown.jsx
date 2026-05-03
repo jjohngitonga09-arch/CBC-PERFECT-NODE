@@ -129,11 +129,11 @@ function KenyaMap({ userCount = 0 }) {
  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, marginTop: 8 }}>
  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }} />
- <span style={{ fontSize: '.7rem', color: '#6b7280', fontFamily: 'monospace' }}>ACTIVE USERS</span>
+ <span style={{ fontSize: '.7rem', color: 'var(--sub)', fontFamily: 'monospace' }}>ACTIVE USERS</span>
  </div>
  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
  <div style={{ width: 8, height: 2, background: 'rgba(16,185,129,0.4)' }} />
- <span style={{ fontSize: '.7rem', color: '#6b7280', fontFamily: 'monospace' }}>SCAN ACTIVE</span>
+ <span style={{ fontSize: '.7rem', color: 'var(--sub)', fontFamily: 'monospace' }}>SCAN ACTIVE</span>
  </div>
  </div>
  </div>
@@ -252,7 +252,7 @@ export default function AdminShutdown() {
  const S = {
  page: { maxWidth: 740, fontFamily: "'Segoe UI', system-ui, sans-serif" },
  panel: {
- background: 'linear-gradient(135deg,#0d1117 0%,#0f1621 100%)',
+ background: 'linear-gradient(135deg,var(--bg) 0%,#0f1621 100%)',
  border: '1px solid #1e2738',
  borderRadius: 16,
  padding: '20px',
@@ -300,14 +300,14 @@ export default function AdminShutdown() {
  <div style={{ marginBottom: 24, animation: 'fadeUp .4s ease' }}>
  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
  <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}></div>
- <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#f9fafb', margin: 0, letterSpacing: '-0.5px' }}>Emergency Controls</h1>
+ <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text)', margin: 0, letterSpacing: '-0.5px' }}>Emergency Controls</h1>
  <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
  <span style={S.tag('rgba(16,185,129,0.12)', '#34d399', '1px solid rgba(16,185,129,0.25)')}>{activeCount} active</span>
  <span style={S.tag('rgba(239,68,68,0.12)', '#f87171', '1px solid rgba(239,68,68,0.2)')}>{lockedCount} locked</span>
  <span style={S.tag('rgba(99,102,241,0.12)', '#a5b4fc', '1px solid rgba(99,102,241,0.2)')}>{users.length} total</span>
  </div>
  </div>
- <p style={{ color: '#4b5563', fontSize: '.8rem', margin: 0, fontFamily: 'monospace' }}>
+ <p style={{ color: 'var(--sub)', fontSize: '.8rem', margin: 0, fontFamily: 'monospace' }}>
  SYS:ADMIN &nbsp;|&nbsp; AUTO-REFRESH 5s &nbsp;|&nbsp; {loading ? 'SYNCING...' : 'LIVE'}
  {!loading && <span style={{ color: '#10b981', animation: 'shimmer 2s infinite' }}> *</span>}
  </p>
@@ -318,7 +318,7 @@ export default function AdminShutdown() {
 
  {/* Global Actions */}
  <div style={S.panel}>
- <p style={{ color: '#9ca3af', fontSize: '.7rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 12px', fontFamily: 'monospace' }}>Global Controls</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.7rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 12px', fontFamily: 'monospace' }}>Global Controls</p>
  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
  <button className="ctrl-btn" onClick={lockAll} disabled={acting} style={{ ...S.lockBtn, ...S.btn('',''), ...S.lockBtn, padding: '9px 20px', borderRadius: 10 }}> Lock All Roles</button>
  <button className="ctrl-btn" onClick={unlockAll} disabled={acting} style={{ ...S.unlockBtn, ...S.btn('',''), ...S.unlockBtn, padding: '9px 20px', borderRadius: 10 }}> Unlock All Roles</button>
@@ -327,7 +327,7 @@ export default function AdminShutdown() {
 
  {/* Kenya Map */}
  <div style={{ ...S.panel, padding: '14px', gridRow: '1 / 4' }}>
- <p style={{ color: '#9ca3af', fontSize: '.7rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 10px', fontFamily: 'monospace' }}> User Distribution</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.7rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', margin: '0 0 10px', fontFamily: 'monospace' }}> User Distribution</p>
  <KenyaMap userCount={activeCount} />
  </div>
 
@@ -344,7 +344,7 @@ export default function AdminShutdown() {
  flex: 1, padding: '9px 6px', borderRadius: 9, border: 'none',
  fontWeight: 700, fontSize: '.78rem', cursor: 'pointer',
  background: tab === r ? '#6366f1' : 'transparent',
- color: tab === r ? '#fff' : '#4b5563',
+ color: tab === r ? '#fff' : 'var(--sub)',
  boxShadow: tab === r ? '0 2px 12px rgba(99,102,241,0.4)' : 'none',
  }}
  >
@@ -355,7 +355,7 @@ export default function AdminShutdown() {
 
  {/* -- Role-level actions ------------------------------------------- */}
  <div style={{ ...S.panel, display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center', padding: '12px 16px' }}>
- <span style={{ color: '#6b7280', fontWeight: 600, fontSize: '.78rem', flex: 1, fontFamily: 'monospace' }}>
+ <span style={{ color: 'var(--sub)', fontWeight: 600, fontSize: '.78rem', flex: 1, fontFamily: 'monospace' }}>
  TARGET: {ROLE_LABELS[tab].toUpperCase()}
  </span>
  <button className="ctrl-btn" onClick={() => lockRole(tab)} disabled={acting} style={{ ...S.lockBtn, ...S.btn('',''), ...S.lockBtn }}> Lock All {ROLE_LABELS[tab]}</button>
@@ -368,7 +368,7 @@ export default function AdminShutdown() {
  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, paddingBottom: 10, borderBottom: '1px solid #1e2738' }}>
  <input type="checkbox" checked={allTabSelected} onChange={e => selectAllTab(e.target.checked)}
  style={{ width: 15, height: 15, accentColor: '#6366f1', cursor: 'pointer' }} />
- <span style={{ color: '#6b7280', fontSize: '.78rem', fontWeight: 600, fontFamily: 'monospace' }}>
+ <span style={{ color: 'var(--sub)', fontSize: '.78rem', fontWeight: 600, fontFamily: 'monospace' }}>
  SELECT ALL ({tabUsers.length})
  </span>
  {anySelected && (
@@ -383,10 +383,10 @@ export default function AdminShutdown() {
  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 0', gap: 10 }}>
  <style>{`@keyframes sspin{to{transform:rotate(360deg)}}`}</style>
  <div style={{ width: 20, height: 20, border: '2px solid #1e2738', borderTopColor: '#6366f1', borderRadius: '50%', animation: 'sspin .7s linear infinite' }} />
- <span style={{ color: '#4b5563', fontSize: '.8rem', fontFamily: 'monospace' }}>LOADING USERS...</span>
+ <span style={{ color: 'var(--sub)', fontSize: '.8rem', fontFamily: 'monospace' }}>LOADING USERS...</span>
  </div>
  ) : tabUsers.length === 0 ? (
- <p style={{ color: '#4b5563', textAlign: 'center', padding: '28px 0', fontFamily: 'monospace', fontSize: '.8rem' }}>
+ <p style={{ color: 'var(--sub)', textAlign: 'center', padding: '28px 0', fontFamily: 'monospace', fontSize: '.8rem' }}>
  NO {ROLE_LABELS[tab].toUpperCase()} FOUND
  </p>
  ) : (
@@ -419,7 +419,7 @@ export default function AdminShutdown() {
  <p style={{ color: '#e5e7eb', fontWeight: 600, margin: 0, fontSize: '.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
  {u.name || u.email}
  </p>
- <p style={{ color: '#4b5563', fontSize: '.7rem', margin: 0, fontFamily: 'monospace' }}>{u.email}</p>
+ <p style={{ color: 'var(--sub)', fontSize: '.7rem', margin: 0, fontFamily: 'monospace' }}>{u.email}</p>
  </div>
 
  <span style={S.badge(locked)}>{locked ? ' Locked' : '* Active'}</span>
@@ -453,7 +453,7 @@ export default function AdminShutdown() {
  </div>
  <div style={{ flex: 1 }}>
  <p style={{ color: '#f87171', fontWeight: 800, fontSize: '1rem', margin: '0 0 6px', letterSpacing: '-0.3px' }}>Emergency Shutdown</p>
- <p style={{ color: '#6b7280', fontSize: '.8rem', margin: '0 0 18px', lineHeight: 1.6 }}>
+ <p style={{ color: 'var(--sub)', fontSize: '.8rem', margin: '0 0 18px', lineHeight: 1.6 }}>
  Immediately stops all incoming requests and terminates the server process.
  All active sessions will be forcibly disconnected. This action cannot be undone remotely.
  </p>
@@ -485,7 +485,7 @@ export default function AdminShutdown() {
  <button
  className="ctrl-btn"
  onClick={() => setShutdownReady(false)}
- style={{ background: 'rgba(255,255,255,0.04)', color: '#6b7280', border: '1px solid #1e2738', borderRadius: 10, padding: '11px 20px', fontWeight: 700, fontSize: '.875rem', cursor: 'pointer' }}
+ style={{ background: 'rgba(255,255,255,0.04)', color: 'var(--sub)', border: '1px solid #1e2738', borderRadius: 10, padding: '11px 20px', fontWeight: 700, fontSize: '.875rem', cursor: 'pointer' }}
  >
  Cancel
  </button>

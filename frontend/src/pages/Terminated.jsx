@@ -13,7 +13,7 @@ export default function Terminated() {
  return (
  <div style={{
  minHeight: '100vh',
- background: '#0a0e17',
+ background: 'var(--bg)',
  display: 'flex',
  alignItems: 'center',
  justifyContent: 'center',
@@ -60,7 +60,7 @@ export default function Terminated() {
  {/* Message */}
  <p style={{
  fontSize: '1rem',
- color: '#d1d5db',
+ color: 'var(--text)',
  lineHeight: 1.75,
  margin: '0 0 12px',
  }}>
@@ -73,7 +73,7 @@ export default function Terminated() {
  margin: '0 0 32px',
  }}>
  This action was taken because your account was found to be in violation of our{' '}
- <strong style={{ color: '#d1d5db' }}>Terms and Conditions</strong>.
+ <strong style={{ color: 'var(--text)' }}>Terms and Conditions</strong>.
  You are no longer permitted to access this service.
  </p>
 

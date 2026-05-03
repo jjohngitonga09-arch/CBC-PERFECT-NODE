@@ -46,6 +46,6 @@
  )
 }
 function defaultIcon(color) {
- const icons = { blue: 'i', green: 'ok', yellow: '*', red: '!', purple: '#', brand: '%' }
- return icons[color] ?? ''
+ const icons = { blue: '🎬', green: '⭐', yellow: '🔥', red: '❗', purple: '🏆', brand: '📈' }
+ return icons[color] ?? '📊'
 }

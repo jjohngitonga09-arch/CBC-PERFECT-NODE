@@ -5,7 +5,7 @@ import useAuthStore from '../../store/authStore'
 import Spinner from '../../components/common/Spinner'
 import toast from 'react-hot-toast'
 
-const card = {background:'#161b27',border:'1px solid #1f2937',borderRadius:'16px',padding:'20px'}
+const card = {background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'16px',padding:'20px'}
 
 export default function TeacherAssignments() {
  const userId = useAuthStore(s => s.userId)
@@ -36,8 +36,8 @@ export default function TeacherAssignments() {
  <div>
  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px',gap:'12px',flexWrap:'wrap'}}>
  <div>
- <h1 style={{fontSize:'1.7rem',fontWeight:800,color:'#f9fafb',margin:'0 0 4px',letterSpacing:'-0.4px'}}>Assignments</h1>
- <p style={{fontSize:'.875rem',color:'#6b7280',margin:0}}>{assignments.length} total</p>
+ <h1 style={{fontSize:'1.7rem',fontWeight:800,color:'var(--text)',margin:'0 0 4px',letterSpacing:'-0.4px'}}>Assignments</h1>
+ <p style={{fontSize:'.875rem',color:'var(--sub)',margin:0}}>{assignments.length} total</p>
  </div>
  <Link to="/teacher/create-card" style={{background:'linear-gradient(135deg,#6366f1,#4f46e5)',color:'#fff',padding:'10px 18px',borderRadius:'12px',textDecoration:'none',fontSize:'.875rem',fontWeight:700}}>
  + New Assignment
@@ -47,8 +47,8 @@ export default function TeacherAssignments() {
  {assignments.length === 0 ? (
  <div style={{...card,textAlign:'center',padding:'56px 20px'}}>
  <p style={{fontSize:'3rem',margin:'0 0 12px'}}></p>
- <p style={{fontWeight:700,color:'#f9fafb',margin:'0 0 8px'}}>No assignments yet</p>
- <p style={{color:'#6b7280',fontSize:'.875rem',margin:'0 0 20px'}}>Create your first assignment to get started.</p>
+ <p style={{fontWeight:700,color:'var(--text)',margin:'0 0 8px'}}>No assignments yet</p>
+ <p style={{color:'var(--sub)',fontSize:'.875rem',margin:'0 0 20px'}}>Create your first assignment to get started.</p>
  <Link to="/teacher/create-card" style={{background:'linear-gradient(135deg,#6366f1,#4f46e5)',color:'#fff',padding:'10px 20px',borderRadius:'12px',textDecoration:'none',fontWeight:700,fontSize:'.875rem'}}>
  Create Assignment
  </Link>
@@ -60,8 +60,8 @@ export default function TeacherAssignments() {
  return (
  <div key={a.id} style={{...card,display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px',flexWrap:'wrap',padding:'14px 18px'}}>
  <div style={{flex:1,minWidth:'150px'}}>
- <p style={{fontWeight:600,color:'#f9fafb',margin:'0 0 3px'}}>{a.title}</p>
- <p style={{fontSize:'.75rem',color:'#6b7280',margin:0}}>
+ <p style={{fontWeight:600,color:'var(--text)',margin:'0 0 3px'}}>{a.title}</p>
+ <p style={{fontSize:'.75rem',color:'var(--sub)',margin:0}}>
  {a.assigned_count || 0} student{a.assigned_count !== 1 ? 's' : ''} {a.submission_count || 0} submissions Due {a.due_date ? new Date(a.due_date).toLocaleDateString() : ''}
  </p>
  </div>

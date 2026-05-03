@@ -4,9 +4,9 @@ import useAuthStore from '../../store/authStore'
 import Avatar from '../../components/common/Avatar'
 import toast from 'react-hot-toast'
 
-const card = { background:'#161b27', border:'1px solid #1f2937', borderRadius:'16px', padding:'24px', marginBottom:'16px' }
-const inp = { width:'100%', background:'#0f1421', border:'1px solid #1f2937', color:'#f9fafb', borderRadius:'10px', padding:'10px 14px', fontSize:'.875rem', outline:'none', boxSizing:'border-box' }
-const lbl = { color:'#6b7280', fontSize:'.78rem', display:'block', marginBottom:'4px' }
+const card = { background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', padding:'24px', marginBottom:'16px' }
+const inp = { width:'100%', background:'var(--bg)', border:'1px solid var(--border)', color:'var(--text)', borderRadius:'10px', padding:'10px 14px', fontSize:'.875rem', outline:'none', boxSizing:'border-box' }
+const lbl = { color:'var(--sub)', fontSize:'.78rem', display:'block', marginBottom:'4px' }
 
 export default function Profile() {
  const { user: authUser, setUser } = useAuthStore()
@@ -74,15 +74,15 @@ export default function Profile() {
  finally { setSaving(false) }
  }
 
- if (!profile) return <div style={{ color:'#6b7280', padding:'40px', textAlign:'center' }}>Loading...</div>
+ if (!profile) return <div style={{ color:'var(--sub)', padding:'40px', textAlign:'center' }}>Loading...</div>
 
  const roleColor = { admin:'#ef4444', teacher:'#6366f1', student:'#10b981', guardian:'#f59e0b' }
 
  return (
  <div style={{ maxWidth:'520px' }}>
  <div style={{ marginBottom:'24px' }}>
- <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'#f9fafb', margin:'0 0 4px' }}>My Profile</h1>
- <p style={{ fontSize:'.875rem', color:'#6b7280', margin:0 }}>Update your info, password and profile picture</p>
+ <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'var(--text)', margin:'0 0 4px' }}>My Profile</h1>
+ <p style={{ fontSize:'.875rem', color:'var(--sub)', margin:0 }}>Update your info, password and profile picture</p>
  </div>
 
  {/* Avatar card */}
@@ -95,7 +95,7 @@ export default function Profile() {
  )}
  </div>
  <div>
- <p style={{ color:'#f9fafb', fontWeight:800, margin:'0 0 2px', fontSize:'1.05rem' }}>{profile.name}</p>
+ <p style={{ color:'var(--text)', fontWeight:800, margin:'0 0 2px', fontSize:'1.05rem' }}>{profile.name}</p>
  <span style={{ fontSize:'.72rem', fontWeight:700, padding:'2px 10px', borderRadius:'20px',
  background: 'rgba(99,102,241,0.12)',
 
@@ -117,7 +117,7 @@ export default function Profile() {
  )}
  </div>
  <input ref={fileRef} type="file" accept="image/*" style={{ display:'none' }} onChange={uploadAvatar}/>
- <p style={{ color:'#4b5563', fontSize:'.7rem', marginTop:'8px', marginBottom:0 }}>
+ <p style={{ color:'var(--sub)', fontSize:'.7rem', marginTop:'8px', marginBottom:0 }}>
  Max 5MB. Visible in chats, leaderboard and across the app.
  </p>
  </div>
@@ -125,7 +125,7 @@ export default function Profile() {
 
  {/* Info */}
  <div style={card}>
- <p style={{ color:'#9ca3af', fontWeight:700, fontSize:'.78rem', margin:'0 0 14px' }}>ACCOUNT INFO</p>
+ <p style={{ color:'var(--sub)', fontWeight:700, fontSize:'.78rem', margin:'0 0 14px' }}>ACCOUNT INFO</p>
  <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
  <div><label style={lbl}>Full Name</label><input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Full name"/></div>
  <div><label style={lbl}>Phone</label><input style={inp} value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+254..."/></div>
@@ -136,7 +136,7 @@ export default function Profile() {
 
  {/* Password */}
  <div style={card}>
- <p style={{ color:'#9ca3af', fontWeight:700, fontSize:'.78rem', margin:'0 0 14px' }}>CHANGE PASSWORD</p>
+ <p style={{ color:'var(--sub)', fontWeight:700, fontSize:'.78rem', margin:'0 0 14px' }}>CHANGE PASSWORD</p>
  <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
  <input style={inp} type="password" value={curPw} onChange={e=>setCurPw(e.target.value)} placeholder="Current password"/>
  <input style={inp} type="password" value={newPw} onChange={e=>setNewPw(e.target.value)} placeholder="New password (min 6 chars)"/>
@@ -145,8 +145,8 @@ export default function Profile() {
  </div>
 
  <button onClick={saveProfile} disabled={saving}
- style={{ width:'100%', background: saving?'#1f2937':'linear-gradient(135deg,#6366f1,#4f46e5)',
- color: saving?'#6b7280':'#fff', border:'none', borderRadius:'12px', padding:'13px',
+ style={{ width:'100%', background: saving?'var(--surface-hover)':'linear-gradient(135deg,#6366f1,#4f46e5)',
+ color: saving?'var(--sub)':'#fff', border:'none', borderRadius:'12px', padding:'13px',
  fontWeight:800, fontSize:'.95rem', cursor: saving?'default':'pointer' }}>
  {saving ? 'Saving...' : 'Save Changes'}
  </button>

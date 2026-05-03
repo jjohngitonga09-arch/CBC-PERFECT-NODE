@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router  = express.Router();
 const { query } = require('../config/db');
 const { authenticate }   = require('../middleware/authenticate');
@@ -171,15 +171,58 @@ router.put('/settings', ...auth, async (req, res) => {
 router.get('/alerts', ...auth, async (req, res) => {
   try {
     const { rows } = await query(
-      `SELECT action, COUNT(*) AS count, MAX(timestamp) AS last_seen
-         FROM system_logs
-        WHERE action IN ('failed_login','account_locked','suspicious_activity','login_blocked')
-          AND COALESCE(timestamp, created_at) > NOW() - INTERVAL '24 hours'
-        GROUP BY action
-        ORDER BY count DESC`
+      `SELECT id,type,action,user_id,COALESCE(timestamp,created_at) AS timestamp FROM system_logs WHERE action IN ('failed_login','account_locked','suspicious_activity','login_blocked') AND COALESCE(timestamp,created_at) > NOW() - INTERVAL '24 hours' ORDER BY COALESCE(timestamp,created_at) DESC LIMIT 20`
     );
     res.json(rows);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+
+//  PENDING APPROVALS 
+router.get('/pending', ...auth, async (req, res) => {
+  try {
+    const { rows } = await query(
+      "SELECT id,name,email,phone,role,status,created_at FROM users WHERE status='pending' ORDER BY created_at DESC LIMIT 20"
+    );
+    res.json(rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post('/users/:id/approve', ...auth, async (req, res) => {
+  try {
+    await query("UPDATE users SET status='active' WHERE id=$1", [req.params.id]);
+    await logIt(`Approved user ${req.params.id}`, req.user?.id);
+    res.json({ message: 'Approved' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post('/users/:id/reject', ...auth, async (req, res) => {
+  try {
+    await query("UPDATE users SET status='bin' WHERE id=$1", [req.params.id]);
+    await logIt(`Rejected user ${req.params.id}`, req.user?.id);
+    res.json({ message: 'Rejected' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+//  RECENT USERS 
+router.get('/recent-users', ...auth, async (req, res) => {
+  try {
+    const { rows } = await query(
+      "SELECT id,name,email,phone,role,status,created_at FROM users WHERE status!='bin' ORDER BY created_at DESC LIMIT 10"
+    );
+    res.json(rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+//  RECENT LOGS 
+router.get('/recent-logs', ...auth, async (req, res) => {
+  try {
+    const { rows } = await query(
+      "SELECT id,type,action,user_id,COALESCE(timestamp,created_at) AS timestamp FROM system_logs ORDER BY COALESCE(timestamp,created_at) DESC LIMIT 10"
+    );
+    res.json(rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 module.exports = router;
+
+

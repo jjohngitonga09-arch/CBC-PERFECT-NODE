@@ -194,14 +194,14 @@ const GRADES = [
 function FormulaCard({ item, color }) {
  return (
  <div style={{
- background: '#0d1117',
- border: '1px solid #1f2937',
+ background: 'var(--bg)',
+ border: '1px solid var(--border)',
  borderRadius: '10px', padding: '14px 16px', marginBottom: '8px',
  }}>
- <p style={{ fontWeight: 700, color: '#f9fafb', margin: '0 0 5px', fontSize: '.9rem' }}>{item.name}</p>
+ <p style={{ fontWeight: 700, color: 'var(--text)', margin: '0 0 5px', fontSize: '.9rem' }}>{item.name}</p>
  <code style={{ background: color + '22', color: color, padding: '3px 10px', borderRadius: '6px', fontSize: '.82rem', fontFamily: 'monospace', display: 'inline-block', marginBottom: '10px' }}>{item.formula}</code>
- <p style={{ color: '#d1d5db', fontSize: '.85rem', lineHeight: 1.7, margin: '0 0 8px' }}>{item.explain}</p>
- <div style={{ background: '#0a0e17', borderRadius: '8px', padding: '10px 14px', borderLeft: '3px solid ' + color }}>
+ <p style={{ color: 'var(--text)', fontSize: '.85rem', lineHeight: 1.7, margin: '0 0 8px' }}>{item.explain}</p>
+ <div style={{ background: 'var(--bg)', borderRadius: '8px', padding: '10px 14px', borderLeft: '3px solid ' + color }}>
  <span style={{ fontSize: '.68rem', fontWeight: 700, color: color, textTransform: 'uppercase', letterSpacing: '.5px' }}>Example: </span>
  <span style={{ color: '#c4b5fd', fontSize: '.85rem', fontFamily: 'monospace' }}>{item.example}</span>
  </div>
@@ -229,23 +229,23 @@ export default function MathKnowledge() {
  return (
  <div style={{ maxWidth: '780px' }}>
  <div style={{ marginBottom: '24px' }}>
- <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#f9fafb', margin: '0 0 4px' }}>Mathematics Knowledge</h1>
- <p style={{ fontSize: '.875rem', color: '#6b7280', margin: 0 }}>{totalFormulas} formulas from Grade 1 to Grade 9 -- click any formula to expand</p>
+ <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: 'var(--text)', margin: '0 0 4px' }}>Mathematics Knowledge</h1>
+ <p style={{ fontSize: '.875rem', color: 'var(--sub)', margin: 0 }}>{totalFormulas} formulas from Grade 1 to Grade 9 -- click any formula to expand</p>
  </div>
 
  <input
  value={search}
  onChange={e => setSearch(e.target.value)}
  placeholder="Search formulas, e.g. pythagoras, percentage, area..."
- style={{ width: '100%', background: '#111827', border: '1.5px solid #1f2937', borderRadius: '12px', padding: '12px 16px', color: '#f9fafb', fontSize: '.9rem', outline: 'none', marginBottom: '32px', boxSizing: 'border-box' }}
+ style={{ width: '100%', background: 'var(--bg)', border: '1.5px solid var(--border)', borderRadius: '12px', padding: '12px 16px', color: 'var(--text)', fontSize: '.9rem', outline: 'none', marginBottom: '32px', boxSizing: 'border-box' }}
  />
 
  {filtered.map(grade => (
  <div key={grade.id} style={{ marginBottom: '48px' }}>
  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', paddingBottom: '12px', borderBottom: '2px solid ' + grade.color + '33' }}>
  <div style={{ flex: 1 }}>
- <h2 style={{ fontWeight: 900, color: '#f9fafb', margin: 0, fontSize: '1.3rem' }}>{grade.label}</h2>
- <p style={{ color: '#6b7280', fontSize: '.75rem', margin: 0 }}>
+ <h2 style={{ fontWeight: 900, color: 'var(--text)', margin: 0, fontSize: '1.3rem' }}>{grade.label}</h2>
+ <p style={{ color: 'var(--sub)', fontSize: '.75rem', margin: 0 }}>
  {grade.topics.reduce((a, t) => a + t.items.length, 0)} formulas across {grade.topics.length} topics
  </p>
  </div>
@@ -264,7 +264,7 @@ export default function MathKnowledge() {
  ))}
 
  {filtered.length === 0 && (
- <div style={{ textAlign: 'center', padding: '48px', color: '#6b7280' }}>
+ <div style={{ textAlign: 'center', padding: '48px', color: 'var(--sub)' }}>
  <p style={{ fontWeight: 600, margin: 0 }}>No formulas found for "{search}"</p>
  </div>
  )}

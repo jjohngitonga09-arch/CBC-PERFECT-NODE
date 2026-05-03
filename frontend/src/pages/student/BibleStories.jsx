@@ -109,27 +109,27 @@ export default function BibleStories() {
  s.summary.toLowerCase().includes(search.toLowerCase())
  )
 
- const card = { background:'#111827', border:'1px solid #1f2937', borderRadius:'14px', padding:'20px', marginBottom:'12px' }
+ const card = { background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'14px', padding:'20px', marginBottom:'12px' }
 
  return (
  <div>
  <div style={{ marginBottom:'24px' }}>
- <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'#f9fafb', margin:'0 0 4px' }}>Bible Stories</h1>
- <p style={{ fontSize:'.875rem', color:'#6b7280', margin:0 }}>Classic stories of faith, courage and wisdom</p>
+ <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'var(--text)', margin:'0 0 4px' }}>Bible Stories</h1>
+ <p style={{ fontSize:'.875rem', color:'var(--sub)', margin:0 }}>Classic stories of faith, courage and wisdom</p>
  </div>
  <input
  value={search} onChange={e => setSearch(e.target.value)}
  placeholder="Search stories..."
- style={{ width:'100%', background:'#111827', border:'1.5px solid #1f2937', borderRadius:'12px', padding:'12px 16px', color:'#f9fafb', fontSize:'.9rem', outline:'none', marginBottom:'20px', boxSizing:'border-box' }}
+ style={{ width:'100%', background:'var(--bg)', border:'1.5px solid var(--border)', borderRadius:'12px', padding:'12px 16px', color:'var(--text)', fontSize:'.9rem', outline:'none', marginBottom:'20px', boxSizing:'border-box' }}
  />
  {filtered.map(s => (
  <div key={s.id} style={card}>
  <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'8px' }}>
- <p style={{ fontWeight:700, color:'#f9fafb', margin:0, fontSize:'.95rem' }}>{s.title}</p>
+ <p style={{ fontWeight:700, color:'var(--text)', margin:0, fontSize:'.95rem' }}>{s.title}</p>
  <span style={{ fontSize:'.7rem', color:'#818cf8', fontWeight:600, background:'rgba(99,102,241,0.1)', padding:'2px 8px', borderRadius:'20px', flexShrink:0 }}>{s.ref}</span>
  </div>
- <p style={{ color:'#9ca3af', fontSize:'.82rem', margin:'0 0 16px', lineHeight:1.5, fontStyle:'italic' }}>{s.summary}</p>
- <div style={{ color:'#d1d5db', fontSize:'.9rem', lineHeight:1.85 }}>
+ <p style={{ color:'var(--sub)', fontSize:'.82rem', margin:'0 0 16px', lineHeight:1.5, fontStyle:'italic' }}>{s.summary}</p>
+ <div style={{ color:'var(--text)', fontSize:'.9rem', lineHeight:1.85 }}>
  {s.body.split('\n\n').map((p, i) => (
  <p key={i} style={{ marginBottom:'14px' }}>{p}</p>
  ))}
@@ -137,7 +137,7 @@ export default function BibleStories() {
  </div>
  ))}
  {filtered.length === 0 && (
- <div style={{ textAlign:'center', padding:'48px', color:'#6b7280' }}>
+ <div style={{ textAlign:'center', padding:'48px', color:'var(--text)' }}>
  <p style={{ fontWeight:600, margin:0 }}>No stories found</p>
  </div>
  )}

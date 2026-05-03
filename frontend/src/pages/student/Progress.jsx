@@ -4,7 +4,7 @@ import useAuthStore from '../../store/authStore'
 import StatRow from '../../components/dashboard/StatRow'
 import Spinner from '../../components/common/Spinner'
 
-const card = {background:'#161b27',border:'1px solid #1f2937',borderRadius:'16px',padding:'20px'}
+const card = {background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'16px',padding:'20px'}
 
 export default function StudentProgress() {
  const userId = useAuthStore(s => s.userId)
@@ -37,8 +37,8 @@ export default function StudentProgress() {
  return (
  <div>
  <div style={{marginBottom:'24px'}}>
- <h1 style={{fontSize:'1.7rem',fontWeight:800,color:'#f9fafb',margin:'0 0 4px',letterSpacing:'-0.4px'}}>My Progress</h1>
- <p style={{fontSize:'.875rem',color:'#6b7280',margin:0}}>Your learning journey at a glance</p>
+ <h1 style={{fontSize:'1.7rem',fontWeight:800,color:'var(--text)',margin:'0 0 4px',letterSpacing:'-0.4px'}}>My Progress</h1>
+ <p style={{fontSize:'.875rem',color:'var(--sub)',margin:0}}>Your learning journey at a glance</p>
  </div>
 
  <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(145px,1fr))',gap:'12px',marginBottom:'24px'}}>
@@ -51,28 +51,28 @@ export default function StudentProgress() {
  <div key={s.label} style={{...card,textAlign:'center'}}>
  <p style={{fontSize:'2rem',margin:'0 0 8px'}}>{s.icon}</p>
  <p style={{fontSize:'1.35rem',fontWeight:800,color:s.color,margin:'0 0 4px'}}>{s.value}</p>
- <p style={{fontSize:'.75rem',color:'#6b7280',margin:0}}>{s.label}</p>
+ <p style={{fontSize:'.75rem',color:'var(--sub)',margin:0}}>{s.label}</p>
  </div>
  ))}
  </div>
 
  <div style={{...card,marginBottom:'20px'}}>
- <p style={{fontWeight:700,color:'#f9fafb',margin:'0 0 16px'}}>Overview</p>
+ <p style={{fontWeight:700,color:'var(--text)',margin:'0 0 16px'}}>Overview</p>
  <StatRow label={`Assignments  ${done} of ${total} done`} value={pct} max={100} color="#6366f1" />
  <StatRow label="Stars earned" value={Math.min(kpis?.starsEarned??0,100)} max={100} color="#f59e0b" />
  <StatRow label="Streak (days)" value={Math.min(kpis?.dailyStreak??0,30)} max={30} color="#f97316" />
  </div>
 
  <div style={card}>
- <p style={{fontWeight:700,color:'#f9fafb',margin:'0 0 14px'}}>Assignments ({assignments.length})</p>
- {assignments.length === 0 && <p style={{color:'#6b7280',fontSize:'.875rem',margin:0}}>No assignments yet.</p>}
+ <p style={{fontWeight:700,color:'var(--text)',margin:'0 0 14px'}}>Assignments ({assignments.length})</p>
+ {assignments.length === 0 && <p style={{color:'var(--sub)',fontSize:'.875rem',margin:0}}>No assignments yet.</p>}
  {assignments.map((a, i) => {
  const sc = statusStyle(a.submission_status)
  return (
- <div key={a.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 0',borderBottom:i<assignments.length-1?'1px solid #1f2937':'none',gap:'12px'}}>
+ <div key={a.id} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 0',borderBottom:i<assignments.length-1?'1px solid var(--border)':'none',gap:'12px'}}>
  <div style={{flex:1,minWidth:0}}>
- <p style={{fontWeight:600,color:'#f9fafb',margin:'0 0 3px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{a.title}</p>
- <p style={{fontSize:'.75rem',color:'#6b7280',margin:0}}>Due {a.due_date ? new Date(a.due_date).toLocaleDateString() : ''}</p>
+ <p style={{fontWeight:600,color:'var(--text)',margin:'0 0 3px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{a.title}</p>
+ <p style={{fontSize:'.75rem',color:'var(--sub)',margin:0}}>Due {a.due_date ? new Date(a.due_date).toLocaleDateString() : ''}</p>
  </div>
  <div style={{display:'flex',alignItems:'center',gap:'8px',flexShrink:0}}>
  {a.stars != null && <span style={{color:'#f59e0b',fontSize:'.875rem'}}>{'*'.repeat(Math.min(+a.stars||0,5))}</span>}

@@ -111,7 +111,7 @@ export default function Subscription() {
 
  {/* Hero */}
  <div style={{ textAlign: "center", padding: "48px 16px 32px" }}>
- <h1 style={{ fontSize: "2rem", fontWeight: 800, color: "#1e293b", letterSpacing: "-.03em", marginBottom: 8 }}>
+ <h1 style={{ fontSize: "2rem", fontWeight: 800, color: "var(--surface)", letterSpacing: "-.03em", marginBottom: 8 }}>
  Unlock <span style={{ color: "var(--ind)" }}>CBC Learning</span> 
  </h1>
  <p style={{ color: "#64748b", fontSize: "1rem", maxWidth: 480, margin: "0 auto" }}>
@@ -144,7 +144,7 @@ export default function Subscription() {
  {Object.entries(plans).map(([key, plan]) => (
  <div key={key} className={`plan-card${sel===key?" sel":""}${key==="basic"?" pop":""}`} onClick={() => setSel(key)}>
  <div style={{ fontSize: "2rem", marginBottom: 10 }}>{plan.icon}</div>
- <div style={{ fontSize: "1rem", fontWeight: 800, color: "#1e293b", marginBottom: 4 }}>{plan.label}</div>
+ <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--surface)", marginBottom: 4 }}>{plan.label}</div>
  {billing === "yearly" && <div style={{ fontSize: ".8rem", color: "#94a3b8", textDecoration: "line-through" }}>KES {(plan.monthly * 12).toLocaleString()}/yr</div>}
  <div style={{ fontSize: "2rem", fontWeight: 800, color: "#4f46e5", lineHeight: 1, marginBottom: 4 }}>
  KES {plan[billing].toLocaleString()}<small style={{ fontSize: ".8rem", fontWeight: 500, color: "#64748b" }}>/{billing==="yearly"?"yr":"mo"}</small>
@@ -162,7 +162,7 @@ export default function Subscription() {
 
  {/* Payment form */}
  <div style={{ background: "#fff", borderRadius: 18, padding: 28, border: "1px solid #e2e8f0", maxWidth: 500, margin: "0 auto", boxShadow: "0 2px 16px rgba(0,0,0,.06)" }}>
- <h3 style={{ fontWeight: 800, fontSize: "1.05rem", marginBottom: 20, color: "#1e293b" }}> Pay via M-Pesa</h3>
+ <h3 style={{ fontWeight: 800, fontSize: "1.05rem", marginBottom: 20, color: "var(--surface)" }}> Pay via M-Pesa</h3>
  <div style={{ marginBottom: 16 }}>
  <label style={{ fontWeight: 600, fontSize: ".82rem", color: "#374151", marginBottom: 6, display: "block" }}>M-Pesa Phone Number</label>
  <input className="field-input" type="tel" placeholder="0712 345 678" value={phone} onChange={e => setPhone(e.target.value)} />
