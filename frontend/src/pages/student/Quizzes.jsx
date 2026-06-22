@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from '../../services/api'
 import useAuthStore from '../../store/authStore'
 import Spinner from '../../components/common/Spinner'
@@ -11,7 +11,7 @@ export default function StudentQuizzes() {
  const [loading, setLoading] = useState(true)
 
  useEffect(() => {
- api.get(`/quizzes?studentId=${userId}`)
+ api.get(`/quizzes?studentId=${userId}${grade ? '&grade=' + encodeURIComponent(grade) : ''}`)
  .then(r => setQuizzes(Array.isArray(r.data) ? r.data : []))
  .catch(() => {})
  .finally(() => setLoading(false))

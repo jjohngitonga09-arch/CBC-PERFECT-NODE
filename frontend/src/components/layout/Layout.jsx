@@ -86,8 +86,13 @@ const CSS_VARS = `
 `
 
 export default function Layout() {
-  const { token, logout, role } = useAuthStore()
+  const { token, logout, role, impersonating, backToParent } = useAuthStore()
   const nav = useNavigate()
+
+  function handleBackToParent() {
+    backToParent()
+    nav('/parent/home', { replace: true })
+  }
 
   useEffect(() => {
     if (!token) return;
@@ -121,6 +126,22 @@ export default function Layout() {
       <style>{CSS_VARS}</style>
       <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
         <Navbar />
+        {impersonating && (
+          <div style={{
+            background: 'linear-gradient(135deg,#f59e0b,#d97706)', color: '#fff',
+            padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            gap: '12px', flexWrap: 'wrap', fontSize: '.85rem', fontWeight: 700,
+          }}>
+            <span>You're using {impersonating.childName}'s account</span>
+            <button onClick={handleBackToParent} style={{
+              background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.5)',
+              color: '#fff', borderRadius: '8px', padding: '5px 14px', fontWeight: 700,
+              fontSize: '.8rem', cursor: 'pointer',
+            }}>
+              Back to Parent
+            </button>
+          </div>
+        )}
         <main className="main-content">
           <Outlet />
         </main>

@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+﻿import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import useAuthStore from '../../store/authStore'
 import useNotifCount from '../../hooks/useNotifCount'
@@ -93,6 +93,7 @@ const MENUS = {
         { icon: '💳', label: 'Subscriptions',  path: '/admin/subscriptions' },
         { icon: '💰', label: 'Payments',       path: '/admin/payments' },
         { icon: '🔒', label: 'Locked Accounts',path: '/admin/locked' },
+        { icon: '🔒', label: 'Manual Payments',path: '/admin/manual-payments' },
       ],
     },
     {

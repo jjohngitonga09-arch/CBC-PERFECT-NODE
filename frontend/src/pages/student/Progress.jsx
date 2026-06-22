@@ -8,6 +8,7 @@ const card = {background:'var(--surface)',border:'1px solid var(--border)',borde
 
 export default function StudentProgress() {
  const userId = useAuthStore(s => s.userId)
+ const grade  = useAuthStore(s => s.grade)
  const [kpis, setKpis] = useState(null)
  const [assignments, setAssignments] = useState([])
  const [loading, setLoading] = useState(true)
@@ -15,7 +16,8 @@ export default function StudentProgress() {
  useEffect(() => {
  Promise.allSettled([
  api.get(`/dashboard/student/kpis/${userId}`),
- api.get(`/assignments/student/${userId}`),
+ api.get(`/assignments/student/${userId}${grade ? "?grade=" + encodeURIComponent(grade) : ""}`),
+
  ]).then(([k, a]) => {
  if (k.status === 'fulfilled') setKpis(k.value.data)
  if (a.status === 'fulfilled') setAssignments(a.value.data)

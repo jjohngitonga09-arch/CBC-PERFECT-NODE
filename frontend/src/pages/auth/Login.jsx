@@ -34,7 +34,12 @@ export default function Login() {
   setErr({ msg: "", type: "error" });
   setBusy(true);
   try {
-   const { data } = await api.post("/auth/login", { identifier, password });
+   // Backend expects 'username' or 'phone', not 'identifier'
+   const isPhone = /^[0-9+\s]+$/.test(identifier.trim());
+   const loginBody = isPhone
+     ? { phone: identifier.trim(), password }
+     : { username: identifier.trim(), password };
+   const { data } = await api.post("/auth/login", loginBody);
    remember ? localStorage.setItem("edu_rid", identifier) : localStorage.removeItem("edu_rid");
    const now = new Date();
    const formatted = "Today at " + now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

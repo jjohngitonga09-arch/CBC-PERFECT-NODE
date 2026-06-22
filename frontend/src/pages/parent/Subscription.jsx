@@ -103,7 +103,7 @@ export default function ParentSubscription() {
  <div>
  <p style={{ fontWeight:700, color:'#34d399', margin:'0 0 3px' }}>Active {sub.plan_name || sub.plan_id} Plan</p>
  <p style={{ color:'var(--sub)', fontSize:'.83rem', margin:0 }}>
- {sub.expiry_date ? 'Renews ' + new Date(sub.expiry_date).toLocaleDateString() : 'Active'}
+ {sub.expiry_date ? (() => { const d = Math.ceil((new Date(sub.expiry_date)-new Date())/86400000); const lbl = sub.plan_id==='trial' ? 'Free trial' : (sub.plan_name||'Plan'); return d > 0 ? lbl+' — '+d+' day'+(d!==1?'s':'')+' left (until '+new Date(sub.expiry_date).toLocaleDateString()+')' : lbl+' ended '+new Date(sub.expiry_date).toLocaleDateString(); })() : 'Active'}
  {linkedStudentIds?.length ? ' Student dashboard is unlocked' : ''}
  </p>
  </div>

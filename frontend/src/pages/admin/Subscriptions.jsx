@@ -271,7 +271,7 @@ function HistoryTab() {
  <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.82rem' }}>
  <thead>
  <tr style={{ borderBottom:'1px solid var(--border)' }}>
- {['User','Role','Plan','Amount','Status','Last Payment','Expires','Actions'].map(h=>(
+ {['User','Role','Plan','Amount','Status','Last Payment','Expires','Days Left','Actions'].map(h=>(
  <th key={h} style={{ padding:'11px 14px', textAlign:'left', color:'var(--sub)', fontWeight:600, fontSize:'.72rem', textTransform:'uppercase', whiteSpace:'nowrap' }}>{h}</th>
  ))}
  </tr>
@@ -293,6 +293,9 @@ function HistoryTab() {
  </td>
  <td style={{ padding:'10px 14px', color:'var(--sub)', fontSize:'.75rem', whiteSpace:'nowrap' }}>{s.last_payment_date ? new Date(s.last_payment_date).toLocaleDateString() : ''}</td>
  <td style={{ padding:'10px 14px', color:'var(--sub)', fontSize:'.75rem', whiteSpace:'nowrap' }}>{s.expiry_date ? new Date(s.expiry_date).toLocaleDateString() : ''}</td>
+ <td style={{ padding:'10px 14px', fontSize:'.75rem', whiteSpace:'nowrap', fontWeight:600 }}>
+ {(() => { if(!s.expiry_date) return <span style={{color:'var(--sub)'}}>-</span>; const d = Math.ceil((new Date(s.expiry_date)-new Date())/86400000); if (d > 0) return <span style={{color: d<=1 ? '#fbbf24' : '#34d399'}}>{d} day{d!==1?'s':''} left</span>; return <span style={{color:'#f87171'}}>Expired {Math.abs(d)}d ago</span>; })()}
+ </td>
  <td style={{ padding:'10px 14px' }}>
  <div style={{ display:'flex', gap:'6px' }}>
  {s.status !== 'locked'

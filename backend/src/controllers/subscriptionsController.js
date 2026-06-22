@@ -1,4 +1,4 @@
-﻿const { query } = require('../config/db')
+const { query } = require('../config/db')
 const { notifyUser } = require('../websocket/socket');
 const { v4: uuid } = require('uuid')
 
@@ -24,6 +24,10 @@ exports.updatePlan = async (req,res,next) => {
 exports.getSubscription = async (req,res,next) => {
   try {
     const userId = req.params.userId || req.user.id
+    await query(
+      `UPDATE subscriptions SET status='expired' WHERE user_id=$1 AND status='active' AND expiry_date IS NOT NULL AND expiry_date < NOW()`,
+      [userId]
+    )
     const { rows } = await query(
       `SELECT s.*, p.name as plan_name, p.price as plan_price, p.color as plan_color
        FROM subscriptions s
@@ -58,7 +62,8 @@ exports.sendMessage = async (req,res,next) => {
 exports.getMessages = async (req,res,next) => {
   try {
     const { rows } = await query(
-      `SELECT pm.*, u.email, u.phone as user_phone
+      `SELECT pm.*, u.email, u.phone as user_phone,
+        COALESCE((SELECT json_agg(r.* ORDER BY r.created_at) FROM payment_message_replies r WHERE r.payment_message_id = pm.id), '[]') as replies
        FROM payment_messages pm
        LEFT JOIN users u ON u.id=pm.user_id
        ORDER BY pm.created_at DESC`
@@ -81,9 +86,10 @@ exports.confirmMessage = async (req,res,next) => {
     )
     await query("UPDATE payment_messages SET status='confirmed' WHERE id=$1",[req.params.id])
     await query(
-      "INSERT INTO notifications(user_id,title,message,type) VALUES($1,'Payment Confirmed!','Your '+$2+' subscription is now active. Enjoy EduApp!','payment')",
-      [msg.user_id, msg.plan_name]
+      "INSERT INTO notifications(user_id,title,message,type) VALUES($1,'Payment Confirmed!',$2,'payment')",
+      [msg.user_id, 'Your ' + msg.plan_name + ' subscription is now active. Enjoy EduApp!']
     )
+    try { notifyUser(msg.user_id, 'subscription:activated', { plan_name: msg.plan_name }) } catch(_) {}
     await query(
       "INSERT INTO logs(type,action,user_id,user_name,role,meta,timestamp) VALUES('admin','subscription_confirmed',$1,$2,$3,$4,NOW())",
       [req.user.id,req.user.name,req.user.role,JSON.stringify({for_user:msg.user_id,plan:msg.plan_name})]
@@ -142,6 +148,9 @@ exports.unlockUser = async (req,res,next) => {
 
 exports.getAllSubscriptions = async (req,res,next) => {
   try {
+    await query(
+      `UPDATE subscriptions SET status='expired' WHERE status='active' AND expiry_date IS NOT NULL AND expiry_date < NOW()`
+    )
     const { rows } = await query(
       `SELECT s.*, u.name, u.email, u.role, u.phone
        FROM subscriptions s LEFT JOIN users u ON u.id=s.user_id
@@ -155,5 +164,57 @@ exports.lockSubscription = async (req,res,next) => {
   try {
     await query("UPDATE subscriptions SET status='locked' WHERE id=$1",[req.params.id])
     res.json({ message:'Locked.' })
+  } catch(e){ next(e) }
+}
+
+exports.replyToMessage = async (req,res,next) => {
+  try {
+    const { id } = req.params
+    const { message } = req.body
+    if(!message || !message.trim()) return res.status(400).json({ error:'Message required' })
+    const msg = (await query('SELECT * FROM payment_messages WHERE id=$1',[id])).rows[0]
+    if(!msg) return res.status(404).json({ error:'Not found' })
+    const replyId = uuid()
+    await query(
+      `INSERT INTO payment_message_replies(id,payment_message_id,sender_role,sender_name,message)
+       VALUES($1,$2,'admin',$3,$4)`,
+      [replyId, id, req.user.name, message.trim()]
+    )
+    await query(
+      "INSERT INTO notifications(user_id,title,message,type) VALUES($1,'Support Reply','You have a new reply about your payment.','payment')",
+      [msg.user_id]
+    )
+    try {
+      notifyUser(msg.user_id, 'payment:reply', {
+        id: replyId, payment_message_id: id, sender_role:'admin', sender_name: req.user.name,
+        message: message.trim(), created_at: new Date()
+      })
+    } catch(_) {}
+    res.status(201).json({ success:true, id: replyId })
+  } catch(e){ next(e) }
+}
+
+exports.replyAsUser = async (req,res,next) => {
+  try {
+    const { id } = req.params
+    const { message } = req.body
+    if(!message || !message.trim()) return res.status(400).json({ error:'Message required' })
+    const msg = (await query('SELECT * FROM payment_messages WHERE id=$1',[id])).rows[0]
+    if(!msg) return res.status(404).json({ error:'Not found' })
+    if(msg.user_id !== req.user.id) return res.status(403).json({ error:'Forbidden' })
+    const replyId = uuid()
+    await query(
+      `INSERT INTO payment_message_replies(id,payment_message_id,sender_role,sender_name,message)
+       VALUES($1,$2,'user',$3,$4)`,
+      [replyId, id, req.user.name, message.trim()]
+    )
+    const admins = await query("SELECT id FROM users WHERE role='admin'")
+    for(const a of admins.rows){
+      try { notifyUser(a.id, 'payment:reply', {
+        id: replyId, payment_message_id: id, sender_role:'user', sender_name: req.user.name,
+        message: message.trim(), created_at: new Date(), user_id: msg.user_id
+      }) } catch(_) {}
+    }
+    res.status(201).json({ success:true, id: replyId })
   } catch(e){ next(e) }
 }

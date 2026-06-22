@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import api from '../../services/api'
 import useAuthStore from '../../store/authStore'
 import Spinner from '../../components/common/Spinner'
@@ -145,7 +145,7 @@ export default function StudentAssignments() {
  const [submitted, setSubmitted] = useState(new Set())
 
  useEffect(() => {
- api.get(`/assignments/student/${userId}`)
+ api.get(`/assignments/student/${userId}${grade ? `?grade=${encodeURIComponent(grade)}` : ''}`)
  .then(r => {
  const data = Array.isArray(r.data) ? r.data : []
  setAssignments(data)

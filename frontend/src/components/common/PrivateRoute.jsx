@@ -14,19 +14,21 @@ const SUBSCRIPTION_FREE = [
 export default function PrivateRoute() {
  const token = useAuthStore(s => s.token);
  const role = useAuthStore(s => s.role);
+ const impersonating = useAuthStore(s => s.impersonating);
  const maintenanceReason = useAuthStore(s => s.maintenanceReason);
  const subscriptionStatus = useAuthStore(s => s.subscriptionStatus);
  const logout = useAuthStore(s => s.logout);
  const setMaintenance = useAuthStore(s => s.setMaintenance);
  const setSubscriptionStatus = useAuthStore(s => s.setSubscriptionStatus);
+ const setSubscriptionInfo = useAuthStore(s => s.setSubscriptionInfo);
  const navigate = useNavigate();
  const location = useLocation();
 
  useEffect(() => {
  if (!token || role !== 'student') return;
  api.get('/subscriptions/me')
- .then(r => setSubscriptionStatus(r.data?.status || 'inactive'))
- .catch(() => setSubscriptionStatus('inactive'));
+ .then(r => { setSubscriptionStatus(r.data?.status || 'inactive'); setSubscriptionInfo(r.data || null); })
+ .catch(() => { setSubscriptionStatus('inactive'); setSubscriptionInfo(null); });
  }, [token, role]);
 
  useEffect(() => {
@@ -69,9 +71,29 @@ export default function PrivateRoute() {
 
  if (!token) return <Navigate to="/login" replace />;
 
- if (role === 'student' && subscriptionStatus && subscriptionStatus !== 'active') {
+ // Role-vs-path guard: a role can only browse its own section,
+ // unless they're a guardian actively impersonating a child (role becomes 'student' then).
+ const HOME = { student: '/student/home', teacher: '/teacher/home', guardian: '/parent/home', admin: '/admin/home' };
+ const ALLOWED_PREFIX = {
+   student: ['/student'],
+   guardian: ['/parent', '/guardian'],
+   teacher: ['/teacher'],
+   admin: ['/admin'],
+ };
+ const allowed = ALLOWED_PREFIX[role] || [];
+ const pathOk = allowed.some(p => location.pathname.startsWith(p)) || location.pathname.startsWith('/profile');
+ if (!pathOk && HOME[role]) {
+   return <Navigate to={HOME[role]} replace />;
+ }
+
+ if (role === 'student') {
  const allowed = SUBSCRIPTION_FREE.some(p => location.pathname.startsWith(p));
- if (!allowed) return <Navigate to="/student/subscription" replace />;
+ if (subscriptionStatus === null && !allowed) {
+ return <div style={{ padding:'60px 20px', textAlign:'center', color:'var(--sub)' }}>Loading...</div>;
+ }
+ if (subscriptionStatus !== 'active' && !allowed) {
+ return <Navigate to="/student/subscription" replace />;
+ }
  }
 
  return <Outlet />;

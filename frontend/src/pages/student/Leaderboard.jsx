@@ -7,6 +7,7 @@ const MEDALS = ["", "", ""];
 
 export default function Leaderboard() {
  const userId = useAuthStore(s => s.userId);
+ const grade  = useAuthStore(s => s.grade);
  const [board, setBoard] = useState([]);
  const [myRank, setMyRank] = useState(null);
  const [myStats, setMyStats] = useState(null);
@@ -14,7 +15,7 @@ export default function Leaderboard() {
 
  useEffect(() => {
  // Fetch leaderboard -- backend already filters role=student only
- api.get("/leaderboard")
+ api.get(`/leaderboard${grade ? "?grade=" + encodeURIComponent(grade) : ""}`)
  .then(r => {
  const rows = r.data?.leaderboard || [];
  setBoard(rows);
@@ -24,7 +25,7 @@ export default function Leaderboard() {
 
  // Fetch this student's personal rank
  if (userId) {
- api.get(`/leaderboard/me/${userId}`)
+ api.get(`/leaderboard/me/${userId}${grade ? "?grade=" + encodeURIComponent(grade) : ""}`)
  .then(r => {
  setMyRank(r.data?.rank);
  setMyStats(r.data);

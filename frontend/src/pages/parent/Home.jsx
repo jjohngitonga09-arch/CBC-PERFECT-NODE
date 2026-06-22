@@ -1,5 +1,5 @@
 ﻿import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import api from '../../services/api'
 import useAuthStore from '../../store/authStore'
 import KpiCard from '../../components/dashboard/KpiCard'
@@ -37,6 +37,13 @@ export default function ParentHome() {
  const [loading, setLoading] = useState(true)
  const [kpiLoading, setKpiLoading] = useState(false)
  const [expanded, setExpanded] = useState(null)
+ const [showLinkStudent, setShowLinkStudent] = useState(false)
+ const [studentUsername, setStudentUsername] = useState('')
+ const [linkingStudent, setLinkingStudent] = useState(false)
+ const [switchingId, setSwitchingId] = useState(null)
+ const useAsChild = useAuthStore(s => s.useAsChild)
+ const navigate = useNavigate()
+ const [linkMsg, setLinkMsg] = useState(null)
 
  // Load children list once
  useEffect(() => {
@@ -73,6 +80,29 @@ export default function ParentHome() {
  }
  }).finally(() => { setLoading(false); setKpiLoading(false) })
  }, [activeId])
+
+ async function useAsChildHandler(child) {
+   setSwitchingId(child.id)
+   try {
+     const { data } = await api.post(`/parent-student/use-as/${child.id}`)
+     useAsChild({ token: data.token, user: data.user, childName: child.name })
+     navigate('/student/home')
+   } catch (e) {
+     toast?.error?.(e.response?.data?.error || 'Could not switch to this child')
+   } finally { setSwitchingId(null) }
+ }
+
+ async function linkStudent() {
+   if (!studentUsername.trim()) return
+   setLinkingStudent(true); setLinkMsg(null)
+   try {
+     await api.post('/parent-student/link-student', { student_username: studentUsername.trim() })
+     setLinkMsg({ type: 'success', text: 'Request sent! The student will receive a notification to accept.' })
+     setStudentUsername('')
+   } catch (e) {
+     setLinkMsg({ type: 'error', text: e.response?.data?.error || 'Failed to send request' })
+   } finally { setLinkingStudent(false) }
+ }
 
  if (loading) return <Spinner />
 
@@ -198,15 +228,91 @@ export default function ParentHome() {
 
  {/* My Children expandable */}
  <div style={{...card,marginBottom:'20px'}}>
- <p style={{fontSize:'1rem',fontWeight:700,color:'var(--text)',margin:'0 0 16px',display:'flex',alignItems:'center',gap:'8px'}}>
- My Children
- <span style={{fontSize:'.75rem',fontWeight:500,color:'var(--sub)'}}>({children.length} linked)</span>
- </p>
- {children.length === 0 ? (
- <div style={{textAlign:'center',padding:'20px 0'}}>
- <p style={{color:'var(--sub)',fontSize:'.85rem',margin:'0 0 4px'}}>No students linked yet</p>
- <p style={{color:'var(--sub)',fontSize:'.78rem',margin:0}}>Ask your child to link you from their dashboard</p>
+ <>
+ <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'16px',flexWrap:'wrap',gap:'8px'}}>
+   <p style={{fontSize:'1rem',fontWeight:700,color:'var(--text)',margin:0,display:'flex',alignItems:'center',gap:'8px'}}>
+     My Children
+     <span style={{fontSize:'.75rem',fontWeight:500,color:'var(--sub)'}}>({children.length} linked)</span>
+   </p>
+   <button onClick={() => { setShowLinkStudent(v => !v); setLinkMsg(null) }}
+     style={{background:'rgba(99,102,241,0.08)',border:'1px solid rgba(99,102,241,0.2)',color:'#a5b4fc',
+       borderRadius:'8px',padding:'6px 14px',fontWeight:700,fontSize:'.78rem',cursor:'pointer'}}>
+     + Link Child
+   </button>
  </div>
+ {showLinkStudent && (
+   <div style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'12px',padding:'16px',marginBottom:'14px'}}>
+     <p style={{color:'var(--sub)',fontSize:'.8rem',margin:'0 0 10px'}}>
+       Enter your child's <strong style={{color:'var(--text)'}}>username</strong> to send a link request.
+     </p>
+     <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
+       <input value={studentUsername} onChange={e => setStudentUsername(e.target.value)}
+         onKeyDown={e => e.key === 'Enter' && linkStudent()}
+         placeholder="Child's username"
+         style={{flex:1,minWidth:'180px',background:'var(--surface)',border:'1px solid var(--border)',
+           color:'var(--text)',borderRadius:'10px',padding:'10px 14px',fontSize:'.875rem',outline:'none'}} />
+       <button onClick={linkStudent} disabled={linkingStudent || !studentUsername.trim()}
+         style={{background:linkingStudent||!studentUsername.trim() ? 'var(--surface-hover)' : 'linear-gradient(135deg,#6366f1,#4f46e5)',
+           color:linkingStudent||!studentUsername.trim() ? 'var(--sub)' : '#fff',
+           border:'none',borderRadius:'10px',padding:'10px 20px',fontWeight:700,fontSize:'.875rem',
+           cursor:linkingStudent||!studentUsername.trim() ? 'default' : 'pointer'}}>
+         {linkingStudent ? 'Sending...' : 'Send Request'}
+       </button>
+     </div>
+     {linkMsg && (
+       <div style={{marginTop:'10px',padding:'10px 14px',borderRadius:'10px',fontSize:'.82rem',fontWeight:600,
+         background: linkMsg.type==='success' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
+         border: '1px solid ' + (linkMsg.type==='success' ? 'rgba(16,185,129,0.25)' : 'rgba(239,68,68,0.25)'),
+         color: linkMsg.type==='success' ? '#34d399' : '#f87171'}}>
+         {linkMsg.text}
+       </div>
+     )}
+   </div>
+ )}
+ </>
+ {children.length === 0 ? (
+ <>
+ <div style={{textAlign:'center',padding:'12px 0 16px'}}>
+   <p style={{color:'var(--sub)',fontSize:'.85rem',margin:'0 0 4px'}}>No students linked yet</p>
+   <p style={{color:'var(--sub)',fontSize:'.78rem',margin:'0 0 14px'}}>You can link your child below, or ask them to link you from their dashboard.</p>
+ </div>
+ <div style={{borderTop:'1px solid var(--border)',paddingTop:'16px'}}>
+   <button onClick={() => { setShowLinkStudent(v => !v); setLinkMsg(null) }}
+     style={{background:'rgba(99,102,241,0.1)',border:'1px solid rgba(99,102,241,0.25)',color:'#a5b4fc',
+       borderRadius:'10px',padding:'9px 18px',fontWeight:700,fontSize:'.85rem',cursor:'pointer',marginBottom: showLinkStudent ? '14px' : '0'}}>
+     {showLinkStudent ? 'Cancel' : '+ Link My Child'}
+   </button>
+   {showLinkStudent && (
+     <div>
+       <p style={{color:'var(--sub)',fontSize:'.8rem',margin:'0 0 10px'}}>
+         Enter your child's <strong style={{color:'var(--text)'}}>username</strong> (the one they chose when registering).
+       </p>
+       <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
+         <input value={studentUsername} onChange={e => setStudentUsername(e.target.value)}
+           onKeyDown={e => e.key === 'Enter' && linkStudent()}
+           placeholder="Child's username"
+           style={{flex:1,minWidth:'180px',background:'var(--bg)',border:'1px solid var(--border)',
+             color:'var(--text)',borderRadius:'10px',padding:'10px 14px',fontSize:'.875rem',outline:'none'}} />
+         <button onClick={linkStudent} disabled={linkingStudent || !studentUsername.trim()}
+           style={{background:linkingStudent||!studentUsername.trim() ? 'var(--surface-hover)' : 'linear-gradient(135deg,#6366f1,#4f46e5)',
+             color:linkingStudent||!studentUsername.trim() ? 'var(--sub)' : '#fff',
+             border:'none',borderRadius:'10px',padding:'10px 20px',fontWeight:700,fontSize:'.875rem',
+             cursor:linkingStudent||!studentUsername.trim() ? 'default' : 'pointer'}}>
+           {linkingStudent ? 'Sending...' : 'Send Request'}
+         </button>
+       </div>
+       {linkMsg && (
+         <div style={{marginTop:'10px',padding:'10px 14px',borderRadius:'10px',fontSize:'.82rem',fontWeight:600,
+           background: linkMsg.type==='success' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)',
+           border: '1px solid ' + (linkMsg.type==='success' ? 'rgba(16,185,129,0.25)' : 'rgba(239,68,68,0.25)'),
+           color: linkMsg.type==='success' ? '#34d399' : '#f87171'}}>
+           {linkMsg.text}
+         </div>
+       )}
+     </div>
+   )}
+ </div>
+  </>
  ) : children.map(child => (
  <div key={child.id} style={{borderRadius:'12px',border:'1px solid var(--border)',marginBottom:'10px',overflow:'hidden'}}>
  <div style={{display:'flex',alignItems:'center',gap:'14px',padding:'14px 16px',
@@ -225,7 +331,8 @@ export default function ParentHome() {
  {[child.username && `@${child.username}`, child.grade && `Grade ${child.grade}`, child.status].filter(Boolean).join(' ')}
  </p>
  </div>
- <span style={{color:'var(--sub)',fontSize:'.8rem'}}>{expanded===child.id?'':''}</span>
+                <button onClick={(e) => { e.stopPropagation(); useAsChildHandler(child) }} disabled={switchingId === child.id} style={{background:'rgba(99,102,241,0.1)',border:'1px solid rgba(99,102,241,0.25)',color:'#a5b4fc',borderRadius:'8px',padding:'6px 12px',fontWeight:700,fontSize:'.75rem',cursor: switchingId === child.id ? 'default' : 'pointer', flexShrink:0}}>{switchingId === child.id ? 'Switching...' : 'Use as ' + child.name.split(' ')[0]}</button>
+ <span style={{color:'var(--sub)',fontSize:'.8rem'}}>{expanded===child.id?'^':'v'}</span>
  </div>
  {expanded === child.id && (
  <div style={{padding:'16px',borderTop:'1px solid var(--border)',display:'flex',flexDirection:'column',gap:'16px'}}>

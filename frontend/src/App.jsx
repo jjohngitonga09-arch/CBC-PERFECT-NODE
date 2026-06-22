@@ -1,4 +1,4 @@
-﻿import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './context/ThemeContext'
 import { useEffect } from 'react'
@@ -41,6 +41,10 @@ import TeacherStudents from './pages/teacher/Students'
 import Leaderboard from './pages/student/Leaderboard'
 import StudentNotes from './pages/student/Notes'
 import JuniorBasics from './pages/student/JuniorBasics'
+import Grade3 from './pages/student/grade_3'
+import Grade4 from './pages/student/grade_4'
+import Grade5 from './pages/student/grade_5'
+import Grade6 from './pages/student/grade_6'
 // Parent
 import ParentHome from './pages/parent/Home'
 import ParentProgress from './pages/parent/Progress'
@@ -66,6 +70,7 @@ import AdminLogs from './pages/admin/Logs'
 import AdminSettings from './pages/admin/Settings'
 import AdminShutdown from './pages/admin/Shutdown'
 import LockedAccounts from './pages/admin/LockedAccounts'
+import ManualPayments from './pages/admin/ManualPayments'
 
 function AppRoutes() {
  const navigate = useNavigate()
@@ -112,6 +117,10 @@ function AppRoutes() {
  <Route path="/student/leaderboard" element={<Leaderboard />} />
                 <Route path="/student/notes" element={<StudentNotes />} />
                 <Route path="/student/junior-basics" element={<JuniorBasics />} />
+                <Route path="/student/grade-3" element={<Grade3 />} />
+                <Route path="/student/grade-4" element={<Grade4 />} />
+                <Route path="/student/grade-5" element={<Grade5 />} />
+                <Route path="/student/grade-6" element={<Grade6 />} />
  <Route path="/student/profile" element={<Profile />} />
  {/* Parent */}
  <Route path="/parent/home" element={<ParentHome />} />
@@ -149,6 +158,7 @@ function AppRoutes() {
  <Route path="/admin/payments" element={<AdminPayments />} />
  <Route path="/admin/notifications" element={<Notifications />} />
  <Route path="/admin/locked" element={<LockedAccounts />} />
+                 <Route path="/admin/manual-payments" element={<ManualPayments />} />
  <Route path="/admin/profile" element={<Profile />} /> </Route>
  </Route>
 

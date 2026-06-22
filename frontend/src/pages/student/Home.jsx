@@ -12,6 +12,8 @@ export default function StudentHome() {
  const userId = useAuthStore(s=>s.userId)
  const name = useAuthStore(s=>s.user?.name)
  const grade = useAuthStore(s=>s.grade) || useAuthStore(s=>s.user)?.grade
+ const GRADE_PAGE = { 'Grade 3':'/student/grade-3','Grade 4':'/student/grade-4','Grade 5':'/student/grade-5','Grade 6':'/student/grade-6' }
+ const notesPath = GRADE_PAGE[grade] || '/student/notes'
  const [kpis,setKpis] = useState(null)
  const [assignments,setAssignments] = useState([])
  const [videos,setVideos] = useState([])
@@ -25,18 +27,20 @@ export default function StudentHome() {
 
  const fetchAll = (initial=false)=>{
  const bust = '&_t=' + Date.now()
- const videoUrl = '/videos?_t=' + Date.now()
+ const gradeNum = grade ? grade.replace(/^Grade\s*/i, '') : ''
+ const videoUrl = '/videos?_t=' + Date.now() + (gradeNum ? '&grade=' + encodeURIComponent(gradeNum) : '')
  Promise.allSettled([
  api.get(`/dashboard/student/kpis/${userId}`),
  api.get(`/assignments/student/${userId}`),
  api.get(videoUrl),
  api.get('/parent-student/my-parent'),
- api.get('/leaderboard'),
+ api.get(`/leaderboard${grade ? '?grade=' + encodeURIComponent(grade) : ''}`),
+
  ]).then(([k,a,v,p,lb])=>{
  if(k.status==='fulfilled') setKpis(k.value.data)
- if(a.status==='fulfilled') setAssignments(a.value.data.slice(0,3))
- if(v.status==='fulfilled') setVideos(v.value.data.slice(0,3))
- if(p.status==='fulfilled') setLinkedParent(p.value.data?.parent||null)
+ if(a.status==='fulfilled') setAssignments(Array.isArray(a.value.data) ? a.value.data.slice(0,3) : [])
+ if(v.status==='fulfilled') { const vl = Array.isArray(v.value.data) ? v.value.data : (Array.isArray(v.value.data?.videos) ? v.value.data.videos : []); setVideos(vl.slice(0,3)) }
+ if(p.status==='fulfilled') setLinkedParent(p.value.data||null)
  if(lb.status==='fulfilled'){
  const list = Array.isArray(lb.value.data) ? lb.value.data : []
  const idx = list.findIndex(s=>s.student_id===userId)
@@ -181,7 +185,7 @@ export default function StudentHome() {
  {to:'/student/writing', label:'Writing'},
  {to:'/student/math-knowledge',label:'Maths'},
  {to:'/student/world-explorer',label:'World Explorer'},
- {to:'/student/notes',    label:'My Notes'},
+ {to:notesPath,           label:'My Notes'},
  {to:'/student/junior-basics',label:'Junior Basics'},
  {to:'/student/messages', label:'Messages'},
  ].map(l=>(

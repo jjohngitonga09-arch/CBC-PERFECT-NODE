@@ -11,4 +11,6 @@ router.get('/my-parent',               authenticate, authorizeRoles('student'), 
 router.get('/my-children',             authenticate, authorizeRoles('guardian'),           C.getMyChildren);
 router.get('/child-kpis/:childId',     authenticate, authorizeRoles('guardian'),           C.getChildKpis);
 
+router.post('/link-student', authenticate, authorizeRoles('guardian','parent'), C.linkStudent);
+router.post('/use-as/:studentId', authenticate, authorizeRoles('guardian','parent'), C.useAsChild);
 module.exports = router;

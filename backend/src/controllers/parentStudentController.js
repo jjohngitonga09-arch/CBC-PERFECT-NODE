@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const { query } = require('../config/db');
 
 // POST /parent-student/link — student sends a link REQUEST (pending until parent accepts)
@@ -180,5 +181,85 @@ exports.getChildKpis = async (req, res) => {
     const submitted = assignments.filter(a => a.submitted).length;
     const avgStars  = assignments.filter(a => a.stars).reduce((acc,a,_,arr)=>acc+a.stars/arr.length,0);
     res.json({ assignments, pending, submitted, avg_stars: avgStars.toFixed(1) });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+};
+
+
+// POST /parent-student/link-student -- parent sends link request to a student
+exports.linkStudent = async (req, res) => {
+  try {
+    const parentId = req.user.id;
+    const { student_username } = req.body;
+    if (!student_username)
+      return res.status(400).json({ error: 'student_username required' });
+
+    const { rows } = await query(
+      `SELECT id, name, role, linked_parent_id FROM users WHERE username=$1 AND status='active'`,
+      [student_username.trim()]
+    );
+    if (!rows.length)
+      return res.status(404).json({ error: 'No active student found with that username' });
+    const student = rows[0];
+    if (student.role !== 'student')
+      return res.status(400).json({ error: 'That username does not belong to a student account' });
+    if (student.linked_parent_id)
+      return res.status(400).json({ error: 'That student already has a linked parent' });
+
+    const { rows: pRows } = await query('SELECT name FROM users WHERE id=$1', [parentId]);
+    const parentName = pRows[0]?.name || 'A parent';
+
+    await query(`UPDATE users SET pending_linked_parent_id=$1 WHERE id=$2`, [parentId, student.id]);
+
+    await query(
+      `INSERT INTO notifications(user_id, sender_id, title, message, type, metadata, read, pinned, reactions)
+       VALUES($1,$2,$3,$4,'link_request',$5,false,false,'{}')`,
+      [
+        student.id,
+        parentId,
+        'Parent Link Request',
+        parentName + ' wants to link as your parent. Accept to let them view your progress and pay for your subscription.',
+        JSON.stringify({ student_id: student.id, student_name: student.name, initiated_by: 'parent', parent_id: parentId, parent_name: parentName })
+      ]
+    );
+
+    res.json({ success: true, message: 'Link request sent to student — waiting for student to accept' });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+};
+
+
+// POST /parent-student/use-as/:studentId -- parent fully switches into a linked child's session
+exports.useAsChild = async (req, res) => {
+  try {
+    const parentId = req.user.id;
+    const { studentId } = req.params;
+
+    const { rows } = await query(
+      `SELECT id, name, role, email, grade, avatar_url, status, linked_parent_id
+       FROM users WHERE id=$1`,
+      [studentId]
+    );
+    if (!rows.length) return res.status(404).json({ error: 'Student not found' });
+    const student = rows[0];
+
+    if (student.role !== 'student')
+      return res.status(400).json({ error: 'That account is not a student account' });
+    if (String(student.linked_parent_id) !== String(parentId))
+      return res.status(403).json({ error: 'This student is not linked to your account' });
+    if (student.status !== 'active')
+      return res.status(403).json({ error: 'This student account is not active' });
+
+    const token = jwt.sign(
+      { id: student.id, role: student.role, name: student.name },
+      process.env.JWT_SECRET || 'changeme',
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: student.id, name: student.name, role: student.role,
+        email: student.email, grade: student.grade, avatar_url: student.avatar_url
+      }
+    });
   } catch (e) { res.status(500).json({ error: e.message }); }
 };

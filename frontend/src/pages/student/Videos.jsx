@@ -28,6 +28,8 @@ export default function StudentVideos() {
  const fetchVideos = (pg=1, replace=true, q=search) => {
    if (pg===1) setLoading(true); else setLoadingMore(true)
    const params = new URLSearchParams()
+   const gradeNum = grade ? grade.replace(/^Grade\s*/i, '') : ''
+   if (gradeNum) params.set('grade', gradeNum)
    if (subject) params.set('subject', subject)
    if (q)       params.set('search', q)
    params.set('limit', LIMIT)
@@ -81,7 +83,7 @@ export default function StudentVideos() {
  <div style={{ marginBottom:'24px' }}>
  <h1 style={{ fontSize:'1.7rem', fontWeight:800, color:'var(--text)', margin:'0 0 4px', letterSpacing:'-0.4px' }}>Videos</h1>
  <p style={{ fontSize:'.875rem', color:'var(--sub)', margin:0 }}>
- {grade ? `Grade ${grade} · ` : ''}{total} video{total !== 1 ? 's' : ''} total
+ {grade ? `${grade} � ` : ''}{total} video{total !== 1 ? 's' : ''} total
  </p>
  </div>
 

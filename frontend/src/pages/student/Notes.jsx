@@ -1,6 +1,7 @@
-﻿import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import api from '../../services/api'
 import useAuthStore from '../../store/authStore'
+import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { CURRICULUM } from './curriculumData'
 
@@ -9,8 +10,9 @@ const GRADES = [
   { id:'PP2',     label:'PP 2' },
   { id:'Grade 1', label:'Grade 1' },
   { id:'Grade 2', label:'Grade 2' },
-  { id:'Grade 3', label:'Grade 3' },
 ]
+
+const GRADE_PAGE = { 'Grade 3':'/student/grade-3','Grade 4':'/student/grade-4','Grade 5':'/student/grade-5','Grade 6':'/student/grade-6' }
 
 const PP_SUBJECTS = [
   { id:'Language Activities',            label:'Language Activities' },
@@ -45,7 +47,7 @@ function useNotes(userId) {
   const persist = useCallback((updated) => {
     setNotes(updated)
     try { localStorage.setItem('notes_' + userId, JSON.stringify(updated)) }
-    catch (err) { console.error('[useNotes] persist failed:', err); toast.error('Could not save – storage may be full.') }
+    catch (err) { console.error('[useNotes] persist failed:', err); toast.error('Could not save � storage may be full.') }
   }, [userId])
   return { notes, persist }
 }
@@ -74,7 +76,7 @@ function NoteModal({ note, subject, onSave, onClose }) {
           <button onClick={onClose} aria-label="Close"
             style={{ background:'var(--bg,var(--border))', border:'none', borderRadius:'8px',
               color:'var(--sub,var(--sub))', width:'32px', height:'32px',
-              cursor:'pointer', fontSize:'1rem' }}>✕</button>
+              cursor:'pointer', fontSize:'1rem' }}>?</button>
         </div>
         <p style={{ color:'var(--sub,var(--sub))', fontSize:'.78rem', margin:'0 0 16px' }}>
           {subject?.label}
@@ -110,7 +112,9 @@ function NoteModal({ note, subject, onSave, onClose }) {
 }
 
 export default function StudentNotes() {
+  const navigate = useNavigate()
   const userId = useAuthStore(s => s.userId)
+  const accountGrade = useAuthStore(s => s.grade)
   const [screen,      setScreen]      = useState('select')
   const [grade,       setGrade]       = useState(null)
   const [subject,     setSubject]     = useState(null)
@@ -120,6 +124,12 @@ export default function StudentNotes() {
   const [delId,       setDelId]       = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
+  useEffect(() => {
+    if (!accountGrade) return
+    if (GRADE_PAGE[accountGrade]) { navigate(GRADE_PAGE[accountGrade], { replace:true }); return }
+    const g = GRADES.find(gd => gd.id === accountGrade)
+    if (g) setGrade(g)
+  }, [accountGrade, navigate])
   const { notes, persist } = useNotes(userId)
 
   const gradeSubjects   = useMemo(() => getSubjects(grade?.id),                                                [grade])
@@ -270,7 +280,7 @@ export default function StudentNotes() {
               borderRadius:'10px', color:'var(--text,var(--text))', height:'40px', padding:'0 12px',
               cursor:'pointer', fontSize:'.78rem', fontWeight:700, flexShrink:0,
               display:'flex', alignItems:'center', gap:'6px', whiteSpace:'nowrap' }}>
-            <span style={{ fontSize:'.95rem' }}>📚</span> Subjects
+            <span style={{ fontSize:'.95rem' }}>??</span> Subjects
           </button>
           <div style={{ flex:1, minWidth:0 }}>
             <p style={{ color:'var(--sub,var(--sub))', fontSize:'.72rem', fontWeight:600,
@@ -354,7 +364,7 @@ export default function StudentNotes() {
                     <div style={{ display:'flex', alignItems:'center',
                       justifyContent:'space-between', flexWrap:'wrap', gap:'8px' }}>
                       <span style={{ color:'var(--sub,var(--sub))', fontSize:'.72rem' }}>
-                        {n.updatedAt !== n.createdAt ? 'Edited' : 'Created'} · {fmtDate(n.updatedAt)}
+                        {n.updatedAt !== n.createdAt ? 'Edited' : 'Created'} � {fmtDate(n.updatedAt)}
                       </span>
                       <div style={{ display:'flex', gap:'8px' }}>
                         <button onClick={() => openEdit(n)}

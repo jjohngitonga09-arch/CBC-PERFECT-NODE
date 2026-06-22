@@ -1,4 +1,4 @@
-﻿import axios from 'axios'
+import axios from 'axios'
 import useAuthStore from '../store/authStore'
 
 const api = axios.create({ baseURL: '/api' })
@@ -38,7 +38,6 @@ api.interceptors.response.use(
  message.includes('not found')
  )) {
  useAuthStore.getState().setMaintenance(message)
- useAuthStore.getState().logout()
  }
 
  return Promise.reject(err)

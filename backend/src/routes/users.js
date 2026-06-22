@@ -5,6 +5,7 @@ const path     = require("path");
 const fs       = require("fs");
 const { query } = require("../config/db");
 const { authenticate } = require("../middleware/authenticate");
+const { kickUser } = require("../websocket/socket");
 
 // Storage config
 const storage = multer.diskStorage({
@@ -115,7 +116,7 @@ router.delete("/:id", authenticate, async (req, res) => {
     const { id } = req.params;
 
     // Prevent admin from deleting themselves
-    if (parseInt(id) === req.user.id) {
+    if (id === req.user.id) {
       return res.status(400).json({ error: "You cannot delete your own account." });
     }
 
@@ -131,6 +132,9 @@ router.delete("/:id", authenticate, async (req, res) => {
 
     // Permanently delete from database
     await query("DELETE FROM users WHERE id=$1", [id]);
+
+    // Force-disconnect them immediately if they're online
+    kickUser(id, 'account_deleted');
 
     res.json({ success: true, message: `User ${rows[0].name} permanently deleted.` });
   } catch(e) { res.status(500).json({ error: e.message }); }

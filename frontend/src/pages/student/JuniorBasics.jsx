@@ -1,4 +1,5 @@
 import { useState } from "react"
+import useAuthStore from "../../store/authStore"
 
 const BASICS = [
   { img: "/basics/1-100.png",               label: "Numbers 1-100",      desc: "Count and recognise numbers" },
@@ -11,6 +12,16 @@ const BASICS = [
 ]
 
 export default function JuniorBasics() {
+  const grade = useAuthStore(s => s.grade)
+  const GRADE_NUM = { PP1:0, PP2:0, 'Grade 1':1, 'Grade 2':2, 'Grade 3':3, 'Grade 4':4, 'Grade 5':5, 'Grade 6':6, 'Grade 7':7, 'Grade 8':8, 'Grade 9':9 }
+  const gradeNum = GRADE_NUM[grade] ?? 1
+  if (gradeNum >= 4) return (
+    <div style={{ padding:'40px 20px', textAlign:'center' }}>
+      <p style={{ fontSize:'2.5rem', margin:'0 0 12px' }}>📚</p>
+      <h2 style={{ color:'var(--text)', margin:'0 0 8px' }}>Junior Basics is for Grades 1–3</h2>
+      <p style={{ color:'var(--sub)', margin:0 }}>This section has foundational materials for younger learners.</p>
+    </div>
+  )
   const [fsIdx,  setFsIdx]  = useState(null)
   const [failed, setFailed] = useState({})
 

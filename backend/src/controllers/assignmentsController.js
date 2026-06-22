@@ -60,13 +60,15 @@ exports.getStudentAssignments = async (req, res, next) => {
        LEFT JOIN submissions s
          ON s.assignment_id = a.id AND s.student_id = $1::uuid
        WHERE
-         jsonb_array_length(a.assigned_to) = 0
-         OR EXISTS (
+         (a.grade IS NULL OR a.grade = $2 OR $2 IS NULL)
+         AND (
+           jsonb_array_length(a.assigned_to) = 0
+           OR EXISTS (
            SELECT 1 FROM jsonb_array_elements_text(a.assigned_to) v
            WHERE v = $1::text
          )
        ORDER BY due_date ASC NULLS LAST`,
-      [req.params.studentId]
+      [req.params.studentId, req.query.grade || null]
     );
     res.json(rows);
   } catch (e) { next(e); }

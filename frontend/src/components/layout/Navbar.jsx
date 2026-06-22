@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+﻿import { useState, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import useAuthStore from '../../store/authStore'
 import HamburgerMenu from './HamburgerMenu'
@@ -17,7 +17,7 @@ const ROLE_STYLES = {
 }
 
 export default function Navbar() {
-  const { role, viewAs, toggleView, logout, user, setUser } = useAuthStore()
+  const { role, logout, user, setUser, subscriptionInfo } = useAuthStore()
   const { dark, toggle } = useTheme()
   const [open, setOpen] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -27,6 +27,8 @@ export default function Navbar() {
   const isSubscriptionPage = location.pathname === '/student/subscription'
   const rs = ROLE_STYLES[role] || ROLE_STYLES.student
   const roleLabel = role === 'guardian' ? 'Parent' : role?.charAt(0).toUpperCase() + role?.slice(1)
+  const daysLeft = (subscriptionInfo?.status === 'active' && subscriptionInfo?.expiry_date) ? Math.max(0, Math.ceil((new Date(subscriptionInfo.expiry_date) - new Date()) / 86400000)) : null
+  const isTrial = subscriptionInfo?.plan_id === 'trial'
 
   async function handleAvatarChange(e) {
     const file = e.target.files[0]
@@ -120,18 +122,19 @@ export default function Navbar() {
           {/* RIGHT */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
 
+            {(role === 'student' || role === 'guardian') && daysLeft !== null && (
+              <div className="hide-xs" style={{ display: 'flex', alignItems: 'center', gap: '5px', background: daysLeft <= 1 ? 'rgba(251,191,36,0.15)' : 'rgba(16,185,129,0.15)', borderRadius: '20px', padding: '4px 10px' }}>
+                <span style={{ fontSize: '.72rem', fontWeight: 700, color: daysLeft <= 1 ? '#fbbf24' : '#34d399' }}>
+                  {isTrial ? '🎁 Trial: ' : ''}{daysLeft} day{daysLeft !== 1 ? 's' : ''} left
+                </span>
+              </div>
+            )}
+
             {/* Role pill */}
             <div className="hide-xs" style={{ display: 'flex', alignItems: 'center', gap: '5px', background: rs.bg, borderRadius: '20px', padding: '4px 10px 4px 6px' }}>
               <div style={{ width: 7, height: 7, borderRadius: '50%', background: rs.dot }} />
               <span style={{ fontSize: '.72rem', fontWeight: 700, color: rs.fg }}>{roleLabel}</span>
             </div>
-
-            {/* Guardian toggle */}
-            {role === 'guardian' && (
-              <button className="nav-icon-btn" onClick={toggleView} style={{ fontSize: '.72rem', fontWeight: 700, padding: '6px 10px', color: 'var(--accent)' }}>
-                {viewAs === 'guardian' ? '👶 Child' : '👤 Parent'}
-              </button>
-            )}
 
             {/* Theme toggle */}
             <button className="nav-icon-btn" onClick={toggle} title={dark ? 'Light mode' : 'Dark mode'}>

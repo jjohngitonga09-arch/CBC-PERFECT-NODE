@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import useAuthStore from '../../store/authStore'
 
 const STORIES = [
  {
@@ -102,9 +103,14 @@ The lesson: When we give what we have -- however little it seems -- and place it
 ]
 
 export default function BibleStories() {
+ const grade = useAuthStore(s => s.grade)
+ const GRADE_NUM = { PP1:0, PP2:0, 'Grade 1':1, 'Grade 2':2, 'Grade 3':3, 'Grade 4':4, 'Grade 5':5, 'Grade 6':6, 'Grade 7':7, 'Grade 8':8, 'Grade 9':9 }
+ const gradeNum = GRADE_NUM[grade] ?? 5
+ const LOWER_IDS = new Set([1, 2, 5, 6]) // David & Goliath, Noah, Daniel, Feeding 5000
+ const visibleStories = gradeNum >= 6 ? STORIES : STORIES.filter(s => LOWER_IDS.has(s.id))
  const [search, setSearch] = useState('')
 
- const filtered = STORIES.filter(s =>
+ const filtered = visibleStories.filter(s =>
  s.title.toLowerCase().includes(search.toLowerCase()) ||
  s.summary.toLowerCase().includes(search.toLowerCase())
  )

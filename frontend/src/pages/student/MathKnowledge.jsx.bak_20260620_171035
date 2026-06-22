@@ -1837,8 +1837,8 @@ const FORMULAS_DATA = [
 export default function MathKnowledge() {
   const [search, setSearch] = useState('');
   const [activeGrade, setActiveGrade] = useState('All');
-  
-  
+  const [collapsed, setCollapsed] = useState({});   // grade-level collapse
+  const [topicCollapsed, setTopicCollapsed] = useState({});
 
   /* Load Google Fonts once */
   useEffect(() => {
@@ -1876,7 +1876,18 @@ export default function MathKnowledge() {
   const grandTotal = FORMULAS_DATA.reduce((s, g) =>
     s + g.topics.reduce((ss, t) => ss + t.formulas.length, 0), 0);
 
-  
+  const toggleGrade = g =>
+    setCollapsed(p => ({ ...p, [g]: !p[g] }));
+  const toggleTopic = key =>
+    setTopicCollapsed(p => ({ ...p, [key]: !p[key] }));
+
+  const allCollapsed = filtered.every(g => collapsed[g.grade]);
+  const collapseAll = () => {
+    const all = {};
+    FORMULAS_DATA.forEach(g => { all[g.grade] = true; });
+    setCollapsed(all);
+  };
+  const expandAll = () => { setCollapsed({}); setTopicCollapsed({}); };
 
   /* ── Styles ── */
   const hand = { fontFamily: "'Kalam', cursive" };
@@ -1997,7 +2008,20 @@ export default function MathKnowledge() {
         </div>
 
         {/* ── Collapse / Expand ── */}
-        
+        <button
+          onClick={allCollapsed ? expandAll : collapseAll}
+          style={{
+            padding: '0.35rem 1rem',
+            border: '1.5px solid #ccc',
+            borderRadius: 6,
+            background: '#fff',
+            cursor: 'pointer',
+            fontSize: '0.82rem',
+            marginBottom: '0.9rem',
+          }}
+        >
+          {allCollapsed ? 'Expand all' : 'Collapse all'}
+        </button>
 
         {/* ── Search ── */}
         <input
@@ -2048,13 +2072,13 @@ export default function MathKnowledge() {
 
                 {/* Grade Header */}
                 <div
-                  
+                  onClick={() => toggleGrade(gd.grade)}
                   style={{
                     display: 'flex', alignItems: 'center', gap: '0.75rem',
                     background: color, color: '#fff',
                     padding: '0.65rem 1rem', borderRadius: 10,
-                    userSelect: 'none',
-                    marginBottom: '0.85rem',
+                    cursor: 'pointer', userSelect: 'none',
+                    marginBottom: collapsed[gd.grade] ? 0 : '0.85rem',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                   }}
                 >
@@ -2064,12 +2088,12 @@ export default function MathKnowledge() {
                     &nbsp;across {gd.topics.length} topic{gd.topics.length !== 1 ? 's' : ''}
                   </span>
                   <span style={{ marginLeft: 'auto', fontSize: '0.85rem' }}>
-                    
+                    {collapsed[gd.grade] ? '▶' : '▼'}
                   </span>
                 </div>
 
                 {/* Grade Body */}
-                {(
+                {!collapsed[gd.grade] && (
                   <div style={{ paddingLeft: '0.25rem' }}>
                     {gd.topics.map((topic, ti) => {
                       const tk = `${gd.grade}-${ti}`;
@@ -2085,7 +2109,7 @@ export default function MathKnowledge() {
                           {/* Topic Row */}
                           <div
                             className="mk-topic-row"
-                            
+                            onClick={() => toggleTopic(tk)}
                           >
                             <span style={{ fontSize: '1rem' }}>{topic.icon}</span>
                             <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#222' }}>
@@ -2095,12 +2119,12 @@ export default function MathKnowledge() {
                               ({topic.formulas.length})
                             </span>
                             <span style={{ marginLeft: 'auto', color: '#bbb', fontSize: '0.8rem' }}>
-                              
+                              {topicCollapsed[tk] ? '▶' : '▼'}
                             </span>
                           </div>
 
                           {/* Formulas */}
-                          {topic.formulas.map((f, fi) => (
+                          {!topicCollapsed[tk] && topic.formulas.map((f, fi) => (
                             <div key={fi} className="mk-formula-card">
                               <div className="mk-card-inner">
 
