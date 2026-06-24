@@ -1,0 +1,224 @@
+EDUAPP/
+├── backend/
+│   ├── routes/
+│   │   ├── adminDashboard.routes.js
+│   │   └── quiz.routes.js
+│   ├── src/
+│   │   ├── config/
+│   │   │   ├── db.js
+│   │   │   └── redis.js
+│   │   ├── controllers/
+│   │   │   ├── assignmentsController.js
+│   │   │   ├── authController.js
+│   │   │   ├── cardsController.js
+│   │   │   ├── dashboardController.js
+│   │   │   ├── emailController.js
+│   │   │   ├── messagesController.js
+│   │   │   ├── mpesaController.js
+│   │   │   ├── notificationsController.js
+│   │   │   ├── parentStudentController.js
+│   │   │   ├── paymentsController.js
+│   │   │   ├── pronunciationController.js
+│   │   │   ├── quizzesController.js
+│   │   │   ├── studytimeController.js
+│   │   │   ├── submissionsController.js
+│   │   │   ├── subscriptionsController.js
+│   │   │   ├── systemController.js
+│   │   │   ├── telemetryController.js
+│   │   │   └── videosController.js
+│   │   ├── db/
+│   │   │   ├── 001_init.sql
+│   │   │   ├── migrate.js
+│   │   │   ├── migrate2.js
+│   │   │   ├── migrate4.js
+│   │   │   ├── migrate5.js
+│   │   │   ├── migrate6.js
+│   │   │   ├── migrate7.js
+│   │   │   ├── migrate8.js
+│   │   │   ├── migrate9.js
+│   │   │   ├── migrate_dismiss.js
+│   │   │   ├── migrate_link_request.js
+│   │   │   ├── pool.js
+│   │   │   └── seed.js
+│   │   ├── middleware/
+│   │   │   ├── auth.js
+│   │   │   ├── auth1.js
+│   │   │   ├── authenticate.js
+│   │   │   ├── authorizeRoles.js
+│   │   │   ├── errorHandler.js
+│   │   │   ├── shutdownGuard.js
+│   │   │   ├── tokenBlacklist.js
+│   │   │   ├── upload.js
+│   │   │   └── validateCard.js
+│   │   ├── models/
+│   │   ├── routes/
+│   │   │   ├── admin.js
+│   │   │   ├── assignments.js
+│   │   │   ├── auth.js
+│   │   │   ├── authStatus.js
+│   │   │   ├── cards.js
+│   │   │   ├── classes.js
+│   │   │   ├── dashboard.js
+│   │   │   ├── leaderboard.js
+│   │   │   ├── messages.js
+│   │   │   ├── mpesa.js
+│   │   │   ├── notifications.js
+│   │   │   ├── otp.js
+│   │   │   ├── parentStudent.js
+│   │   │   ├── payments.js
+│   │   │   ├── pronunciation.js
+│   │   │   ├── quiz.routes.js
+│   │   │   ├── quizzes.js
+│   │   │   ├── studytime.js
+│   │   │   ├── submissions.js
+│   │   │   ├── subscriptions.js
+│   │   │   ├── system.js
+│   │   │   ├── telemetry.js
+│   │   │   ├── users.js
+│   │   │   └── videos.js
+│   │   ├── services/
+│   │   │   ├── api.js
+│   │   │   └── otpService.js
+│   │   ├── utils/
+│   │   │   ├── AppError.js
+│   │   │   └── logger.js
+│   │   ├── websocket/
+│   │   │   └── socket.js
+│   │   ├── workers/
+│   │   ├── app.js
+│   │   └── index.js
+│   ├── docs/
+│   │   ├── API_SPEC.md
+│   │   ├── CURRICULUM_MAP.md
+│   │   ├── ENGINEERING_BRIEF.md
+│   │   ├── PILOT_PLAN.md
+│   │   └── SECURITY.md
+│   ├── seed_admin.js
+│   ├── seed_users.js
+│   ├── package.json
+│   └── Dockerfile
+│
+└── frontend/
+    ├── public/
+    │   ├── basics/
+    │   │   ├── 1-100.png
+    │   │   ├── 2dshapes.png
+    │   │   ├── Alphabetics.png
+    │   │   ├── englishsounds.png
+    │   │   ├── multiplication.png
+    │   │   └── numbers100withwords.png
+    │   ├── icons/
+    │   │   └── hacker.png
+    │   ├── manifest.json
+    │   └── sw.js
+    ├── src/
+    │   ├── components/
+    │   │   ├── cards/
+    │   │   ├── common/
+    │   │   │   ├── Avatar.jsx
+    │   │   │   ├── KpiCard.jsx
+    │   │   │   ├── PrivateRoute.jsx
+    │   │   │   └── Spinner.jsx
+    │   │   ├── dashboard/
+    │   │   │   ├── KpiCard.jsx
+    │   │   │   └── StatRow.jsx
+    │   │   ├── layout/
+    │   │   │   ├── HamburgerMenu.jsx
+    │   │   │   ├── Layout.jsx
+    │   │   │   └── Navbar.jsx
+    │   │   └── student/
+    │   │       ├── LinkParent.jsx
+    │   │       └── StoryQuiz.jsx
+    │   ├── context/
+    │   │   └── ThemeContext.jsx
+    │   ├── hooks/
+    │   │   └── useNotifCount.js
+    │   ├── i18n/
+    │   │   ├── locales/
+    │   │   │   ├── en.json
+    │   │   │   └── sw.json
+    │   │   └── i18n.js
+    │   ├── pages/
+    │   │   ├── admin/
+    │   │   │   ├── Home.jsx
+    │   │   │   ├── LockedAccounts.jsx
+    │   │   │   ├── Logs.jsx
+    │   │   │   ├── Messages.jsx
+    │   │   │   ├── Payments.jsx
+    │   │   │   ├── Settings.jsx
+    │   │   │   ├── Shutdown.jsx
+    │   │   │   ├── Subscriptions.jsx
+    │   │   │   └── Users.jsx
+    │   │   ├── auth/
+    │   │   │   ├── ForgotPassword.jsx
+    │   │   │   ├── Login.jsx
+    │   │   │   ├── Signup.jsx
+    │   │   │   ├── SignupParent.jsx
+    │   │   │   ├── SignupTeacher.jsx
+    │   │   │   └── VerifyOtp.jsx
+    │   │   ├── guardian/
+    │   │   │   ├── Children.jsx
+    │   │   │   └── PaymentHistory.jsx
+    │   │   ├── parent/
+    │   │   │   ├── Home.jsx
+    │   │   │   ├── Messages.jsx
+    │   │   │   ├── Notifications.jsx
+    │   │   │   ├── Progress.jsx
+    │   │   │   └── Subscription.jsx
+    │   │   ├── shared/
+    │   │   │   ├── Messages.jsx
+    │   │   │   ├── Notifications.jsx
+    │   │   │   └── Profile.jsx
+    │   │   ├── student/
+    │   │   │   ├── Assignments.jsx
+    │   │   │   ├── Badges.jsx
+    │   │   │   ├── BibleStories.jsx
+    │   │   │   ├── CurriculumCharts.jsx
+    │   │   │   ├── curriculumData.js
+    │   │   │   ├── generateStories.js
+    │   │   │   ├── Home.jsx
+    │   │   │   ├── JuniorBasics.jsx
+    │   │   │   ├── Leaderboard.jsx
+    │   │   │   ├── MathKnowledge.jsx
+    │   │   │   ├── Messages.jsx
+    │   │   │   ├── Notes.jsx
+    │   │   │   ├── Practice.jsx
+    │   │   │   ├── Progress.jsx
+    │   │   │   ├── Quizzes.jsx
+    │   │   │   ├── Settings.jsx
+    │   │   │   ├── Stories.jsx
+    │   │   │   ├── storiesData.jsx
+    │   │   │   ├── StoryLibrary.jsx
+    │   │   │   ├── StudyTime.jsx
+    │   │   │   ├── Subscription.jsx
+    │   │   │   ├── Videos.jsx
+    │   │   │   ├── WorldExplorer.jsx
+    │   │   │   └── Writing.jsx
+    │   │   └── teacher/
+    │   │       ├── Assignments.jsx
+    │   │       ├── ClassProgress.jsx
+    │   │       ├── CreateCard.jsx
+    │   │       ├── Home.jsx
+    │   │       ├── Messages.jsx
+    │   │       ├── Students.jsx
+    │   │       ├── Submissions.jsx
+    │   │       ├── UploadVideo.jsx
+    │   │       ├── Login.jsx
+    │   │       ├── Maintenance.jsx
+    │   │       ├── Subscription.jsx
+    │   │       └── Terminated.jsx
+    │   ├── services/
+    │   │   ├── api.js
+    │   │   ├── socketService.js
+    │   │   └── telemetry.js
+    │   ├── store/
+    │   │   └── authStore.js
+    │   ├── utils/
+    │   │   └── deviceProfile.js
+    │   ├── App.jsx
+    │   ├── index.css
+    │   └── main.jsx
+    ├── index.html
+    ├── package.json
+    ├── tailwind.config.js
+    └── vite.config.js

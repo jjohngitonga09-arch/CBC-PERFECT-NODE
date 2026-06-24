@@ -20,7 +20,7 @@ function Badge({ action }) {
  background: cfg.bg, color: cfg.color,
  padding:'2px 9px', borderRadius:'99px',
  fontWeight:700, fontSize:'.68rem', letterSpacing:'.5px',
- textTransform:'uppercase', whiteSpace:'nowrap'
+ textTransform:'uppercase', whiteSpace:'normal', wordBreak:'break-word'
  }}>{cfg.label || action}</span>
  )
 }
@@ -165,15 +165,15 @@ export default function AdminLogs() {
  ) : logs.length === 0 ? (
  <div style={{ padding:'48px', textAlign:'center', color:'var(--sub)' }}>No log entries found.</div>
  ) : (
- <div style={{ overflowX:'auto' }}>
- <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.82rem' }}>
+ <div style={{ overflowX:'auto', maxWidth:'100%', WebkitOverflowScrolling:'touch' }}>
+ <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.82rem' , fontSize:'.78rem'}}>
  <thead>
  <tr style={{ borderBottom:'1px solid var(--border)' }}>
  {['Time','Event','User','Role','Email','IP','Attempts'].map(h=>(
  <th key={h} style={{
- padding:'11px 14px', textAlign:'left', color:'var(--sub)',
+ padding:'8px 10px', textAlign:'left', color:'var(--sub)',
  fontWeight:600, fontSize:'.72rem', textTransform:'uppercase',
- letterSpacing:'.4px', whiteSpace:'nowrap'
+ letterSpacing:'.4px', whiteSpace:'normal', wordBreak:'break-word'
  }}>{h}</th>
  ))}
  </tr>
@@ -191,25 +191,25 @@ export default function AdminLogs() {
  onMouseEnter={e=>e.currentTarget.style.background = isAlert?'rgba(239,68,68,.09)':'var(--surface)'}
  onMouseLeave={e=>e.currentTarget.style.background = isAlert?'rgba(239,68,68,.04)':'transparent'}>
 
- <td style={{ padding:'10px 14px', color:'var(--sub)', whiteSpace:'nowrap', fontFamily:'monospace', fontSize:'.75rem' }}>
+ <td style={{ padding:'8px 10px', color:'var(--sub)', whiteSpace:'normal', wordBreak:'break-word', fontFamily:'monospace', fontSize:'.75rem' }}>
  {new Date(l.timestamp).toLocaleString()}
  </td>
- <td style={{ padding:'10px 14px' }}>
+ <td style={{ padding:'8px 10px' }}>
  <Badge action={l.action} />
  </td>
- <td style={{ padding:'10px 14px', color:'var(--text)', fontWeight:500 }}>
+ <td style={{ padding:'8px 10px', color:'var(--text)', fontWeight:500 }}>
  {l.user_name || <span style={{color:'var(--sub)'}}></span>}
  </td>
- <td style={{ padding:'10px 14px' }}>
+ <td style={{ padding:'8px 10px' }}>
  <RoleBadge role={l.role} />
  </td>
- <td style={{ padding:'10px 14px', color:'var(--sub)', fontSize:'.75rem' }}>
+ <td style={{ padding:'8px 10px', color:'var(--sub)', fontSize:'.75rem' }}>
  {l.email || ''}
  </td>
- <td style={{ padding:'10px 14px', color:'var(--sub)', fontFamily:'monospace', fontSize:'.75rem' }}>
+ <td style={{ padding:'8px 10px', color:'var(--sub)', fontFamily:'monospace', fontSize:'.75rem' }}>
  {l.ip || ''}
  </td>
- <td style={{ padding:'10px 14px', textAlign:'center' }}>
+ <td style={{ padding:'8px 10px', textAlign:'center' }}>
  {l.action==='login_failed'||l.action==='login_blocked'
  ? <span style={{ color:'#f87171', fontWeight:700 }}>
  {l.meta?.attempts || ''}/3

@@ -1,4 +1,4 @@
-const { query } = require('../config/db')
+﻿const { query } = require('../config/db')
 const { notifyUser } = require('../websocket/socket');
 const { v4: uuid } = require('uuid')
 
@@ -94,6 +94,19 @@ exports.confirmMessage = async (req,res,next) => {
       "INSERT INTO logs(type,action,user_id,user_name,role,meta,timestamp) VALUES('admin','subscription_confirmed',$1,$2,$3,$4,NOW())",
       [req.user.id,req.user.name,req.user.role,JSON.stringify({for_user:msg.user_id,plan:msg.plan_name})]
     )
+    // Referral reward - give referrer 7 extra days ONCE only
+    try {
+      const newUser = (await query(`SELECT referred_by, referral_rewarded FROM users WHERE id=$1`,[msg.user_id])).rows[0]
+      if (newUser && newUser.referred_by && !newUser.referral_rewarded) {
+        const referrer = (await query(`SELECT id FROM users WHERE username=$1`,[newUser.referred_by])).rows[0]
+        if (referrer) {
+          await query(`UPDATE subscriptions SET expiry_date = expiry_date + INTERVAL '7 days' WHERE user_id=$1`,[referrer.id])
+          await query(`INSERT INTO notifications(user_id,title,message,type) VALUES($1,'You earned 7 free days!','A friend you invited just subscribed. 7 bonus days added!','system')`,[referrer.id])
+          await query(`UPDATE users SET referral_rewarded=true WHERE id=$1`,[msg.user_id])
+        }
+      }
+    } catch(refErr) { console.error('Referral reward error:', refErr.message) }
+
     res.json({ success:true })
   } catch(e){ next(e) }
 }
@@ -128,7 +141,7 @@ exports.lockUser = async (req,res,next) => {
       "INSERT INTO logs(type,action,user_id,user_name,role,meta,timestamp) VALUES('admin','user_locked',$1,$2,$3,$4,NOW())",
       [req.user.id,req.user.name,req.user.role,JSON.stringify({locked_user:userId})]
     )
-  try { notifyUser(req.params.userId, 'subscription:locked', { reason: 'payment_required' }) } catch(_) {}
+    try { notifyUser(req.params.userId, 'subscription:locked', { reason: 'payment_required' }) } catch(_) {}
     res.json({ success:true })
   } catch(e){ next(e) }
 }
@@ -141,7 +154,7 @@ exports.unlockUser = async (req,res,next) => {
       "INSERT INTO notifications(user_id,title,message,type) VALUES($1,'Dashboard Unlocked','Your dashboard has been unlocked. Welcome back!','system')",
       [userId]
     )
-  try { notifyUser(req.params.userId, 'subscription:unlocked', {}) } catch(_) {}
+    try { notifyUser(req.params.userId, 'subscription:unlocked', {}) } catch(_) {}
     res.json({ success:true })
   } catch(e){ next(e) }
 }
@@ -216,5 +229,19 @@ exports.replyAsUser = async (req,res,next) => {
       }) } catch(_) {}
     }
     res.status(201).json({ success:true, id: replyId })
+  } catch(e){ next(e) }
+}
+
+exports.getMyMessages = async (req,res,next) => {
+  try {
+    const { rows } = await query(
+      `SELECT pm.*,
+        COALESCE((SELECT json_agg(r.* ORDER BY r.created_at) FROM payment_message_replies r WHERE r.payment_message_id = pm.id), '[]') as replies
+       FROM payment_messages pm
+       WHERE pm.user_id=$1
+       ORDER BY pm.created_at DESC`,
+      [req.user.id]
+    )
+    res.json(rows)
   } catch(e){ next(e) }
 }

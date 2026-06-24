@@ -1,0 +1,75 @@
+<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" font-family="Arial Rounded MT Bold, Arial, sans-serif">
+  <rect width="300" height="210" fill="#FFF8E7"/>
+  <!-- Ground -->
+  <rect y="165" width="300" height="45" fill="#5A9E3A"/>
+  <rect y="162" width="300" height="9" fill="#7BC142"/>
+  <!-- Fence -->
+  <line x1="0" y1="165" x2="300" y2="165" stroke="#A0522D" stroke-width="3"/>
+  <line x1="20"  y1="150" x2="20"  y2="165" stroke="#A0522D" stroke-width="3"/>
+  <line x1="60"  y1="150" x2="60"  y2="165" stroke="#A0522D" stroke-width="3"/>
+  <line x1="100" y1="150" x2="100" y2="165" stroke="#A0522D" stroke-width="3"/>
+  <line x1="140" y1="150" x2="140" y2="165" stroke="#A0522D" stroke-width="3"/>
+  <line x1="180" y1="150" x2="180" y2="165" stroke="#A0522D" stroke-width="3"/>
+  <line x1="220" y1="150" x2="220" y2="165" stroke="#A0522D" stroke-width="3"/>
+  <line x1="260" y1="150" x2="260" y2="165" stroke="#A0522D" stroke-width="3"/>
+  <line x1="300" y1="150" x2="300" y2="165" stroke="#A0522D" stroke-width="3"/>
+
+  <!-- ── KID 1 (left, orange top) ── -->
+  <rect x="68" y="112" width="26" height="32" rx="5" fill="#FF7F00"/>
+  <rect x="69" y="140" width="11" height="22" rx="3" fill="#2c2c2c"/>
+  <rect x="82" y="140" width="11" height="22" rx="3" fill="#2c2c2c"/>
+  <rect x="76" y="103" width="10" height="11" rx="3" fill="#C17F4B"/>
+  <circle cx="81" cy="88" r="17" fill="#C17F4B"/>
+  <path d="M64 86 Q81 66 98 86 L97 78 Q81 62 65 78 Z" fill="#2c1810"/>
+  <circle cx="75" cy="86" r="3" fill="#1a1a1a"/>
+  <circle cx="87" cy="86" r="3" fill="#1a1a1a"/>
+  <circle cx="76" cy="85" r="1.1" fill="white"/>
+  <circle cx="88" cy="85" r="1.1" fill="white"/>
+  <path d="M74 95 Q81 103 88 95" stroke="#1a1a1a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <!-- Arms: one pointing/gesturing at kid 2 -->
+  <line x1="93" y1="120" x2="112" y2="115" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+  <line x1="69" y1="120" x2="58" y2="136" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+  <line x1="78" y1="162" x2="74" y2="183" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+  <line x1="90" y1="162" x2="94" y2="183" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="73" cy="185" rx="9" ry="5" fill="#4a2c0a"/>
+  <ellipse cx="95" cy="185" rx="9" ry="5" fill="#4a2c0a"/>
+
+  <!-- ── SPEECH BUBBLE kid 1 ── -->
+  <rect x="2" y="36" width="124" height="36" rx="12" fill="#FF7F00" stroke="#CC5500" stroke-width="2.5"/>
+  <polygon points="75,72 65,85 85,72" fill="#FF7F00"/>
+  <polygon points="75,72 65,85 85,72" fill="none" stroke="#CC5500" stroke-width="1.5"/>
+  <text x="64" y="56" text-anchor="middle" font-size="10" font-weight="bold" fill="white">How are</text>
+  <text x="64" y="68" text-anchor="middle" font-size="10" font-weight="bold" fill="white">you?</text>
+
+  <!-- ── KID 2 (right, purple top, happy response) ── -->
+  <rect x="206" y="112" width="26" height="32" rx="5" fill="#8B5CF6"/>
+  <rect x="207" y="140" width="11" height="22" rx="3" fill="#2c2c2c"/>
+  <rect x="220" y="140" width="11" height="22" rx="3" fill="#2c2c2c"/>
+  <rect x="214" y="103" width="10" height="11" rx="3" fill="#8D5524"/>
+  <circle cx="219" cy="88" r="17" fill="#8D5524"/>
+  <path d="M202 86 Q219 66 236 86 L235 78 Q219 62 203 78 Z" fill="#2c1810"/>
+  <!-- Eyebrows raised happily -->
+  <path d="M212 80 Q216 77 220 80" stroke="#2c1810" stroke-width="2" fill="none"/>
+  <path d="M218 80 Q222 77 226 80" stroke="#2c1810" stroke-width="2" fill="none"/>
+  <circle cx="213" cy="84" r="3" fill="#1a1a1a"/>
+  <circle cx="225" cy="84" r="3" fill="#1a1a1a"/>
+  <circle cx="214" cy="83" r="1.1" fill="white"/>
+  <circle cx="226" cy="83" r="1.1" fill="white"/>
+  <!-- Big smile -->
+  <path d="M212 93 Q219 103 226 93" stroke="#1a1a1a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M214 93 Q219 99 224 93" fill="white"/>
+  <!-- Arms open/happy -->
+  <line x1="207" y1="120" x2="194" y2="108" stroke="#8D5524" stroke-width="6" stroke-linecap="round"/>
+  <line x1="231" y1="120" x2="244" y2="108" stroke="#8D5524" stroke-width="6" stroke-linecap="round"/>
+  <line x1="215" y1="162" x2="211" y2="183" stroke="#8D5524" stroke-width="6" stroke-linecap="round"/>
+  <line x1="227" y1="162" x2="231" y2="183" stroke="#8D5524" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="210" cy="185" rx="9" ry="5" fill="#4a2c0a"/>
+  <ellipse cx="232" cy="185" rx="9" ry="5" fill="#4a2c0a"/>
+
+  <!-- ── SPEECH BUBBLE kid 2 ── -->
+  <rect x="170" y="28" width="128" height="44" rx="12" fill="#8B5CF6" stroke="#6D28D9" stroke-width="2.5"/>
+  <polygon points="212,72 200,86 224,72" fill="#8B5CF6"/>
+  <polygon points="212,72 200,86 224,72" fill="none" stroke="#6D28D9" stroke-width="1.5"/>
+  <text x="234" y="48" text-anchor="middle" font-size="9.5" font-weight="bold" fill="white">I am fine,</text>
+  <text x="234" y="61" text-anchor="middle" font-size="9.5" font-weight="bold" fill="white">thank you!</text>
+</svg>

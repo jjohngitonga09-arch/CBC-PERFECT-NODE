@@ -1,16 +1,31 @@
-export const CURRICULUM = { //  PP1
+﻿export const CURRICULUM = { //  PP1
 PP1: {'Language Activities': [ { title:'Overview', content: `Language Activities lay the groundwork for literacy. There is no formal reading or writing yet. The focus is on:
  Listening and speaking
  Auditory discrimination
- Pre-writing readiness Learning happens through play, songs, stories, and conversation using Mother Tongue / school language.`}, { title:'Vowels — Short and Long', content: `SHORT VOWELS:
-ă=apple, ĕ=egg, ĭ=iguana, ŏ=octopus, ŭ=umbrella
+ Pre-writing readiness Learning happens through play, songs, stories, and conversation using Mother Tongue / school language.`}, { title:'Vowels ¿½ Short and Long', content: `A E I O U ¿½ these are our 5 vowels!
 
-LONG VOWELS:
-ā=acorn, ē=easel, ī=ice cream, ō=oval, ū=unicorn
+- a is for apple
+- e is for egg
+- i is for igloo
+- o is for octopus
+- u is for umbrella
 
-The 5 vowels are: A E I O U
-Every word needs at least one vowel!`}, { title:'Listening and Speaking', content: ` Greetings and Etiquette: saying"good morning","please","thank you","sorry" Self-Expression: talking about yourself, naming family members, expressing feelings
- Auditory Discrimination: identifying environmental sounds (animals, vehicles, rain, thunder)`}, { title:'Reading Readiness', content: ` Visual Discrimination: matching identical pictures, spotting differences
+Every word has a vowel inside it!`}, { title:'Listening and Speaking', content: `Greetings ¿½ say these every day:
+- "Good morning"
+- "Please"
+- "Thank you"
+- "Sorry"
+
+Talk about yourself:
+- Say your name
+- Name your family members
+- Say how you feel (happy, sad, tired)
+
+Listen for sounds:
+- Animals
+- Cars
+- Rain
+- Thunder`, images:['/images/greetings_chart.png']}, { title:'Reading Readiness', content: ` Visual Discrimination: matching identical pictures, spotting differences
  Book Handling: holding a book correctly, turning pages one by one
  Print Awareness: noticing that print carries meaning, reading left to right`}, { title:'Writing Readiness', content: ` Fine Motor Skills: tearing paper, kneading dough, threading beads, building blocks
  Scribbling and Tracing: making marks freely, tracing sandpaper letters and patterns
@@ -20,12 +35,254 @@ Every word needs at least one vowel!`}, { title:'Listening and Speaking', conten
 5. Shapes and Lines Tracing Chart  zigzag, curved, straight dotted lines
 6. Story Sequence Pictures  picture cards to tell a story in order
 7. Classroom Labels  door, table, chair, board labelled in class
-8. Vowels Chart (Short & Long)  SHORT: ă=apple, ĕ=egg, ĭ=iguana, ŏ=octopus, ŭ=umbrella | LONG: ā=acorn, ē=easel, ī=ice cream, ō=oval, ū=unicorn
-9. Alphabet Frieze (A–Z)  Aa=Apple, Bb=Ball, Cc=Cupcake, Dd=Duck, Ee=Elephant, Ff=Flag, Gg=Guitar, Hh=Hat, Ii=Iguana, Jj=Jacket, Kk=Kite, Ll=Leaf, Mm=Monkey, Nn=Nine, Oo=Orange, Pp=Penguin, Qq=Queen, Rr=Rabbit, Ss=Starfish, Tt=Train, Uu=Umbrella, Vv=Vest, Ww=Wagon, Xx=Xylophone, Yy=Yo-yo, Zz=Zebra`}, { title:'How You Are Assessed', content: `Assessment is continuous and informal (NO exams):
+8. Vowels Chart (Short & Long)  SHORT: a=apple, e=egg, i=iguana, o=octopus, u=umbrella | LONG: a=acorn, e=easel, i=ice cream, o=oval, u=unicorn
+9. Alphabet Frieze (A¿½Z)  Aa=Apple, Bb=Ball, Cc=Cupcake, Dd=Duck, Ee=Elephant, Ff=Flag, Gg=Guitar, Hh=Hat, Ii=Iguana, Jj=Jacket, Kk=Kite, Ll=Leaf, Mm=Monkey, Nn=Nine, Oo=Orange, Pp=Penguin, Qq=Queen, Rr=Rabbit, Ss=Starfish, Tt=Train, Uu=Umbrella, Vv=Vest, Ww=Wagon, Xx=Xylophone, Yy=Yo-yo, Zz=Zebra`},
+{ title:'Capital Letters A-Z', content: ` CAPITAL LETTERS A - Z
+
+A   B   C   D   E 
+F   G   H   I   J 
+K   L   M   N   O 
+P   Q   R   S  T 
+U   V   W   X   Y 
+Z 
+
+Say each letter out loud!
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z`},
+{ title:'Small Letters a-z', content: ` SMALL LETTERS a - z
+
+a   b   c   d   e 
+f   g   h   i   j 
+k   l   m   n   o 
+p   q   r   s  t 
+u   v   w   x   y 
+z 
+
+Every CAPITAL letter has a small letter friend!
+Aa  Bb  Cc  Dd  Ee  Ff
+Gg  Hh  Ii  Jj  Kk  Ll
+Mm  Nn  Oo  Pp  Qq  Rr
+Ss  Tt  Uu  Vv  Ww  Xx
+Yy  Zz`},
+{ title:'Simple Words with Pictures', content: ` 30 SIMPLE WORDS TO KNOW
+
+ cat      hat      bat
+ rat      cap      map
+ egg      hen      box
+ dog      log      fog
+ sun      bun      run
+ pig      fig     6 six
+ bed      red      web
+ pot     dot      net
+ tub      bug      jug
+cup      mat      sit
+
+ Say each sound slowly
+ Blend sounds together
+ Say the whole word!
+
+c-a-t =    h-a-t =    s-u-n = `},
+{ title:'How You Are Assessed', content: `Assessment is continuous and informal (NO exams):
  Observation checklist: can you greet correctly?
  Can you identify an environmental sound?
  Can you hold a book properly?
- Can you follow a two-step instruction?`},],'Mathematics Activities': [ { title:'Overview', content: `Mathematics Activities introduce early numeracy through playing with concrete objects. Children learn by touching, moving, and playing with things they can see and feel.`}, { title:'Number Sense', content: ` Object Counting: rote counting from 1 to 10 with one-to-one correspondence
+ Can you follow a two-step instruction?`},],'Mathematics Activities': [ { title:'Overview', content: `Mathematics Activities introduce early numeracy through playing with concrete objects. Children learn by touching, moving, and playing with things they can see and feel.`},
+{ title:'Core Strands', content: `PP1 Mathematics Activities is organised into 3 Core Learning Strands.
+
+?  STRAND 1 ¿½ CLASSIFICATION
+   We sort, group, pattern, and match objects.
+   Sort objects by colour, size, or shape.
+   Find and copy repeating patterns.
+   Match and pair things that belong together.
+   Spot the odd one out in a group.
+
+?  STRAND 2 ¿½ NUMBER WORK
+   We learn to count, read, write, and use numbers.
+   Count objects 1 to 10 one by one.
+   Recognise and write digits 1 to 9.
+   Learn number words: one, two, three ¿½
+   Put together (add) objects to find the total.
+   Take away (subtract) objects to find what is left.
+
+?  STRAND 3 ¿½ MEASUREMENT
+   We compare sizes, weights, and amounts.
+   Compare sizes:  big / small  ¿½  tall / short  ¿½  long / short.
+   Compare weight: heavy / light using a balance scale.
+   Compare capacity: empty / full using cups and sand.
+   Learn about coins and notes through play.`},
+{ title:'Classification', content: `? STRAND 1 ¿½ CLASSIFICATION
+
+
+ A ¿½ SORTING & GROUPING
+
+We put things that are the SAME together.
+Choose ONE rule, then sort!
+
+ Sort by COLOUR:
+   All red things    go in the red group.
+   All blue things   go in the blue group.
+   All yellow things go in the yellow group.
+
+ Sort by SIZE:
+   Big things   big pile.
+   Small things small pile.
+
+ Sort by SHAPE:
+   All circles    go together.
+   All squares    go together.
+   All triangles  go together.
+
+
+ B ¿½ PATTERNING
+
+A pattern REPEATS again and again!
+
+ Colour pattern:
+   Red  Blue  Red  Blue  Red  Blue  ...
+
+ Shape pattern:
+   Circle  Square  Circle  Square  Circle  ...
+
+ Object pattern:
+   Spoon  Fork  Spoon  Fork  Spoon  Fork  ...
+
+ How to continue a pattern ¿½ 3 steps:
+   Step 1  Say the pattern out loud to hear it repeat.
+   Step 2  Find where the pattern stopped.
+   Step 3  Say what comes next, then place it!
+
+
+ C ¿½ MATCHING & PAIRING
+
+Find the two things that BELONG together.
+
+ Match same objects:
+   Left shoe    Right shoe
+   One sock     Other sock
+   Cup          Saucer
+
+ Match a number to its group of objects:
+   1   ?
+   2   ?
+   3   ?
+   4   ?
+   5   ? ?
+
+ Match objects you play with:
+   Ball   Ball    Doll  Doll    Toy car Toy car
+
+
+ D ¿½ ODD ONE OUT
+
+Find the one that does NOT belong.
+
+ By shape:
+         the is different.
+
+ By colour:
+   Red heart  Red heart  Blue heart  Red heart
+   the Blue heart is the odd one out.
+
+ By size:
+   Big cup  Big cup  Small cup  Big cup
+   the Small cup is different.
+
+ How to find it ¿½ 3 steps:
+   Step 1  Look at all the items.
+   Step 2  Find the rule (same colour? same shape? same size?).
+   Step 3  The one that breaks the rule = ODD ONE OUT.`, images:['/images/shapes_classification.png']},
+{ title:'Number Work', content: `? STRAND 2 ¿½ NUMBER WORK
+
+
+ A ¿½ NUMBER CHART 1 ¿½ 10
+
+  1   2   3   4   5
+  6   7   8   9   10
+
+ Point to each number and say it out loud!
+
+
+ B ¿½ NUMBER WORDS
+
+  0 = zero      1 = one       2 = two
+  3 = three     4 = four      5 = five
+  6 = six       7 = seven     8 = eight
+  9 = nine     10 = ten
+
+ Read them aloud, then trace them!
+
+
+ C ¿½ COUNTING OBJECTS (one by one)
+
+ Touch each object and say its number.
+ Do NOT skip.  Do NOT count the same one twice.
+ The LAST number you say = the total.
+
+                  =  1   (one)
+                =  2   (two)
+              =  3   (three)
+   ?          =  4   (four)
+   ?        =  5   (five)
+   ?      =  6   (six)
+   ?    =  7   (seven)
+   ? ?  =  8   (eight)
+
+
+ D ¿½ TRACING & WRITING NUMBERS
+
+ Trace with your finger first, then use a pencil.
+
+   1   one straight line going down  ?
+   2   curve to the right, then a flat line ?
+   3   two bumps both facing to the right
+   4   line down  +  line across  +  line down
+   5   flat top   curve down   flat base
+   6   curve round and close into a loop
+   7   flat top then slant down  ?
+   8   two loops, one on top of the other
+   9   circle at top, tail going down
+
+
+ E ¿½ NUMBER SEQUENCES (forward counting)
+
+ Always count forward from 1:
+   1  2  3  4  5  6  7  8  9  10
+   10 11 12 13 14 15 16 17 18 ...
+
+ Say the numbers aloud to find any missing one:
+   1, 2, 3, 4,  ___ , 6        5
+   6, 7,  ___ , 9, 10          8
+   10, 11, 12,  ___ , 14      13
+   12, 13,  ___ , 15, 16      14
+   ___ , 2, 3, 4, 5            1
+   6,  ___ ,  ___ , 9, 10      7 and 8
+
+
+ F ¿½ PUTTING TOGETHER (Early Addition)
+
+ Use fingers, counters, or sticks.
+
+      +         =  3      (2 + 1 = 3)
+     +         =  5      (3 + 2 = 5)
+   6    +  2        =  8
+   2    +  8        =  10
+   3    +  1  +  0  =  4
+   1    +  2  +  4  =  7
+
+ Steps to add ¿½ always 3 steps:
+   Step 1  Count the first group.
+   Step 2  Count the second group.
+   Step 3  Count ALL of them together ¿½ that is your answer!
+
+
+ G ¿½ SHAPE NAMES TO KNOW
+
+   Circle     ¿½ round, smooth, no corners
+   Square     ¿½ 4 equal sides, 4 corners
+   Triangle   ¿½ 3 sides, 3 corners
+   Rectangle  ¿½ 4 sides (2 long, 2 short), 4 corners
+   Oval       ¿½ like a stretched circle (egg shape)
+   Star       ¿½ many sharp points all around`},
+{ title:'Number Sense', content: ` Object Counting: rote counting from 1 to 10 with one-to-one correspondence
  Number Sequencing: which number comes first, next, last
  Arranging number cards in order
  Modelling Numbers: showing a number using fingers, counters, or sticks`}, { title:'Measurement', content: ` Comparing Sizes: big/small, tall/short, long/short
@@ -54,61 +311,97 @@ Every word needs at least one vowel!`}, { title:'Listening and Speaking', conten
 6. Playdough Steps Chart  how to roll, pinch, and squeeze dough`}, { title:'How You Are Assessed', content: ` Can you catch a ball?
  Can you colour within the lines?
  Can you keep a beat with body percussion?
- Do you participate in group singing?`},],'Environmental Activities': [ { title:'Overview', content: `Environmental Activities help children understand their immediate environment  their bodies, health, and social relationships. It covers social studies, science, and health.`}, { title:'Self-Awareness', content: ` Myself: knowing my name, age, and gender
- Parts of the Body: naming and pointing to external body parts (head, eyes, nose, mouth, ears, hands, legs)`}, { title:'Health and Hygiene', content: ` Hand Washing: steps  wet, soap, rub palm to palm, rub back of hands, between fingers, rinse, dry
+ Do you participate in group singing?`},],'Environmental Activities': [ { title:'Overview', content: `Environmental Activities help children understand their immediate environment  their bodies, health, and social relationships. It covers social studies, science, and health.`, kidSummary:'Today we learn about our body, our family, and how to stay clean!'}, { title:'Self-Awareness', content: ` Myself: knowing my name, age, and gender
+ Parts of the Body: naming and pointing to external body parts (head, eyes, nose, mouth, ears, hands, legs)`, kidSummary:'This is me! I have a head, eyes, ears, nose, mouth, hands and legs.', images:['/images/body_parts_naming.png','/creative/headshoulderknees.png']}, { title:'Health and Hygiene', content: ` Hand Washing: steps  wet, soap, rub palm to palm, rub back of hands, between fingers, rinse, dry
  Dental Hygiene: importance of brushing teeth
- Using the Toilet: correct use and cleaning oneself`}, { title:'Social Environment', content: ` My Family: who makes up a family (father, mother, siblings) and their roles
- My School: recognizing the classroom, playground, and people (teacher, classmates, cook)`}, { title:'Key Charts to Know', content: `1. My Body Parts Chart  large image with labelled parts
+ Using the Toilet: correct use and cleaning oneself`, kidSummary:'Wash your hands and brush your teeth every day to stay healthy!', images:['/images/handwashing.png','/images/brushingteeth.png']}, { title:'Social Environment', content: ` My Family: who makes up a family (father, mother, siblings) and their roles
+ My School: recognizing the classroom, playground, and people (teacher, classmates, cook)`, kidSummary:'I have a family at home and a school with my teacher and friends.', images:['/images/myfamily.png','/images/classroom_and_schoolcommunity.png']}, { title:'Key Charts to Know', content: `1. My Body Parts Chart  large image with labelled parts
 2. Hand Washing Steps Poster  7 steps, should be near the basin
 3. My Family Poster  nuclear family with labels
 4. Tooth Brushing Chart  toothbrush + circular brushing motion
 5. Our Classroom Chart  labelled learning corners
-6. School Community Chart  teacher, headteacher, cook, guard`}, { title:'How You Are Assessed', content: ` Can you identify body parts on a doll?
+6. School Community Chart  teacher, headteacher, cook, guard`, kidSummary:'Look at these pictures to remember what we learned!'}, { title:'How You Are Assessed', content: ` Can you identify body parts on a doll?
  Can you demonstrate hand washing steps?
- Can you name family members?`},],'Religious Education Activities': [ { title:'Overview (CRE)', content: `This area develops moral and spiritual growth. The goal is to encourage gratitude, love, and respect. (Also offered as IRE and HRE depending on your faith.)`}, { title:"God's Creation", content: ` Myself: appreciating how God made me unique
+ Can you name family members?`, kidSummary:"Let's see what you remember! Can you point to your body parts?"},],'Religious Education Activities': [ { title:'Overview (CRE)', content: `This area develops moral and spiritual growth. The goal is to encourage gratitude, love, and respect. (Also offered as IRE and HRE depending on your faith.)`, kidSummary:"God loves you very much! This is all about loving God, loving people, and saying thank you."}, { title:"God's Creation", content: ` Myself: appreciating how God made me unique
  My Family: recognizing family as a gift from God
- Plants and Animals: God created all living things`}, { title:'Prayer', content: ` What is prayer: talking to God
- Simple prayers: a short prayer of thanks before meals and at end of day`}, { title:'Christian Values', content: ` Love and Sharing: stories that demonstrate kindness and sharing
+ Plants and Animals: God created all living things`, kidSummary:"God made everything around us - the sun, the moon, the trees, the animals, and YOU! Everything God made is good.", images:['/images/gods_creation.png']}, { title:'Prayer', content: ` What is prayer: talking to God
+ Simple prayers: a short prayer of thanks before meals and at end of day`, kidSummary:"Praying means talking to God. We close our eyes, fold our hands, and say thank you - like before we eat our food.", images:['/images/prayer_time.png']}, { title:'Christian Values', content: ` Love and Sharing: stories that demonstrate kindness and sharing
  Being kind to friends and classmates
- Saying thank you and being grateful`}, { title:'Key Charts to Know', content: `1. God's Creation Poster  sun, moon, stars, trees, animals, with caption"God Made Everything"2. Prayer Time Chart  child praying with words"Thank you God for this food"3. The Good Shepherd Poster  Jesus holding a lamb (love and care)
+ Saying thank you and being grateful`, kidSummary:"Be kind! Share your toys, say please and thank you, and help your friends."}, { title:'Key Charts to Know', content: `1. God's Creation Poster  sun, moon, stars, trees, animals, with caption"God Made Everything"2. Prayer Time Chart  child praying with words"Thank you God for this food"3. The Good Shepherd Poster  Jesus holding a lamb (love and care)
 4. Kindness Tree  paper hearts added each time a kind act is seen
-5. Noah's Ark Picture Chart  pairs of animals, obedience and God's care`}, { title:'How You Are Assessed', content: ` Can you say who created the sun?
+5. Noah's Ark Picture Chart  pairs of animals, obedience and God's care`, images:[{src:'/images/good_shepherd.png',caption:'3. The Good Shepherd Poster'},{src:'/images/kindness_tree.png',caption:'4. Kindness Tree'},{src:'/images/noahs_ark.png',caption:"5. Noah's Ark Picture Chart"}], kidSummary:"These pictures help us remember: God made everything, we pray and say thank you, Jesus loves us like a shepherd loves his sheep, we are kind to others, and God takes care of all animals."}, { title:'How You Are Assessed', content: ` Can you say who created the sun?
  Can you say a simple prayer?
- Do you show willingness to share with others?`},],'PPI': [ { title:'Overview', content: `PPI (Pastoral Programme of Instruction) is a safe, non-assessed session for your well-being. It helps you understand your feelings, make friends, and stay safe. No exams here!`}, { title:'Self-Awareness and Emotions', content: ` Identifying basic feelings: happy, sad, angry, scared
+ Do you show willingness to share with others?`, kidSummary:"Your teacher will check if you can talk about God, say a prayer, and be kind to your friends."},],'IRE Activities': [ { title:'Overview (IRE)', content: `Islamic Religious Education (IRE) teaches us about Islam â€” our beautiful faith. Islam means peace and submission to Allah. In this class you will learn about Allah our Creator, Prophet Muhammad (Peace Be Upon Him), how to pray five times daily, how to say special Arabic words, and how to be a kind and honest person every day. Islam is one of the great world religions. People who follow Islam are called Muslims. Muslims live all over the world, and in Kenya many people are Muslim. They worship at a Mosque where people bow and pray together facing the same direction. IRE teaches you to love Allah, follow the Prophet, and respect all of God's creation.`, kidSummary:"IRE teaches us about Islam! We learn about Allah, Prophet Muhammad, how to pray, and how to be kind and honest every single day."}, { title:'Allah â€” Our Creator', content: `Allah is the name of God in Islam. Muslims believe that Allah is the only God â€” He is One, and there is no one else like Him. Allah created everything in the world. He made the wide blue sky, the bright sun, the gentle moon, and millions of stars. He made every mountain, river, ocean, tree, flower, butterfly, elephant, and tiny ant. Most beautifully â€” He made YOU. Your eyes that see the world, your ears that hear music, your hands that hug your parents â€” all are gifts from Allah. Allah knows everything. He knows when you are happy, when you are sad, when you are kind, and when you make mistakes. He loves you more than anyone. Even when we cannot see Allah, He is always near â€” closer than our own heartbeat. He never sleeps and is never tired. When something good happens, say ALHAMDULILLAH â€” Thank you, Allah! Let us thank Allah every day for life, family, food, and love.`, kidSummary:"Allah made the sky, the sun, the stars, the animals, and YOU! He loves us all so much. Say ALHAMDULILLAH to thank Him every single day!"}, { title:'Prophet Muhammad (PBUH)', content: `The most important person in Islam is Prophet Muhammad. After his name we say Peace Be Upon Him (PBUH) to show love and respect. Prophet Muhammad was born over 1400 years ago in Makkah, Saudi Arabia. As a young boy he was always honest and kind â€” everyone trusted him and gave him the special name Al-Amin, which means The Trustworthy One. Are you trustworthy? Can your friends and teachers always count on you to tell the truth? Prophet Muhammad loved children â€” he played with them, hugged them, and always smiled when he saw them. He said: Smiling at someone is a gift, it is an act of charity! So every smile you give a sad friend is a good deed. He taught us to say Bismillah before eating, to greet everyone with Assalamu Alaikum â€” Peace be upon you â€” and to be gentle with all animals. He taught us to help the poor and share with those in need. The way the Prophet lived is called the Sunnah. When we follow his good habits, we become better Muslims, better friends, and better children.`, kidSummary:"Prophet Muhammad was honest, kind, and gentle. His special name was Al-Amin â€” The Trustworthy One! He loved children and always smiled. Let us copy his wonderful ways!"}, { title:'Bismillah & Alhamdulillah', content: `There are special Arabic words Muslims use every single day. BISMILLAH means In the name of Allah. Say it before everything: before eating â€” Bismillah! Before drinking water â€” Bismillah! Before writing or drawing â€” Bismillah! Before sleeping â€” Bismillah! Before leaving the house â€” Bismillah! Bismillah reminds us that Allah is always with us and helping us. It is like asking Allah to bless what we are about to do. ALHAMDULILLAH means All praise and thanks belong to Allah. Say it after eating â€” thank you, Allah! Say it when something good happens â€” Alhamdulillah! Say it when you sneeze. When you sneeze and say Alhamdulillah, the person nearby should reply Yarhamukallah â€” May Allah bless you. These small but powerful words keep Allah in our hearts all through the day. Even when tying your shoes â€” say Bismillah first! Starting everything with Allah's name brings blessings to all that we do.`, kidSummary:"Say BISMILLAH before you start anything â€” eating, drinking, writing, sleeping! Say ALHAMDULILLAH to thank Allah when you finish. Practice these words every day!"}, { title:'Salah â€” Our Five Daily Prayers', content: `Salah means prayer. Muslims pray five times every single day, staying connected to Allah from morning to night. FAJR is the morning prayer â€” we pray before the sun rises. The world is quiet and fresh, a beautiful time to talk to Allah. DHUHR is the midday prayer â€” when the sun is at its highest point around lunchtime. ASAR is the afternoon prayer â€” in the late afternoon before sunset. MAGHRIB is the sunset prayer â€” just after the sun sets and the sky turns orange and pink. ISHA is the night prayer â€” after it is dark, before sleeping. Before praying we do WUDHU â€” a special washing of the face, hands, arms up to the elbow, head, and feet. Wudhu makes us clean and ready to stand before Allah. We face MAKKAH when we pray â€” this direction is called the QIBLA. Muslims all over the world face the same direction at the same time. During prayer we stand, bow, and place our forehead on the ground. This is called SUJOOD and it means: Allah, You are the Greatest. Prayer is a gift â€” five special conversations with Allah every day.`, kidSummary:"Muslims pray 5 times daily: FAJR (morning), DHUHR (midday), ASAR (afternoon), MAGHRIB (sunset), ISHA (night). Wash first â€” that is WUDHU. Face Makkah. Allah is always listening!"}, { title:'Being Kind & Honest', content: `Islam teaches that kindness is one of the most important qualities in a Muslim. There are many small ways to be kind every day. Share your food with a hungry friend. Pick up rubbish from the floor even if it is not yours. Ask: Are you okay? when someone looks sad. Help your mother carry something heavy. Encourage a friend who is struggling. Prophet Muhammad said: Every act of kindness is a charity â€” even a smile is a gift from your heart! Honesty is equally important in Islam. Never tell a lie, even when the truth is difficult. If you break something by accident, tell the truth. If you have not done your homework, admit it and try harder. Honesty makes people trust you, and trust is one of the most valuable things in life. We must also show kindness to animals. Do not hurt cats, birds, dogs, or any animal. If you see a thirsty or hungry animal, help it. Prophet Muhammad was very gentle with animals and taught us to care for them too. Allah sees and rewards every single act of kindness.`, kidSummary:"Be kind to everyone â€” friends, strangers, and animals! Share, help, smile, and always tell the truth. Allah sees every kind thing you do and rewards you!"}, { title:'Ramadan & Eid', content: `Ramadan is the most special month in Islam â€” the ninth month of the Islamic calendar. Grown-up Muslims fast during Ramadan: they do not eat or drink from sunrise until sunset. This teaches patience, gratitude, and self-control. Before sunrise they eat a meal called SUHOOR for strength. When the sun sets, they break the fast with IFTAR â€” often starting with a date and water, just as Prophet Muhammad taught. Ramadan is about becoming a better Muslim: reading more Quran, praying extra night prayers called TARAWIH, giving more charity to help the poor, and being extra kind and patient with everyone. At the end of Ramadan comes the joyful celebration EID UL-FITR. Families wake up early, wear their most beautiful clean clothes, and pray together. Afterwards everyone hugs, smiles, and says EID MUBARAK â€” Blessed Eid! There is wonderful food, sweets, and gifts. Before Eid, every Muslim family gives food or money to poor families â€” this is ZAKAT UL-FITR â€” so that everyone can celebrate. Eid teaches us to share our happiness with the whole world!`, kidSummary:"Ramadan is the month of fasting and prayer. After it comes EID â€” a huge celebration! Say EID MUBARAK, share sweets and food, and make sure everyone can join the joy."}, { title:'Key Charts to Know (IRE)', content: `1. The Five Pillars of Islam â€” Shahadah (faith in Allah and Prophet Muhammad), Salah (5 daily prayers), Zakat (giving charity to the poor), Sawm (fasting in Ramadan), Hajj (pilgrimage to Makkah)
+2. Wudhu Steps Poster â€” illustrated steps: rinse hands, rinse mouth, wash face, wash arms to elbow, wipe head, wash feet
+3. Five Daily Prayers Clock â€” Fajr (before sunrise), Dhuhr (midday), Asar (afternoon), Maghrib (after sunset), Isha (night)
+4. The Mosque Diagram â€” minaret (tall tower for call to prayer), dome, prayer hall, ablution area â€” all clearly labelled
+5. Arabic Words We Use Daily â€” Bismillah (In the name of Allah), Alhamdulillah (Thanks to Allah), Assalamu Alaikum (Peace be upon you), Inshallah (If Allah wills), Subhanallah (Glory to Allah)
+6. Prophet Muhammad's Qualities Poster â€” Al-Amin (honest), kind, gentle, brave, generous â€” with simple illustrations`, kidSummary:"Study all 6 charts! Can you name the 5 Pillars? Show Wudhu steps on your fingers? Say the 5 prayer names in order? Teach someone at home tonight!"}, { title:'How You Are Assessed (IRE)', content: ` Can you say the Shahadah â€” I believe in Allah and Prophet Muhammad?
+ Can you name the five daily prayers in the correct order?
+ Can you describe the steps of Wudhu on your hands?
+ Can you say Bismillah before a meal and Alhamdulillah after?
+ Can you greet someone correctly with Assalamu Alaikum?
+ Can you give two examples of showing kindness in daily life?
+ Can you explain what Muslims do during Ramadan?
+ Can you say what Eid Mubarak means and why we celebrate?`, kidSummary:"Your teacher will check your prayers, greetings, Wudhu steps, and kindness. Practice every day and you will do brilliantly!"},],'HRE Activities': [ { title:'Overview (HRE)', content: `Hindu Religious Education (HRE) introduces you to Hinduism â€” one of the oldest and most colourful religions in the world. The word Hindu comes from the ancient river Indus in India. Hinduism has spread all over the world, and many people in Kenya follow it. In HRE you will learn about God â€” called Brahman in Hinduism. You will discover that God is One but appears in many beautiful names and forms. You will meet Lord Ganesha, the wise elephant-headed God who removes all obstacles from your path. You will learn about Goddess Saraswati who blesses students with knowledge and wisdom. You will celebrate Diwali â€” the Festival of Lights â€” and learn about Ahimsa, the beautiful teaching of kindness and gentleness towards all living things. You will also learn how Hindus pray and worship at home and in the temple. HRE helps you become a loving, thoughtful person who respects all people, all animals, and all of God's wonderful creation.`, kidSummary:"HRE teaches us about Hinduism â€” one of the world's oldest and most beautiful religions! We learn about God, festivals, prayer, and being kind to every living thing."}, { title:'God in Hinduism â€” Brahman', content: `Hindus believe in God. The name for God in Hinduism is BRAHMAN. Brahman is not a person you can see with your eyes â€” Brahman is a great spirit and power that is present everywhere in the whole universe. Brahman is in the wind through the trees, in the flowing river, in the fire, inside every person, every animal, every tiny insect, and every star in the sky. Hinduism teaches that God is ONE â€” but God has many names and beautiful forms, like one white light shining through many differently coloured windows. The most important forms are the TRIMURTI â€” three great forms of God. BRAHMA is the Creator who made the entire universe â€” all stars, the earth, all plants, all animals, and all people. VISHNU is the Preserver who protects and takes care of all creation. SHIVA is the Transformer who helps old things end so beautiful new beginnings can emerge. Hindus also love the Goddesses: SARASWATI, Goddess of learning and music, blesses students with knowledge and wisdom. LAKSHMI, Goddess of kindness and good fortune. DURGA, the powerful Goddess who defeats evil. All these forms lead to the same One God, Brahman.`, kidSummary:"Brahman is God in Hinduism and is present everywhere! The Trimurti: Brahma (Creator), Vishnu (Preserver), Shiva (Transformer). Saraswati blesses your studies â€” pray to her!"}, { title:'Om â€” The Sacred Sound', content: `One of the most important symbols in Hinduism is OM, written as the beautiful symbol OM. Om is called the first sound of the universe. Hindus believe that when God created the world, the very first vibration that ever existed was OM â€” the sound of all creation humming with life. When we chant Om slowly and gently, it sounds like: AAA â€” UUU â€” MMM. The three parts carry deep and beautiful meanings. AAA represents CREATION â€” the very beginning of everything that exists. UUU represents PRESERVATION â€” taking care of all that has been made. MMM represents TRANSFORMATION â€” change and beautiful new beginnings. Together AUM honours Brahma, Vishnu, and Shiva. You will see Om on temple walls, prayer books, jewellery, clothing, and above the doors of Hindu homes â€” it announces: God is present here. When your teacher chants Om before prayer, take a slow deep breath, gently close your eyes, and feel the soft vibration in your chest. Scientists have found that chanting Om creates a deeply calming effect in the brain and body. Om is one single sacred sound that holds the entire universe inside it.`, kidSummary:"OM is the first sound of the universe â€” AAA-UUU-MMM! We chant it before prayers. It means God is everywhere. Close your eyes, breathe slowly, and chant Om. Feel the peace!"}, { title:'Lord Ganesha', content: `Lord Ganesha is one of the most loved Gods in all of Hinduism. He is impossible to mistake â€” he has the round, kind, wise face of an elephant on a human body, four arms, a large happy belly showing he is content and joyful, and small twinkling eyes full of warmth. He rides a tiny mouse called MUSHIKA. Ganesha is the beloved son of Lord Shiva and Goddess Parvati. He is worshipped as VIGHNAHARTA â€” The Remover of Obstacles. An obstacle is anything that blocks your path or makes things very difficult. Before any new beginning â€” a new school year, a journey, a new home, starting something important â€” Hindus always pray to Lord Ganesha first, asking him to clear the path of all difficulties and bring success. In his four hands Ganesha holds special objects: a LOTUS FLOWER for purity and beauty, a small AXE to cut away all problems and bad habits, a ROPE to gently pull us closer to God, and a MODAK â€” a round sweet dumpling that is his favourite food! His large EARS mean he listens carefully to every prayer. His tiny mouse Mushika teaches us that even the smallest creature can carry greatness when blessed with God's grace. Pray to Lord Ganesha each morning to make your mind sharp, clear, and full of wisdom.`, kidSummary:"Lord Ganesha has an elephant head and removes all obstacles! Pray to him before anything new. He holds a lotus, axe, rope, and his favourite sweet â€” the modak. His mouse is Mushika!"}, { title:'Diwali â€” Festival of Lights', content: `DIWALI is the most famous and most beautiful Hindu festival â€” the FESTIVAL OF LIGHTS. It comes once a year, usually in October or November. During Diwali, homes and streets everywhere are filled with thousands of tiny glowing lamps called DIYAS. A diya is a small clay pot with oil and a cotton wick that burns with a warm, golden orange flame. The light of the diya represents the most important Hindu teaching: good always conquers evil, and light always defeats darkness. The story of Diwali comes from the ancient sacred tale called the RAMAYANA. Lord Rama, a righteous and good king, was unfairly sent away from his kingdom for fourteen long years. After defeating the evil demon king Ravana and rescuing his beloved wife Sita, Rama returned home triumphant. His overjoyed people lit thousands of lamps to guide him safely home and to celebrate the return of goodness. Today Hindus celebrate by lighting diyas throughout the home, wearing bright new clothes, drawing beautiful patterns called RANGOLI on the floor, sharing sweets and gifts with all family and neighbours, and bursting sparkling fireworks into the night sky. Diwali teaches us: always choose good, always let your light shine, always share your joy with everyone.`, kidSummary:"Diwali is the Festival of Lights! We light small clay lamps called DIYAS to celebrate good winning over evil. We wear new clothes, draw beautiful rangoli, share sweets, and burst fireworks!"}, { title:'Ahimsa â€” Kindness to All Living Things', content: `One of the most beautiful and important teachings in Hinduism is AHIMSA. Ahimsa is a Sanskrit word â€” the ancient sacred language of Hinduism â€” and it means NON-VIOLENCE and KINDNESS. Ahimsa teaches that we should not hurt any living thing: not people, not animals, not birds, not insects, not trees, not the earth itself. Mahatma Gandhi, one of the greatest and most admired leaders in history, believed completely in Ahimsa. He used love, truth, and peaceful action to help India win freedom without weapons â€” the whole world was amazed by his courage and gentleness. Hinduism teaches that God lives inside every single living being. When you hurt another creature, you are hurting a part of God. When you show kindness, you are honouring God. Many Hindus choose to be VEGETARIAN, not eating meat because they believe deeply in the sacredness of all animal life. Ahimsa starts at home and at school every day: do not bully or tease classmates. Do not crush insects for fun. Do not break branches off trees. Speak kindly. Think kindly. Act kindly. Every gentle choice and kind word brings you closer to God and makes the world more beautiful.`, kidSummary:"AHIMSA means kindness and non-violence to ALL living things! God lives inside every person, animal, and creature. Every kind act brings you closer to God. Always be gentle!"}, { title:'Puja â€” Prayer & Worship', content: `Hindus express their deep love for God through PUJA â€” which means worship and prayer. Puja can be done lovingly at home or at a beautiful place of worship called a MANDIR, also called a TEMPLE. Inside a Mandir, walls are beautifully painted and decorated, fragrant incense fills the air with sweet smoke, bells ring to call everyone to prayer, and devotional songs fill every corner with deep peace and joy. At home, Hindu families set up a small dedicated PUJA AREA â€” a prayer corner with statues or framed pictures of God called MURTIS. During puja, families light fragrant INCENSE sticks, light a glowing DIYA lamp representing God's eternal light, and lovingly offer flowers, fresh fruit, and clean water to God as gifts of devotion. They ring a small BELL to announce that puja has begun and to focus the mind on God. They sing beautiful songs called BHAJANS â€” melodious hymns that praise God and fill the heart with peace and happiness. The best times for puja are early morning after bathing and in the evening at sunset. Even a quiet heartfelt prayer of thanks before sleeping is a sacred form of puja. God always hears every prayer said with a sincere and loving heart.`, kidSummary:"PUJA means worship and prayer! Hindus pray at a puja corner with statues (murtis), flowers, incense, and a diya lamp. They sing beautiful BHAJANS to praise God. God hears every sincere prayer."}, { title:'Key Charts to Know (HRE)', content: `1. The Trimurti Chart â€” Brahma the Creator, Vishnu the Preserver, Shiva the Transformer â€” each with their symbols and animal vehicles clearly shown
+2. The Goddesses Chart â€” Saraswati (learning and music, with her veena), Lakshmi (kindness and fortune, with lotus flowers), Durga (strength and protection, on her lion)
+3. Lord Ganesha Poster â€” elephant head, four arms, lotus, axe, rope, modak sweet, and tiny mouse Mushika all labelled
+4. Om Symbol Poster â€” the sacred OM symbol with AAA-UUU-MMM and the three meanings: Creation, Preservation, Transformation
+5. Diwali Celebration Chart â€” diya lamp, rangoli pattern, fireworks, bright new clothes, sweets and gifts shared with neighbours
+6. Ahimsa in Daily Life Poster â€” kindness to people, gentleness with animals, care for plants and the environment
+7. The Puja Corner Diagram â€” murti (statue), diya (lamp), agarbatti (incense), flowers, bell, and water offering all labelled`, kidSummary:"Study all 7 charts! Can you draw a diya? Name Ganesha's 4 objects. Explain Ahimsa with an example. Describe puja. Write the word OM. You know so much â€” brilliant!"}, { title:'How You Are Assessed (HRE)', content: ` Can you name the three forms of God in Hinduism and say what each one does?
+ Can you say what Om means and chant it correctly: AAA-UUU-MMM?
+ Can you describe Lord Ganesha and explain why Hindus pray to him first?
+ Can you explain the story and meaning of Diwali in your own words?
+ Can you explain what Ahimsa means and give two examples from your own daily life?
+ Can you describe puja and name three things used during worship at home?
+ Can you name one Goddess and explain what she represents?`, kidSummary:"Your teacher will ask about God, Ganesha, Om, Diwali, Ahimsa, and Puja. Revise your charts, practise with a friend, and you will do amazingly well!"},],'PPI': [ { title:'Overview', content: `PPI (Pastoral Programme of Instruction) is a safe, non-assessed session for your well-being. It helps you understand your feelings, make friends, and stay safe. No exams here!`}, { title:'Self-Awareness and Emotions', content: ` Identifying basic feelings: happy, sad, angry, scared
  Learning how to express feelings appropriately
- It's OK to feel all kinds of feelings!`}, { title:'Social Skills', content: ` How to make friends
+ It's OK to feel all kinds of feelings!`, images:['/images/feelings_chart.png']}, { title:'Social Skills', content: ` How to make friends
  Sharing and taking turns
- Solving small conflicts peacefully with classmates`}, { title:'Safety', content: ` Basic personal safety rules
+ Solving small conflicts peacefully with classmates`, images:['/ppi/solving-conflicts.png']}, { title:'Safety', content: ` Basic personal safety rules
  Not talking to strangers
  Saying"No"when something feels wrong
- Understanding safe and unsafe touch`}, { title:'Key Charts to Know', content: `1. Feelings Chart "How do I feel today?"with 6 emotion faces
+ Understanding safe and unsafe touch`, images:['/ppi/basic-personal-safety-rules.png','/ppi/not-talking-to-strangers.png','/ppi/safe-unsafe-touch.png']}, { title:'Key Charts to Know', content: `1. Feelings Chart "How do I feel today?"with 6 emotion faces
 2. Class Rules Chart "We use kind words","We share toys","We walk inside"3. Tidy-Up Time Chart  pictures of putting toys away
 4. Safe/Unsafe Touch Poster  teacher resource for personal safety
-5. Our Peace Corner Poster  quiet corner with cushion to calm down`}, { title:'Important Note', content: `PPI is NOT assessed or graded. It is a time to talk, share, and grow as a person. Always speak honestly and kindly during PPI sessions.`},],}, //  PP2
-PP2: {'Language Activities': [ { title:'Overview', content: `PP2 Language Activities formally bridge the gap to literacy. This year you learn vowel and consonant sounds, syllable awareness, and more structured pre-reading skills. Writing readiness advances to letter formation.`}, { title:'Vowels — Short and Long Sounds', content: `SHORT VOWELS:
-Short A: Apple/Ask/Cap | Short E: Egg/Bet | Short I: Igloo/Pig
-Short O: Octopus/Tock | Short U: Under/Cup
+5. Our Peace Corner Poster  quiet corner with cushion to calm down`, images:['/ppi/class-rules-chart.png','/ppi/tidy-up-time-chart.png','/ppi/safe-unsafe-touch.png','/ppi/peace-corner-poster.png']}, { title:'Important Note', content: `PPI is NOT assessed or graded. It is a time to talk, share, and grow as a person. Always speak honestly and kindly during PPI sessions.`},],'Kiswahili Activities': [ { title:'Salamu na Familia', content: 'Greetings and family words in Kiswahili.'}, { title:'Maneno ya Kila Siku', content: 'Daily words: maji, chakula, shule, kitabu, kalamu.'}, { title:'Rangi na Hesabu', content: 'Colours and numbers 1-10 in Kiswahili.'}, { title:'Silabi za Msingi', content: 'Basic syllables: Ba Be Bi Bo Bu, Ma Me Mi Mo Mu.'}, { title:'Tathmini (Assessment)', content: 'Je, unaweza kusema habari yako?\nJe, unajua jina lako kwa Kiswahili?\nJe, unaweza kuhesabu 1-10 kwa Kiswahili?'},],}, //  PP2
+PP2: {'Language Activities': [ { title:'Overview', kidSummary:'This year we learn letter sounds and start writing our name!', content: `This year we learn the sounds that letters make. We listen carefully, talk a lot, and start writing some letters - even our own name!`}, { title:'Vowels - Short and Long Sounds', kidSummary:'A E I O U are our 5 special vowel friends. Say them out loud!', content: `Our 5 vowels are: a e i o u
 
-LONG VOWELS:
-Long A: Acorn/Hay | Long E: Eel/Feed | Long I: Ice/Tie
-Long O: Over/Low | Long U: Unicorn/Flute
+Each vowel has a SHORT sound and a LONG sound.
 
-RULE: Long vowels say their NAME.`}, { title:'Listening and Speaking', content: ` Auditory Discrimination: distinguishing more complex sounds, including initial sounds of words
- Self-Expression: describing family events, favourite foods, telling a simple personal story
- Polite Language: correct greetings for morning/afternoon/evening, responding to questions`}, { title:'Reading Skills', content: ` Print Awareness: following text left to right, identifying a letter and a word
- Visual Memory: recalling a sequence of pictures or letters
- Letter Knowledge: Short & Long Vowels — a(ă=apple/ā=acorn), e(ĕ=egg/ē=eel), i(ĭ=igloo/ī=ice), o(ŏ=octopus/ō=orange), u(ŭ=umbrella/ū=unicorn)
- Beginning Consonants: recognizing common consonants  m, s, t, b`}, { title:'Writing Skills', content: ` Pre-writing Patterns: copying V-shapes, loops, horizontal and vertical strokes
- Letter Formation: tracing and writing vowels and a few consonants
- Name Writing: beginning to write your own first name`}, { title:'Key Charts to Know', content: `1. Vowels Chart (Short & Long)  SHORT: ă=apple, ĕ=egg, ĭ=iguana, ŏ=octopus, ŭ=umbrella | LONG: ā=acorn, ē=easel, ī=ice cream, ō=oval, ū=unicorn
-2. Alphabet Frieze (A–Z)  Aa=Apple, Bb=Ball, Cc=Cupcake, Dd=Duck, Ee=Elephant, Ff=Flag, Gg=Guitar, Hh=Hat, Ii=Iguana, Jj=Jacket, Kk=Kite, Ll=Leaf, Mm=Monkey, Nn=Nine, Oo=Orange, Pp=Penguin, Qq=Queen, Rr=Rabbit, Ss=Starfish, Tt=Train, Uu=Umbrella, Vv=Vest, Ww=Wagon, Xx=Xylophone, Yy=Yo-yo, Zz=Zebra
-3. Vowel Sounds Chart  Short A: Apple/Ask/Cap | Long A: Acorn/Animal/Hay | Short E: Egg/Bet | Long E: Eel/Feed | Short I: Igloo/Pig | Long I: Ice/Tie | Short O: Octopus/Olive | Long O: Over/Orange | Short U: Under/Cup | Long U: Unicorn/Use/Flute
-4. Beginning Sounds Chart  m=mango, s=sun, b=ball, etc.
-4. Syllable Chart  ba-by, ta-ble, ap-ple (clap as you read!)
-5. Story Map Chart  boxes labelled"First","Next","Last"6. My Name Chart  your photo + your name to trace with dry-erase marker`}, { title:'How You Are Assessed', content: ` Can you identify the 5 vowels?
- Can you sound out a word beginning with m, s, or b?
- Can you write your own first name?
- Can you sequence a 3-part story?`},],'Mathematics Activities': [ { title:'Overview', content: `PP2 Numeracy extends skills to larger numbers, deeper measurement concepts, and introduces money and time. The concrete, hands-on approach continues.`}, { title:'Numbers', content: ` Number Sequencing: rote counting and sequencing numbers 130
+a - apple (short) / acorn (long)
+e - egg (short) / eel (long)
+i - igloo (short) / ice (long)
+o - octopus (short) / over (long)
+u - up (short) / unicorn (long)
+
+When a vowel says its LONG sound, it says its own NAME!`}, { title:'Listening and Speaking', kidSummary:'Let us listen carefully and talk about our day!', content: `Let's practice every day:
+- Listen for the first sound in a word, like "m" in "mango"
+- Tell a friend about your family or your favourite food
+- Say "Good morning", "Good afternoon" and "Good evening"
+- Say "please", "thank you" and "sorry"`}, { title:'Reading Skills', kidSummary:'We look at words from left to right, just like this!', content: `Let's practice every day:
+- Point to words and read from LEFT to RIGHT
+- Find a letter, then find a word
+- Remember pictures in the order we saw them
+- Know these sounds: m, s, t, b
+- Know our vowel sounds: a, e, i, o, u`}, { title:'Writing Skills', kidSummary:'Let us trace lines, curves, and our own name!', content: `Let's practice every day:
+- Trace lines, curves and loops
+- Trace and copy the letters a, e, i, o, u
+- Start writing the first letter of YOUR name
+- Hold your pencil gently with 3 fingers`}, { title:'Simple Words with Pictures', kidSummary:'Look at the pictures and say each word out loud!', content: `Look at the pictures and say each word.
+
+c-a-t = cat   h-a-t = hat   s-u-n = sun
+
+Say each sound slowly, then say the whole word!`}, { title:'Key Charts to Know', kidSummary:'Look at these charts every day to help you remember!', content: `1. Vowels Chart - a=apple/acorn, e=egg/eel, i=igloo/ice, o=octopus/over, u=up/unicorn
+2. Alphabet Chart - Aa=Apple, Bb=Ball, Cc=Cupcake, Dd=Duck, Ee=Elephant
+3. Beginning Sounds Chart - m=mango, s=sun, b=ball, t=table
+4. Syllable Chart - ba-by, ta-ble, ap-ple (clap as you read!)
+5. Story Map Chart - First, Next, Last
+6. My Name Chart - your photo and your name to trace`}, { title:'How You Are Assessed', kidSummary:'Let us see what you can do. Try your best!', content: ` Can you say the 5 vowel sounds?
+ Can you say a word that starts with m, s, or b?
+ Can you write the first letter of your name?
+ Can you say what happens first, next, and last in a story?`},],'Kiswahili Activities': [ { title:'Salamu na Familia', content: 'Greetings and family words in Kiswahili.'}, { title:'Maneno ya Kila Siku', content: 'Daily words: maji, chakula, shule, kitabu, kalamu.'}, { title:'Rangi na Hesabu', content: 'Colours and numbers 1-10 in Kiswahili.'}, { title:'Silabi za Msingi', content: 'Basic syllables: Ba Be Bi Bo Bu, Ma Me Mi Mo Mu.'}, { title:'Tathmini (Assessment)', content: 'Je, unaweza kusema habari yako?\nJe, unajua jina lako kwa Kiswahili?\nJe, unaweza kuhesabu 1-10 kwa Kiswahili?'},],'Mathematics Activities': [ { title:'Overview', content: `PP2 Numeracy extends skills to larger numbers, deeper measurement concepts, and introduces money and time. The concrete, hands-on approach continues.`}, { title:'Numbers', content: ` Number Sequencing: rote counting and sequencing numbers 130
  Counting Concrete Objects: one-to-one correspondence up to 20
  Putting Together (Early Addition): adding two groups under 10 using objects
  Modelling Numbers: representing numbers using bundles of sticks`}, { title:'Measurement', content: ` Length: comparing using non-standard units (handspan, paces)
@@ -171,18 +464,11 @@ RULE: Long vowels say their NAME.`}, { title:'Listening and Speaking', content: 
 2. Rainbow of Friends Chart  each colour = a quality of a good friend
 3. Coughing/Sneezing Manners Poster  use your bent elbow!
 4. Our Class Responsibilities Chart  weekly class jobs (Line Leader, Book Monitor, etc.)`},],}, //  GRADE 1
-'Grade 1': {'Indigenous Language Activities': [ { title:'Overview', content: `This subject develops literacy in your mother tongue or local school language. The strands mirror English and Kiswahili but are rooted in your specific culture, community, and traditions.`}, { title:'Listening and Speaking', content: ` Greetings in the community language
- Extended family vocabulary in mother tongue
- Oral narratives (folktales) and proverbs
- Listening to community elders tell stories`}, { title:'Reading', content: ` Reading simple familiar words in mother tongue
- Matching words to pictures
- Reading short simple sentences
- Using flashcards with local words`}, { title:'Writing', content: ` Writing the letters of the alphabet in that language
- Copying words and simple sentences
- Writing your own name in your mother tongue`}, { title:'Key Charts to Know', content: `1. Community Elders/Helpers Chart  photos of a village elder, traditional midwife, blacksmith (labelled in local language)
+'Grade 1': {'Indigenous Language Activities': [ { title:'Overview', content: `This subject develops literacy in your mother tongue or local school language. The strands mirror English and Kiswahili but are rooted in your specific culture, community, and traditions.`}, { title:'Letters and Words Practice', content: `` }, { title:'Listening and Speaking', content: `Polite words: say "Please," "Thank you," "Excuse me," "Sorry," and "May I." Greetings: say "Good morning," "Good afternoon," and "Goodbye." Self-introduction: tell your name, age, and gender clearly. Classroom commands: listen and follow "Stand up," "Sit down," "Open your book," and "Line up."`, images:[{placeholder:true, caption:"Two Grade 1 pupils shaking hands on the school playground, smiling"}] }, { title:'Reading and Phonics', content: `Letter sounds: say the sound each letter makes, from /a/ to /z/. Word blending: put sounds together to read short words - /c/-/a/-/t/ makes "cat"! Two-letter words to know: an, am, at, in, is, it, on, up, go, to, no, he, me, my, we. Sight words: words we should know by sight without sounding out - the, and, a, see, look, you, they, said, was.`, images:[{placeholder:true, caption:"A bright wall chart with flashcards of sight words like 'the', 'and', 'see', 'look'"}] }, { title:'Language Structures (Grammar)', content: `Naming words (nouns) name people (mother, boy, girl, teacher), places (school, home, shop, church), and things (book, desk, ball, pencil). One and many: add "s" to make many - one boy becomes many boys, one cup becomes many cups. Pronouns replace names: "he" for a boy or man, "she" for a girl or woman, "it" for animals and things. Positional words tell us where: "in" the tin, "on" the table, "under" the chair.`, images:[{placeholder:true, caption:"A small kitten sleeping peacefully under a wooden school chair"}] }, { title:'Guided Writing', content: `Letter formation: write your capital letters (A-Z) and small letters (a-z) correctly and neatly. Spacing: leave a finger-space between each word you write. Punctuation: start every sentence with a capital letter and end it with a full stop (.)` },
+{ title:'Key Charts to Know', content: `1. Community Elders/Helpers Chart  photos of a village elder, traditional midwife, blacksmith (labelled in local language)
 2. Alphabet Chart in Indigenous Language  with locally relevant pictures (e.g., G = traditional gourd)
 3. Oral Narrative Picture Chart  famous local folktale scene (e.g., Hare and Hyena)
-4. Classroom Command Cards "Sit down","Stand up","Come here","Listen"in mother tongue`}, { title:'How You Are Assessed', content: ` Oral response to questions
+4. Classroom Command Cards "Sit down","Stand up","Come here","Listen"in mother tongue 5. The Alphabet & Phonics Chart - grid A to Z with a picture and sound for each letter (Aa=apple, Bb=ball, Cc=cat...Zz=zebra). 6. Opposite Words Chart - Big/Small, Tall/Short, Happy/Sad shown as pictures. 7. Days of the Week Chart - Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday in order`, images:[{placeholder:true, caption:"A large printable wall chart titled OPPOSITES showing a big elephant and a tiny mouse"}] }, { title:'How You Are Assessed', content: ` Oral response to questions
  Reading simple flashcards
  A portfolio of your writing samples is kept throughout the year`},],'Kiswahili Language Activities': [ { title:'Muhtasari (Overview)', content: `Kiswahili Grade 1 inaanzisha usomaji wa msingi wa kusikiliza, kuzungumza, kusoma, na kuandika. Msingi mkuu ni muundo wa silabi za Kiswahili.`}, { title:'Kusikiliza na Kuzungumza', content: `Mada (Topics):
  Salamu na Maamkuzi  Habari za asubuhi / mchana / jioni
@@ -280,14 +566,14 @@ Tip: Flash cards + word wall + read in sentences every day!`},
  Cylinder (soda can)
  Cube (box)
  Cone (party hat)
-Patterns: creating and extending patterns with shapes and colours`}, { title:'Key Charts to Know', content: `1. 100 Chart  10×10 grid with 1100 (most versatile chart in the class!)
-2. 120 Number Chart  12×10 grid with numbers 1–120 — practise counting beyond 100!
+Patterns: creating and extending patterns with shapes and colours`}, { title:'Key Charts to Know', content: `1. 100 Chart  10¿½10 grid with 1100 (most versatile chart in the class!)
+2. 120 Number Chart  12¿½10 grid with numbers 1¿½120 ¿½ practise counting beyond 100!
 3. Place Value Chart  two columns: TENS | ONES (with bundles of sticks)
 4. Kenyan Money Chart  coins (50c, 1, 5, 10, 20 sh) and notes (50, 100, 200 sh)
 5. Addition & Subtraction Strategies Chart  Part-Part-Whole and Count On number line
 6. Shapes Chart  2D: Hexagon, Circle, Pentagon, Square, Diamond, Parallelogram, Oval, Octagon, Trapezoid, Rectangle, Heart, Star, Crescent, Triangle | 3D: Sphere (ball), Cylinder (tin can), Cube (box), Cone (party hat)`}, { title:'How You Are Assessed', content: ` Count from any number to 100
  Show 47 using tens and ones
- Add: 23 + 5 = ? | Subtract: 10 - 4 = ?
+ Add: 23 + 5 = | Subtract: 10 - 4 = 
  Identify a 10-shilling coin and a 50-shilling note
  Name 4 2D shapes and 4 3D shapes`},],'Environmental Activities': [ { title:'Overview', content: `Grade 1 Environmental Activities is an integrated subject covering social studies, natural science, and health. Hygiene and Nutrition are fully embedded throughout.`}, { title:'Social Environment', content: ` Cleaning my body: proper hygiene habits
  Our Home: different types of houses
@@ -308,14 +594,8 @@ Patterns: creating and extending patterns with shapes and colours`}, { title:'Ke
  Name the 3 food groups and give an example of each
  Identify today's weather
  Name 3 wild animals and 3 domestic animals
- Describe the difference between sandy and clay soil`},],'Religious Education Activities': [ { title:'Overview (CRE)', content: `Grade 1 CRE builds on the foundation of creation and introduces deeper stories from the life of Jesus and strong Christian values like obedience and gratitude.`}, { title:"God's Creation", content: ` Plants, animals, sea, and the universe  all created by God
- The order of creation: light, sky, land, plants, animals, humans
- Our responsibility to care for God's creation (environmental stewardship)`}, { title:'The Life of Jesus Christ', content: ` The birth of Jesus  shepherds, magi (wise men), the star
- Jesus was born in Bethlehem in a manger
- Mary and Joseph were chosen by God
- The gifts of the Magi: gold, frankincense, and myrrh`}, { title:'Christian Values', content: ` Obedience: why it's important to listen and obey
- Kindness: The Good Samaritan  a man helped a stranger in need
- Gratitude: saying thank you to God and to people who help us`}, { title:'Key Charts to Know', content: `1. Creation Story 7-Day Poster  set of 7 cards in sequence (Day 1=light ... Day 7=rest)
+ Describe the difference between sandy and clay soil`},],'Religious Education Activities': [ { title:"God Made Me Special", content: `God made YOU on purpose! He gave you eyes to see His beautiful world, ears to hear songs and instructions, a mouth to speak kind words and praise Him, hands to help and create, and feet to walk to good places. God knows your name! In the Bible He says "I have called you by name; you are mine" (Isaiah 43:1). That means God loves YOU - not just a crowd of people. You are special, and you are not an accident!`, kidSummary:"God made you special and knows your name! Use your eyes, ears, mouth, hands and feet to love Him and others.", images:[{placeholder:true, caption:"A child looking in a mirror, pointing happily at their own face"}] }, { title:'My Family', content: `God gives every child a family to love and take care of them. A family has a father, mother, and children who love God and love each other. The Bible says: "Obey your parents... so that it may go well with you" (Ephesians 6:1-3). We honor our parents by speaking kindly and listening to them. Helping with small chores - like tidying toys or wiping a table - shows we love our family. Praying together - before meals and before bed - helps us say thank you to God and feel safe.`, kidSummary:"Love and obey your family! Helping with chores and praying together shows God's love.", images:[{placeholder:true, caption:"A family of four sitting together with hands joined, praying with eyes closed"}] }, { title:"God's Other Creations", content: `God made more than just people! He made plants for food and beauty, and they help us breathe. He made animals too - some live with us like cows, dogs and chickens (domestic animals), and some live in the wild like lions and eagles (wild animals). God told Adam to take care of the garden (Genesis 2:15). When we water a plant or pick up litter, we are taking care of what God made - just like Adam did!`, kidSummary:"God made plants and animals too! Taking care of them is a way of obeying God.", images:[{placeholder:true, caption:"A child watering a small plant in a sunny garden with birds and butterflies nearby"}] }, { title:'The Holy Bible', content: `The Bible is a very special book - God's own Word! He "breathed out" His words through people who wrote them down (2 Timothy 3:16). The Bible is not like any other book - it can change our hearts when we read it. It has 66 books in two parts: the Old Testament (39 books, the story before Jesus was born) and the New Testament (27 books, the story of Jesus and the church). Because the Bible's message comes from God, we treat it with care and respect.`, kidSummary:"The Bible is God's special Word with 66 books. We treat it with care because it is from God.", images:[{placeholder:true, caption:"A child carefully placing a Bible on a clean table with a respectful expression"}] }, { title:'Bible Stories', content: `Creation: God made the world in 6 days just by speaking - light, sky, sea, land, plants, animals, and people! On the 7th day He rested, and that's why we rest too. Noah's Ark: Noah obeyed God and built a huge boat to save his family and the animals from a flood, because Noah trusted God completely. David and Goliath: A giant named Goliath scared everyone, but young David was brave because he trusted God's power, not just his sling and stone. With God's help, David won!`, kidSummary:"God made the world, saved Noah, and helped brave David. God is powerful and we can trust Him!", images:[{placeholder:true, caption:"Young David standing bravely in a field holding a sling, facing a giant's shadow"}] }, { title:'The Birth of Jesus', content: `An angel told Mary she would have a very special baby - God's own Son! Mary said "yes" to God even though it wasn't easy (Luke 1:38). Baby Jesus was born in a stable, not a palace, and was placed in a manger - the place where animals eat. God's biggest announcement was given to humble shepherds, who ran to tell everyone the wonderful news!`, kidSummary:"Jesus was born in a humble manger, and shepherds were the first to hear the good news!", images:[{placeholder:true, caption:"Baby Jesus sleeping peacefully in a manger filled with hay, glowing softly at night"}] }, { title:'Jesus Growing Up', content: `The Bible says "Jesus grew in wisdom and stature, and in favor with God and man" (Luke 2:52) - that means He grew smart, strong, loving God, and kind to people! At 12 years old, Jesus amazed the teachers in the temple with His questions about God's Word, and He obeyed Mary and Joseph perfectly. When Jesus grew up, He was baptized, and God's voice from heaven said, "This is my Son, whom I love."`, kidSummary:"Jesus grew up obeying His parents and loving God's Word. At His baptism, God called Him His beloved Son.", images:[{placeholder:true, caption:"Young Jesus sitting among temple teachers, holding a scroll and listening closely"}] }, { title:'Christian Values', content: `Obedience means doing what we're asked, all the way, right away, with a happy heart - because we love God and our parents (John 14:15). Sharing is being like God, who shared His own Son with us (Romans 8:32) - when we share a crayon or a snack, we show God's love. Thankfulness means remembering that everything is a gift from God (James 1:17), so we say "thank you" often! Honesty means telling the truth even when we make a mistake - God already knows the truth, and He is happy when we are honest.`, kidSummary:"Obey with a happy heart, share like God shares, say thank you, and always tell the truth!", images:[{placeholder:true, caption:"Two children sharing a box of crayons and smiling at each other"}] },
+{ title:'Key Charts to Know', content: `1. Creation Story 7-Day Poster  set of 7 cards in sequence (Day 1=light ... Day 7=rest)
 2. The Good Samaritan Chart  large illustrated picture for character and moral discussion
 3. The Lord's Prayer Chart  colourful poster with words, illustrated stanza by stanza`}, { title:'How You Are Assessed', content: ` Sequence the 7 days of creation
  Retell the story of the Good Samaritan in your own words
@@ -441,8 +721,8 @@ ch (chair), sh (shoe), th (thumb), wh (wheel), ph (phone), ng (king), ck (clock)
  Capacity: comparing containers  which holds more/less?
  Time: telling time to the HOUR and HALF-HOUR on an analogue clock"o'clock"= minute hand on 12 |"half past"= minute hand on 6
  Money: Kenyan coins and notes up to 200 shillings; adding money`}, { title:'Geometry & Fractions', content: `2D Shapes: square, rectangle, circle, triangle, oval (oval is the NEW one this year!) Simple Fractions (NEW this year!):
- Half (½): a shape divided into 2 EQUAL parts  each part is ½
- Quarter (¼): a shape divided into 4 EQUAL parts  each part is ¼
+ Half (¿½): a shape divided into 2 EQUAL parts  each part is ¿½
+ Quarter (¿½): a shape divided into 4 EQUAL parts  each part is ¿½
  KEY word: EQUAL parts  if parts are not equal, it is NOT a fraction!`}, { title:'Key Charts to Know', content: `1. 100 Chart with Skip Counting  multiples of 2 (blue), 5 (red), 10 (yellow) highlighted
 2. Place Value Mat Chart  TENS | ONES with bundles of sticks and numeral cards
 3. Addition Strategies Chart  Counting On, Breaking Apart, Using 100 Chart (3 methods!)
@@ -452,9 +732,9 @@ ch (chair), sh (shoe), th (thumb), wh (wheel), ph (phone), ng (king), ck (clock)
 7. Telling Time Poster  analogue clock with"o'clock"and"half past"clearly shown
 8. Measurement Tools Chart  ruler (length), balance (mass), containers (capacity)`}, { title:'How You Are Assessed', content: ` Count backwards from 80 in 2s
  Show 54 using tens and ones
- Add: 43 + 26 = ? using the Breaking Apart strategy
+ Add: 43 + 26 = using the Breaking Apart strategy
  What time is it? (analogue clock showing half past 3)
- Which is ½ of this shape? (identify the correctly divided shape)
+ Which is ¿½ of this shape? (identify the correctly divided shape)
  Is this fraction correct? (Are the parts equal?)`},],'Environmental Activities': [ { title:'Overview', content: `Grade 2 Environmental Activities explores the world further  from your home and neighbourhood outward to the nation. This subject covers weather, water, soil, national symbols, rights, markets, and health.`}, { title:'Natural Environment', content: `Weather and the Sky:
  Making daily weather observations and recording them in a table
  Interpreting weather messages (cloud+rain drops = rainy day)
@@ -519,7 +799,7 @@ ch (chair), sh (shoe), th (thumb), wh (wheel), ph (phone), ng (king), ck (clock)
  Along pathways: straight line, wavy curve, sharp zigzag, circle Turning:
  Left (Kushoto), Right (Kulia)
  Half Turn (Nusu mzunguko) = facing the opposite direction
- Full Turn (Zunguko zima) = facing same direction after spinning 360° Ball Skills:
+ Full Turn (Zunguko zima) = facing same direction after spinning 360¿½ Ball Skills:
  Underarm throwing at a target
  Catching a bounced ball
  Rolling a ball along different pathways`}, { title:'Visual Arts', content: `Drawing and Painting: representing objects using lines and simple shapes Texture (NEW!):
@@ -603,7 +883,7 @@ Self-regulation: breathing and counting to calm yourself down.`}, { title:'Frien
  Understand what you read (literal AND inferential comprehension)
  Write short well-organised compositions
  Use parts of speech, tenses, and punctuation correctly`}, { title:'Listening and Speaking', content: ` Effective communication: group discussions, giving directions, asking for clarification
- Pronunciation: difficult sounds /θ/ (think, three), /ð/ (this, that), and multi-syllabic words
+ Pronunciation: difficult sounds /?/ (think, three), /¿½/ (this, that), and multi-syllabic words
  Listening comprehension: understanding stories and information presented orally`}, { title:'Reading  Fluency & Comprehension', content: `Fluency: reading with speed, accuracy, AND prosody (expression that shows meaning) Comprehension  6 key skills:
 1. Identifying the MAIN IDEA  what is this mostly about?
 2. Recalling SEQUENCE  what happened first, next, last?
@@ -628,20 +908,20 @@ Self-regulation: breathing and counting to calm yourself down.`}, { title:'Frien
  Addition and Subtraction WITH REGROUPING (carrying and borrowing!)
  Multiplication tables: 2, 3, 4, 5, 10
  Division as sharing and grouping
- Fractions: ½, ¼, , 
+ Fractions: ¿½, ¿½, , 
  Measurement in standard units: cm, m, kg, litres`}, { title:'Numbers up to 1000', content: ` Reading, writing, comparing, and ordering numbers 11000
- Place Value: HUNDREDS, TENS, ONES e.g., 452 = 4 hundreds + 5 tens + 2 ones Expanded form: 452 = 400 + 50 + 2  Addition WITH REGROUPING (carrying):"If it's ten or more, carry next door!"e.g., 258 + 167: ones=15 (write 5, carry 1), tens=12 (write 2, carry 1), hundreds=4  425  Subtraction WITH REGROUPING (borrowing): When you can't subtract, borrow from the next column!`}, { title:'Multiplication', content: `Multiplication is REPEATED ADDITION: 3 × 4 = 4 + 4 + 4 = 12 Four ways to understand multiplication:
-1. Repeated Addition: 3 × 4 = 4+4+4
+ Place Value: HUNDREDS, TENS, ONES e.g., 452 = 4 hundreds + 5 tens + 2 ones Expanded form: 452 = 400 + 50 + 2  Addition WITH REGROUPING (carrying):"If it's ten or more, carry next door!"e.g., 258 + 167: ones=15 (write 5, carry 1), tens=12 (write 2, carry 1), hundreds=4  425  Subtraction WITH REGROUPING (borrowing): When you can't subtract, borrow from the next column!`}, { title:'Multiplication', content: `Multiplication is REPEATED ADDITION: 3 ¿½ 4 = 4 + 4 + 4 = 12 Four ways to understand multiplication:
+1. Repeated Addition: 3 ¿½ 4 = 4+4+4
 2. Equal Groups: 3 groups of 4 stars
 3. Array: 3 rows of 4 dots
-4. Skip Counting: 4, 8, 12 on a number line Times tables to know: 2, 3, 4, 5, 10`}, { title:'Division', content: `Division = sharing OR grouping (both give same answer!) SHARING: 12 ÷ 4 ="Share 12 cookies among 4 plates  3 each"GROUPING: 12 ÷ 4 ="Put 12 cookies into bags of 4  3 bags"Division and multiplication are FACT FAMILIES:
-3 × 4 = 12 | 4 × 3 = 12 | 12 ÷ 3 = 4 | 12 ÷ 4 = 3`}, { title:'Fractions', content: `Understanding fractions of a WHOLE shape AND of a SET:
- ½ = 2 equal parts, take 1
- ¼ = 4 equal parts, take 1
+4. Skip Counting: 4, 8, 12 on a number line Times tables to know: 2, 3, 4, 5, 10`}, { title:'Division', content: `Division = sharing OR grouping (both give same answer!) SHARING: 12 ¿½ 4 ="Share 12 cookies among 4 plates  3 each"GROUPING: 12 ¿½ 4 ="Put 12 cookies into bags of 4  3 bags"Division and multiplication are FACT FAMILIES:
+3 ¿½ 4 = 12 | 4 ¿½ 3 = 12 | 12 ¿½ 3 = 4 | 12 ¿½ 4 = 3`}, { title:'Fractions', content: `Understanding fractions of a WHOLE shape AND of a SET:
+ ¿½ = 2 equal parts, take 1
+ ¿½ = 4 equal parts, take 1
   = 3 equal parts, take 1
   = 8 equal parts, take 1 Fraction of a SET:
- ¼ of 12 apples = 12 ÷ 4 = 3 apples
- ½ of 20 children = 20 ÷ 2 = 10 children KEY: Parts must ALWAYS be EQUAL!`}, { title:'Measurement', content: `Length: Centimetres (cm) and Metres (m)  100 cm = 1 m
+ ¿½ of 12 apples = 12 ¿½ 4 = 3 apples
+ ¿½ of 20 children = 20 ¿½ 2 = 10 children KEY: Parts must ALWAYS be EQUAL!`}, { title:'Measurement', content: `Length: Centimetres (cm) and Metres (m)  100 cm = 1 m
 Mass: Kilograms (kg)  1 kg = 1000 g
 Capacity: Litres (l) Time:
  Reading an analogue clock to the nearest 5 MINUTES
@@ -652,12 +932,12 @@ Capacity: Litres (l) Time:
 2. Addition with Regrouping Poster  step-by-step example with"carry"circles
 3. Multiplication Strategies Chart  4 quadrants: Repeated Addition, Equal Groups, Array, Skip Counting
 4. Division Sharing vs Grouping Chart  cookies shared vs cookies in bags
-5. Fractions of a Set Chart  ¼ of 12 apples = 3 coloured apples
+5. Fractions of a Set Chart  ¿½ of 12 apples = 3 coloured apples
 6. Measurement Reference Chart  metre stick, 1 kg flour bag, 1-litre carton
-7. Telling Time to 5 Minutes Poster  analogue clock with"quarter past/to"`}, { title:'How You Are Assessed', content: ` Solve: 378 + 245 = ? (with regrouping shown)
- What is 6 × 5? Show using an array.
+7. Telling Time to 5 Minutes Poster  analogue clock with"quarter past/to"`}, { title:'How You Are Assessed', content: ` Solve: 378 + 245 = (with regrouping shown)
+ What is 6 ¿½ 5? Show using an array.
  Share 18 sweets among 3 friends  how many each?
- What is ¼ of 16? Draw it!
+ What is ¿½ of 16? Draw it!
  Measure this line in cm
  Performance task: plan a class party with a 100-shilling budget`},],'Environmental Activities': [ { title:'Overview', content: `Grade 3 Environmental Activities emphasizes CRITICAL THINKING and applying knowledge to real life. Topics:
  Natural: weather, soil types, sources of heat and heat safety
@@ -673,7 +953,7 @@ Capacity: Litres (l) Time:
  Keeping your sleeping area clean:  Anika matandiko kwenye jua (Air bedding in the sun)  Fagia chumba kila siku (Sweep the room daily)  Badilisha shuka mara kwa mara (Change sheets regularly) Coping with Bedwetting:
  This is a MEDICAL and DEVELOPMENTAL issue  NOT a failing
  Helpful tips: use the toilet before sleeping, drink less water just before bed
- Always tell a parent or teacher  they will help, not punish you`}, { title:'Waste Management  The 3Rs', content: `PUNGUZA (Reduce): Use LESS  carry a reusable water bottle instead of buying disposables TENA (Reuse): Use again  use a glass jar to store pencils instead of throwing it away REJELEA (Recycle): Transform  old newspapers become papier-mâché art! Colour-coded bins:
+ Always tell a parent or teacher  they will help, not punish you`}, { title:'Waste Management  The 3Rs', content: `PUNGUZA (Reduce): Use LESS  carry a reusable water bottle instead of buying disposables TENA (Reuse): Use again  use a glass jar to store pencils instead of throwing it away REJELEA (Recycle): Transform  old newspapers become papier-m¿½ch¿½ art! Colour-coded bins:
  Green bin: organic waste (food scraps, leaves)  becomes compost
  Blue bin: recyclables (paper, plastic, metal)  sent to recycling
  Black bin: non-recyclables (broken glass, hazardous items)`}, { title:'Water Conservation', content: ` Turn off the tap while brushing teeth  EVERY drop counts
@@ -736,7 +1016,7 @@ Capacity: Litres (l) Time:
  Patterns: over-under, alternating two colours, 2-over 1-under
  The process: cut warp (vertical strips), cut weft (horizontal), weave over-under-over`}, { title:'Music  Rhythm, Melody & Rounds', content: `Rhythm and Pattern Making:
  Creating and PERFORMING your own rhythmic phrases
- Composition Grid: fill a 4×4 beat grid with clap, stomp, shaker, rest symbols Melody:
+ Composition Grid: fill a 4¿½4 beat grid with clap, stomp, shaker, rest symbols Melody:
  Humming and simple pitch matching
  Creating a simple melody for given words ROUNDS (NEW this year!):
  A round is when different groups sing the SAME song but start at DIFFERENT times
@@ -745,7 +1025,7 @@ Capacity: Litres (l) Time:
  Challenge: don't get confused by the other group  stay on your part!`}, { title:'Key Charts to Know', content: `1. Skipping Skills Progression Chart  5 levels (self-paced challenge)
 2. Pushing & Pulling Safety Poster  correct posture and dangerous actions 3. Weaving Patterns and Process Poster  3 stages: cut warp  cut weft  weave over-under
 4. Collage Inspiration Gallery  examples of collage art + materials list
-5. Rhythm Composition Grid Chart  4×4 beat grid with notation cards
+5. Rhythm Composition Grid Chart  4¿½4 beat grid with notation cards
 6."Round"Singing Visual Chart  stick figures showing Group 1, Group 2, Group 3 entering at the mark
 7. Colour Value and Shading Chart  blue from light tint to dark shade`}, { title:'How You Are Assessed', content: ` Motor: Can you skip rhythmically? Can you push/pull with correct body posture?
  Art: Did you use shading? Did you mix colours well? Is your weaving pattern consistent?

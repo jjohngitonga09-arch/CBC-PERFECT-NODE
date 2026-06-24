@@ -1,10 +1,11 @@
-import { useEffect, useState, useCallback, useRef } from 'react'
+﻿import { useEffect, useState, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../services/api'
 import useAuthStore from '../../store/authStore'
 import Spinner from '../../components/common/Spinner'
 import toast from 'react-hot-toast'
 import { getSocket } from '../../services/socketService'
+import InviteCard from '../../components/student/InviteCard'
 
 export default function StudentSubscription() {
  return <><SubscriptionPage role="student" /><PaymentFAB /></>
@@ -52,7 +53,7 @@ function SubscriptionPage({ role }) {
  const socket = getSocket()
  if (!socket) return
  const handler = () => {
- toast.success('Payment confirmed! Welcome back!', { duration: 3000, icon: '🎉' })
+  toast.success('Payment confirmed! Welcome back!', { duration: 3000, icon: '??' })
  setTimeout(() => navigate('/'), 2500)
  }
  socket.on('subscription:activated', handler)
@@ -139,7 +140,7 @@ function SubscriptionPage({ role }) {
  {/* Status banner */}
  {isLocked && (
  <div style={{ background:'rgba(239,68,68,.08)', border:'1px solid rgba(239,68,68,.3)', borderRadius:'14px', padding:'16px 20px', marginBottom:'24px', display:'flex', gap:'12px', alignItems:'center' }}>
- <span style={{ fontSize:'1.8rem' }}>🔒</span>
+ <span style={{ fontSize:'1.8rem' }}>ðŸ”’</span>
  <div>
  <p style={{ fontWeight:700, color:'#f87171', margin:'0 0 3px' }}>Dashboard Locked</p>
  <p style={{ color:'var(--sub)', fontSize:'.83rem', margin:0 }}>Your access has been restricted. Please choose a plan below to restore access.</p>
@@ -148,22 +149,22 @@ function SubscriptionPage({ role }) {
  )}
  {isActive && (
  <div style={{ background:'rgba(16,185,129,.08)', border:'1px solid rgba(16,185,129,.3)', borderRadius:'14px', padding:'16px 20px', marginBottom:'24px', display:'flex', gap:'12px', alignItems:'center' }}>
- <span style={{ fontSize:'1.8rem' }}>✅</span>
+ <span style={{ fontSize:'1.8rem' }}>…</span>
  <div>
- <p style={{ fontWeight:700, color:'#34d399', margin:'0 0 3px' }}>Active — {sub.plan_name || sub.plan_id} Plan</p>
+ <p style={{ fontWeight:700, color:'#34d399', margin:'0 0 3px' }}>Active â€” {sub.plan_name || sub.plan_id} Plan</p>
  <p style={{ color:'var(--sub)', fontSize:'.83rem', margin:0 }}>
  {sub.expiry_date ? 'Renews ' + new Date(sub.expiry_date).toLocaleDateString() : 'Active subscription'}
  </p>
 
  </div>
- <button onClick={() => navigate('/')} style={{ background:'#34d399', color:'#000', border:'none', borderRadius:'10px', padding:'9px 20px', fontWeight:700, fontSize:'.85rem', cursor:'pointer', flexShrink:0 }}>Go to Dashboard</button>
+ <button onClick={() => navigate('/student/home')} style={{ background:'#34d399', color:'#000', border:'none', borderRadius:'10px', padding:'9px 20px', fontWeight:700, fontSize:'.85rem', cursor:'pointer', flexShrink:0 }}>Go to Dashboard</button>
  </div>
  )}
 
  {/* Sent confirmation notice */}
  {sent && (
  <div style={{ background:'rgba(99,102,241,.08)', border:'1px solid rgba(99,102,241,.3)', borderRadius:'14px', padding:'16px 20px', marginBottom:'24px', textAlign:'center' }}>
- <p style={{ fontWeight:700, color:'#a5b4fc', margin:'0 0 4px' }}>✅ Confirmation Sent!</p>
+ <p style={{ fontWeight:700, color:'#a5b4fc', margin:'0 0 4px' }}>… Confirmation Sent!</p>
  <p style={{ color:'var(--sub)', fontSize:'.83rem', margin:0 }}>Admin will review and activate your plan shortly. You will receive a notification.</p>
  </div>
  )}
@@ -195,7 +196,7 @@ function SubscriptionPage({ role }) {
  {(plan.features || []).map((feat, fi) => (
  <li key={fi} style={{ display:'flex', gap:'8px', alignItems:'center', marginBottom:'6px', fontSize:'.82rem', color: feat.included ? '#d1d5db' : 'var(--sub)' }}>
  <span style={{ color: feat.included ? '#34d399' : '#ef4444', fontWeight:700, fontSize:'.9rem', flexShrink:0 }}>
- {feat.included ? '✓' : '✗'}
+  {feat.included ? '?' : '?'}
  </span>
  {feat.text}
  </li>
@@ -218,10 +219,12 @@ function SubscriptionPage({ role }) {
  })}
  </div>
 
+ <InviteCard />
+
  {/* Confirmation message form (after payment) */}
  {showConfirm && (
  <div style={{ ...card, marginBottom:'24px' }}>
- <h3 style={{ color:'var(--text)', fontWeight:700, margin:'0 0 4px' }}>📨 Confirm Your Payment</h3>
+ <h3 style={{ color:'var(--text)', fontWeight:700, margin:'0 0 4px' }}>ðŸ“¨ Confirm Your Payment</h3>
  <p style={{ color:'var(--sub)', fontSize:'.83rem', margin:'0 0 16px' }}>Enter your M-Pesa confirmation code and send a message to admin for activation.</p>
  <input
  style={{ width:'100%', background:'var(--bg)', border:'1px solid var(--border)', color:'var(--text)', borderRadius:'10px', padding:'10px 12px', marginBottom:'10px', fontSize:'.85rem', boxSizing:'border-box' }}
@@ -254,7 +257,7 @@ function SubscriptionPage({ role }) {
  <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.7)', zIndex:1000, display:'flex', alignItems:'center', justifyContent:'center', padding:'20px' }}>
  <div style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'20px', padding:'28px', width:'100%', maxWidth:'400px' }}>
  <h3 style={{ color:'var(--text)', fontWeight:800, margin:'0 0 4px', fontSize:'1.2rem' }}>Pay with M-Pesa</h3>
- <p style={{ color:'var(--sub)', margin:'0 0 20px', fontSize:'.85rem' }}>Plan: {modal.name} — KES {Number(modal.price).toLocaleString()}/{modal.period}</p>
+ <p style={{ color:'var(--sub)', margin:'0 0 20px', fontSize:'.85rem' }}>Plan: {modal.name} â€” KES {Number(modal.price).toLocaleString()}/{modal.period}</p>
  <p style={{ color:'var(--sub)', fontSize:'.82rem', margin:'0 0 8px', fontWeight:600 }}>M-Pesa Phone Number</p>
  <input
  style={{ width:'100%', background:'var(--surface)', border:'1px solid var(--border)', color:'var(--text)', borderRadius:'10px', padding:'11px 14px', fontSize:'1rem', boxSizing:'border-box', marginBottom:'16px' }}
@@ -263,7 +266,7 @@ function SubscriptionPage({ role }) {
  type="tel" maxLength={12}
  />
  <div style={{ background:'rgba(99,102,241,.08)', border:'1px solid rgba(99,102,241,.2)', borderRadius:'10px', padding:'12px 16px', marginBottom:'20px', fontSize:'.82rem', color:'#a5b4fc' }}>
- 📱 You will receive an M-Pesa prompt on your phone. Enter your PIN to complete payment.
+ ðŸ“± You will receive an M-Pesa prompt on your phone. Enter your PIN to complete payment.
  </div>
  <div style={{ display:'flex', gap:'10px' }}>
  <button onClick={()=>setModal(null)} style={{ flex:1, padding:'11px', background:'var(--surface-hover)', color:'var(--sub)', border:'none', borderRadius:'10px', fontWeight:600, cursor:'pointer' }}>Cancel</button>
@@ -289,7 +292,8 @@ function PaymentFAB() {
   const [selPlan, setSelPlan] = useState('')
   const [sending, setSending] = useState(false)
   const bottomRef = useRef(null)
-  const prevConfirmed = useRef(false)
+  const prevConfirmed = useRef(null)
+  const redirected = useRef(false)
 
   useEffect(() => {
     api.get('/subscriptions/plans').then(r => {
@@ -321,7 +325,7 @@ function PaymentFAB() {
         if (existing.some(r => r.id === payload.id)) return m
         return { ...m, replies: [...existing, payload] }
       }))
-      toast('New reply from support', { icon: '🛡️' })
+      toast('New reply from support', { icon: 'ðŸ›¡ï¸' })
     }
     socket.on('payment:reply', handler)
     return () => socket.off('payment:reply', handler)
@@ -332,9 +336,12 @@ function PaymentFAB() {
   }, [msgs, open])
 
   useEffect(() => {
+    if (redirected.current) return
+    if (!msgs.length && prevConfirmed.current === null) return
     const hasConfirmed = msgs.some(m => m.status === 'confirmed')
-    if (hasConfirmed && !prevConfirmed.current) {
-      toast.success('Payment verified! Entering your account...', { duration: 3000, icon: '🎉' })
+    if (hasConfirmed && prevConfirmed.current === false) {
+      redirected.current = true
+      toast.success('Payment verified! Entering your account...', { duration: 3000, icon: '??' })
       setTimeout(() => window.location.reload(), 2800)
     }
     prevConfirmed.current = hasConfirmed
@@ -367,10 +374,10 @@ function PaymentFAB() {
   const firstName = (user?.name || user?.username || '').split(' ')[0] || 'there'
   const getReply = (status, isDuplicatePending) => {
     if (status === 'pending' && isDuplicatePending) {
-      return { text: 'Please wait, ' + firstName + ' — we are still reviewing your earlier message. No need to resend.', col: '#fbbf24', bg: 'rgba(251,191,36,0.1)' }
+      return { text: 'Please wait, ' + firstName + ' â€” we are still reviewing your earlier message. No need to resend.', col: '#fbbf24', bg: 'rgba(251,191,36,0.1)' }
     }
     return ({
-      confirmed: { text: 'Hi ' + firstName + '! Great news — your payment has been verified and your account is now active. Welcome back! 🎉', col: '#34d399', bg: 'rgba(52,211,153,0.12)' },
+      confirmed: { text: 'Hi ' + firstName + '! Great news â€” your payment has been verified and your account is now active. Welcome back! ðŸŽ‰', col: '#34d399', bg: 'rgba(52,211,153,0.12)' },
       rejected:  { text: 'Hi ' + firstName + ', unfortunately we could not confirm your payment. Please resend the correct M-Pesa message or contact support. We are happy to help!', col: '#f87171', bg: 'rgba(248,113,113,0.1)' },
       pending:   { text: 'Hi ' + firstName + ', I hope your day is going well! We have found your message. Sit tight, your account will resume in a few minutes once verified. Thank you for your patience!', col: '#fbbf24', bg: 'rgba(251,191,36,0.1)' },
     }[status] || { text: 'Hi ' + firstName + ', awaiting review...', col: 'var(--sub)', bg: 'var(--surface-hover)' })
@@ -440,7 +447,7 @@ function PaymentFAB() {
               </div>
               <div>
                 <p style={{ margin: 0, fontWeight: 700, color: '#fff', fontSize: '1.05rem' }}>Payment Support</p>
-                <p style={{ margin: '2px 0 0', color: 'rgba(255,255,255,0.8)', fontSize: '.78rem' }}>Paste your M-Pesa message — we will activate your account</p>
+                <p style={{ margin: '2px 0 0', color: 'rgba(255,255,255,0.8)', fontSize: '.78rem' }}>Paste your M-Pesa message â€” we will activate your account</p>
               </div>
             </div>
             <button onClick={() => setOpen(false)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: '38px', height: '38px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.1rem', fontWeight: 700 }}>
@@ -452,9 +459,9 @@ function PaymentFAB() {
           <div style={{ flex: 1, overflowY: 'auto', padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: '14px', maxWidth: '680px', width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
             {msgs.length === 0 && (
               <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>💳</div>
+                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>ðŸ’³</div>
                 <p style={{ color: 'var(--sub)', fontSize: '.9rem', margin: 0, lineHeight: 1.6 }}>
-                  Already paid via M-Pesa?<br/>Select your plan below and paste your M-Pesa confirmation message — we will verify and activate your account.
+                  Already paid via M-Pesa?<br/>Select your plan below and paste your M-Pesa confirmation message â€” we will verify and activate your account.
                 </p>
               </div>
             )}
@@ -468,13 +475,13 @@ function PaymentFAB() {
                   <div key={msg.id}>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
                       <div style={{ background: 'linear-gradient(135deg,#22c55e,#16a34a)', color: '#fff', borderRadius: '18px 18px 4px 18px', padding: '12px 16px', maxWidth: '75%', fontSize: '.88rem', lineHeight: 1.6, wordBreak: 'break-word', boxShadow: '0 2px 8px rgba(34,197,94,0.3)' }}>
-                        {msg.message || 'Payment for ' + msg.plan_name + ' — KES ' + msg.amount}
+                        {msg.message || 'Payment for ' + msg.plan_name + ' â€” KES ' + msg.amount}
                         <div style={{ fontSize: '.68rem', color: 'rgba(255,255,255,0.6)', marginTop: '4px', textAlign: 'right' }}>{new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                       </div>
                     </div>
                     {!hasRealReplies && (
                       <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-end', gap: '8px', marginBottom: '14px' }}>
-                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg,#22c55e,#16a34a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '.8rem' }}>🛡️</div>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg,#22c55e,#16a34a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '.8rem' }}>ðŸ›¡ï¸</div>
                         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '18px 18px 18px 4px', padding: '12px 16px', maxWidth: '75%', fontSize: '.88rem', lineHeight: 1.6, color: 'var(--text)', wordBreak: 'break-word' }}>
                           {rp.text}
                         </div>
@@ -483,7 +490,7 @@ function PaymentFAB() {
                     {hasRealReplies && msg.replies.map(rep => (
                       <div key={rep.id} style={{ display: 'flex', justifyContent: rep.sender_role === 'admin' ? 'flex-start' : 'flex-end', alignItems: 'flex-end', gap: '8px', marginBottom: '10px' }}>
                         {rep.sender_role === 'admin' && (
-                          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg,#22c55e,#16a34a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '.8rem' }}>🛡️</div>
+                          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg,#22c55e,#16a34a)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '.8rem' }}>ðŸ›¡ï¸</div>
                         )}
                         <div style={{
                           background: rep.sender_role === 'admin' ? 'var(--surface)' : 'linear-gradient(135deg,#22c55e,#16a34a)',
@@ -511,7 +518,7 @@ function PaymentFAB() {
             {!isReplyMode && (
               <select value={selPlan} onChange={e => setSelPlan(e.target.value)} style={{ width: '100%', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: '12px', color: 'var(--text)', padding: '10px 14px', fontSize: '.85rem', outline: 'none', marginBottom: '10px' }}>
                 <option value="">Select the plan you paid for...</option>
-                {plans.map(p => <option key={p.id} value={p.id}>{p.name} — KES {p.price}/{p.period}</option>)}
+                {plans.map(p => <option key={p.id} value={p.id}>{p.name} â€” KES {p.price}/{p.period}</option>)}
               </select>
             )}
             {isReplyMode && (

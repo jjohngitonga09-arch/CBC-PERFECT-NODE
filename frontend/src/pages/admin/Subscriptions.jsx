@@ -98,7 +98,7 @@ function PlansTab() {
  </div>
  </div>
  <button onClick={()=>savePlan(plan.id)} disabled={saving===plan.id}
- style={{ padding:'9px 20px', background:'#6366f1', color:'#fff', border:'none', borderRadius:'8px', fontWeight:700, cursor:'pointer', whiteSpace:'nowrap' }}>
+ style={{ padding:'9px 20px', background:'#6366f1', color:'#fff', border:'none', borderRadius:'8px', fontWeight:700, cursor:'pointer', whiteSpace:'normal', wordBreak:'break-word' }}>
  {saving===plan.id?'Saving':'Save Plan'}
  </button>
  </div>
@@ -267,12 +267,12 @@ function HistoryTab() {
  <button onClick={load} style={{ background:'var(--surface-hover)', color:'var(--sub)', border:'none', borderRadius:'8px', padding:'7px 14px', cursor:'pointer', fontSize:'.8rem' }}> Refresh</button>
  </div>
  <div style={{ background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'16px', overflow:'hidden' }}>
- <div style={{ overflowX:'auto' }}>
- <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.82rem' }}>
+ <div style={{ overflowX:'auto', maxWidth:'100%', WebkitOverflowScrolling:'touch' }}>
+ <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.82rem' , fontSize:'.78rem'}}>
  <thead>
  <tr style={{ borderBottom:'1px solid var(--border)' }}>
  {['User','Role','Plan','Amount','Status','Last Payment','Expires','Days Left','Actions'].map(h=>(
- <th key={h} style={{ padding:'11px 14px', textAlign:'left', color:'var(--sub)', fontWeight:600, fontSize:'.72rem', textTransform:'uppercase', whiteSpace:'nowrap' }}>{h}</th>
+ <th key={h} style={{ padding:'8px 10px', textAlign:'left', color:'var(--sub)', fontWeight:600, fontSize:'.72rem', textTransform:'uppercase', whiteSpace:'normal', wordBreak:'break-word' }}>{h}</th>
  ))}
  </tr>
  </thead>
@@ -281,22 +281,22 @@ function HistoryTab() {
  <tr key={s.id||i} style={{ borderBottom:'1px solid var(--border)' }}
  onMouseEnter={e=>e.currentTarget.style.background='var(--surface)'}
  onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
- <td style={{ padding:'10px 14px' }}>
+ <td style={{ padding:'8px 10px' }}>
  <p style={{ fontWeight:600, color:'var(--text)', margin:'0 0 2px' }}>{s.name||''}</p>
  <p style={{ color:'var(--sub)', fontSize:'.72rem', margin:0 }}>{s.email||''}</p>
  </td>
- <td style={{ padding:'10px 14px', color:'var(--sub)', textTransform:'capitalize' }}>{s.role||''}</td>
- <td style={{ padding:'10px 14px', color:'#a5b4fc', fontWeight:600 }}>{s.plan_name||s.plan_id||''}</td>
- <td style={{ padding:'10px 14px', color:'#4ade80', fontWeight:700 }}>{s.amount ? 'KES '+Number(s.amount).toLocaleString() : ''}</td>
- <td style={{ padding:'10px 14px' }}>
+ <td style={{ padding:'8px 10px', color:'var(--sub)', textTransform:'capitalize' }}>{s.role||''}</td>
+ <td style={{ padding:'8px 10px', color:'#a5b4fc', fontWeight:600 }}>{s.plan_name||s.plan_id||''}</td>
+ <td style={{ padding:'8px 10px', color:'#4ade80', fontWeight:700 }}>{s.amount ? 'KES '+Number(s.amount).toLocaleString() : ''}</td>
+ <td style={{ padding:'8px 10px' }}>
  <span style={{ color:statusColor[s.status]||'var(--sub)', fontWeight:700, fontSize:'.75rem', textTransform:'uppercase' }}>{s.status}</span>
  </td>
- <td style={{ padding:'10px 14px', color:'var(--sub)', fontSize:'.75rem', whiteSpace:'nowrap' }}>{s.last_payment_date ? new Date(s.last_payment_date).toLocaleDateString() : ''}</td>
- <td style={{ padding:'10px 14px', color:'var(--sub)', fontSize:'.75rem', whiteSpace:'nowrap' }}>{s.expiry_date ? new Date(s.expiry_date).toLocaleDateString() : ''}</td>
- <td style={{ padding:'10px 14px', fontSize:'.75rem', whiteSpace:'nowrap', fontWeight:600 }}>
+ <td style={{ padding:'8px 10px', color:'var(--sub)', fontSize:'.75rem', whiteSpace:'normal', wordBreak:'break-word' }}>{s.last_payment_date ? new Date(s.last_payment_date).toLocaleDateString() : ''}</td>
+ <td style={{ padding:'8px 10px', color:'var(--sub)', fontSize:'.75rem', whiteSpace:'normal', wordBreak:'break-word' }}>{s.expiry_date ? new Date(s.expiry_date).toLocaleDateString() : ''}</td>
+ <td style={{ padding:'8px 10px', fontSize:'.75rem', whiteSpace:'normal', wordBreak:'break-word', fontWeight:600 }}>
  {(() => { if(!s.expiry_date) return <span style={{color:'var(--sub)'}}>-</span>; const d = Math.ceil((new Date(s.expiry_date)-new Date())/86400000); if (d > 0) return <span style={{color: d<=1 ? '#fbbf24' : '#34d399'}}>{d} day{d!==1?'s':''} left</span>; return <span style={{color:'#f87171'}}>Expired {Math.abs(d)}d ago</span>; })()}
  </td>
- <td style={{ padding:'10px 14px' }}>
+ <td style={{ padding:'8px 10px' }}>
  <div style={{ display:'flex', gap:'6px' }}>
  {s.status !== 'locked'
  ? <button onClick={()=>lockUser(s.user_id)} disabled={acting===s.user_id}

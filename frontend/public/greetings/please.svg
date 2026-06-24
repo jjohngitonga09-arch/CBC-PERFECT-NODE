@@ -1,0 +1,68 @@
+<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" font-family="Arial Rounded MT Bold, Arial, sans-serif">
+  <rect width="300" height="210" fill="#FEF9F0"/>
+
+  <!-- Classroom wall -->
+  <rect width="300" height="210" fill="#FFFBF0"/>
+  <!-- Chalkboard on wall -->
+  <rect x="60" y="8" width="180" height="56" rx="6" fill="#2E7D32"/>
+  <rect x="64" y="12" width="172" height="48" rx="4" fill="#388E3C"/>
+  <text x="150" y="40" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Our Classroom</text>
+  <line x1="70" y1="48" x2="230" y2="48" stroke="white" stroke-width="1" opacity="0.4"/>
+
+  <!-- ── DESK (shared, across middle) ── -->
+  <rect x="55" y="140" width="190" height="20" rx="6" fill="#D4A76A"/>
+  <rect x="55" y="157" width="14" height="32" rx="4" fill="#B8864E"/>
+  <rect x="231" y="157" width="14" height="32" rx="4" fill="#B8864E"/>
+  <!-- Pencil on desk belonging to kid B -->
+  <rect x="174" y="132" width="42" height="8" rx="3" fill="#FFD700"/>
+  <polygon points="216,132 224,136 216,140" fill="#FF6B35"/>
+  <rect x="171" y="132" width="5" height="8" rx="1" fill="#C0C0C0"/>
+  <!-- Eraser end -->
+  <rect x="169" y="133" width="4" height="6" rx="1" fill="#FF9999"/>
+
+  <!-- ── KID A (left, asking, reaching hand out) x≈85 ── -->
+  <rect x="68" y="106" width="26" height="34" rx="5" fill="#3B6FDB"/>
+  <path d="M74 106 L81 112 L88 106" fill="white" stroke="white" stroke-width="1"/>
+  <rect x="70" y="136" width="12" height="8" rx="2" fill="#1a1a1a"/>
+  <rect x="84" y="136" width="12" height="8" rx="2" fill="#1a1a1a"/>
+  <rect x="76" y="98" width="10" height="10" rx="3" fill="#C17F4B"/>
+  <circle cx="81" cy="84" r="16" fill="#C17F4B"/>
+  <path d="M65 82 Q81 63 97 82 L96 75 Q81 58 66 75 Z" fill="#2c1810"/>
+  <circle cx="75" cy="82" r="2.8" fill="#1a1a1a"/>
+  <circle cx="87" cy="82" r="2.8" fill="#1a1a1a"/>
+  <circle cx="76" cy="81" r="1" fill="white"/>
+  <circle cx="88" cy="81" r="1" fill="white"/>
+  <!-- Hopeful smile -->
+  <path d="M74 90 Q81 97 88 90" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Arm reaching across desk for pencil -->
+  <line x1="93" y1="118" x2="164" y2="132" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="167" cy="133" r="7" fill="#C17F4B"/>
+  <!-- Other arm down -->
+  <line x1="69" y1="118" x2="58" y2="132" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- ── SPEECH BUBBLE kid A ── -->
+  <rect x="2" y="34" width="152" height="40" rx="12" fill="white" stroke="#3B6FDB" stroke-width="2.5"/>
+  <polygon points="76,74 64,86 86,74" fill="white"/>
+  <polygon points="76,74 64,86 86,74" fill="none" stroke="#3B6FDB" stroke-width="1.5"/>
+  <text x="78" y="53" text-anchor="middle" font-size="9" font-weight="bold" fill="#3B6FDB">Please give me</text>
+  <text x="78" y="66" text-anchor="middle" font-size="9" font-weight="bold" fill="#3B6FDB">a pencil 🙏</text>
+
+  <!-- ── KID B (right, has pencil, looking at kid A) x≈215 ── -->
+  <rect x="202" y="106" width="26" height="34" rx="5" fill="#10B981"/>
+  <path d="M208 106 L215 112 L222 106" fill="white" stroke="white" stroke-width="1"/>
+  <rect x="204" y="136" width="12" height="8" rx="2" fill="#1a1a1a"/>
+  <rect x="218" y="136" width="12" height="8" rx="2" fill="#1a1a1a"/>
+  <rect x="210" y="98" width="10" height="10" rx="3" fill="#8D5524"/>
+  <circle cx="215" cy="84" r="16" fill="#8D5524"/>
+  <path d="M199 82 Q215 63 231 82 L230 75 Q215 58 200 75 Z" fill="#2c1810"/>
+  <circle cx="209" cy="82" r="2.8" fill="#1a1a1a"/>
+  <circle cx="221" cy="82" r="2.8" fill="#1a1a1a"/>
+  <circle cx="210" cy="81" r="1" fill="white"/>
+  <circle cx="222" cy="81" r="1" fill="white"/>
+  <!-- Friendly smile, looking at kid A -->
+  <path d="M208 91 Q215 98 222 91" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M210 91 Q215 96 220 91" fill="white"/>
+  <!-- Arm with pencil, offering it -->
+  <line x1="203" y1="118" x2="185" y2="130" stroke="#8D5524" stroke-width="6" stroke-linecap="round"/>
+  <line x1="227" y1="118" x2="238" y2="132" stroke="#8D5524" stroke-width="6" stroke-linecap="round"/>
+</svg>

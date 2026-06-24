@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import api from '../../services/api'
 import useAuthStore from '../../store/authStore'
 import KpiCard from '../../components/dashboard/KpiCard'
+import InviteCard from '../../components/student/InviteCard'
 import StatRow from '../../components/dashboard/StatRow'
 import Spinner from '../../components/common/Spinner'
 import toast from 'react-hot-toast'
@@ -72,10 +73,10 @@ export default function ParentHome() {
  if (s.status === 'fulfilled') {
  const d = s.value.data
  setActivity([
- d.dailyStreak != null && { icon:'~', label:`${d.dailyStreak}-day learning streak` },
- d.starsEarned != null && { icon:'*', label:`${d.starsEarned} stars earned total` },
- d.videosWatched7d != null && { icon:'V', label:`${d.videosWatched7d} videos this week` },
- d.badges != null && { icon:'#', label:`${d.badges} badges unlocked` },
+ d.dailyStreak != null && { icon:'🔥', label:`${d.dailyStreak}-day learning streak` },
+ d.starsEarned != null && { icon:'⭐', label:`${d.starsEarned} stars earned total` },
+ d.videosWatched7d != null && { icon:'📹', label:`${d.videosWatched7d} videos this week` },
+ d.badges != null && { icon:'🏅', label:`${d.badges} badges unlocked` },
  ].filter(Boolean))
  }
  }).finally(() => { setLoading(false); setKpiLoading(false) })
@@ -160,7 +161,7 @@ export default function ParentHome() {
  borderRadius:'14px',padding:'14px 18px',marginBottom:'20px',
  display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px',flexWrap:'wrap'}}>
  <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
- <span style={{fontSize:'1.5rem'}}></span>
+ <span style={{fontSize:'1.5rem'}}>⚠</span>
  <div>
  <p style={{fontWeight:700,color:'#fbbf24',margin:'0 0 2px'}}>Subscription expires in {daysLeft} day{daysLeft!==1?'s':''}</p>
  <p style={{fontSize:'.82rem',color:'var(--sub)',margin:0}}>Renew now to avoid interrupting {activeChild?.name?.split(' ')[0]}'s learning</p>
@@ -178,7 +179,7 @@ export default function ParentHome() {
  {subStatus === 'active' && (daysLeft == null || daysLeft > 7) && (
  <div style={{background:'rgba(16,185,129,0.08)',border:'1px solid rgba(16,185,129,0.25)',
  borderRadius:'14px',padding:'14px 18px',marginBottom:'20px',display:'flex',alignItems:'center',gap:'12px'}}>
- <span style={{fontSize:'1.5rem'}}></span>
+ <span style={{fontSize:'1.5rem'}}>✅</span>
  <div>
  <p style={{fontWeight:700,color:'#34d399',margin:'0 0 2px'}}>Subscription active</p>
  <p style={{fontSize:'.85rem',color:'var(--sub)',margin:0}}>
@@ -197,10 +198,10 @@ export default function ParentHome() {
  </div>
  ) : (
  <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(145px,1fr))',gap:'12px',marginBottom:'24px'}}>
- <KpiCard icon="%" label="Progress" value={`${kpis?.childProgress??0}%`} color="brand" />
- <KpiCard icon="M" label="Unread Msgs" value={kpis?.unreadMessages??0} color="yellow" />
- <KpiCard icon="~" label="Day Streak" value={`${kpis?.learningStreak??0}d`} color="green" />
- <KpiCard icon="" label="Videos (7d)" value={kpis?.engagement?.videosWatched??0} color="blue" />
+ <KpiCard icon="📊" label="Progress" value={`${kpis?.childProgress??0}%`} color="brand" />
+ <KpiCard icon="💬" label="Unread Msgs" value={kpis?.unreadMessages??0} color="yellow" />
+ <KpiCard icon="🔥" label="Day Streak" value={`${kpis?.learningStreak??0}d`} color="green" />
+ <KpiCard icon="📹" label="Videos (7d)" value={kpis?.engagement?.videosWatched??0} color="blue" />
  </div>
  )}
 
@@ -332,7 +333,7 @@ export default function ParentHome() {
  </p>
  </div>
                 <button onClick={(e) => { e.stopPropagation(); useAsChildHandler(child) }} disabled={switchingId === child.id} style={{background:'rgba(99,102,241,0.1)',border:'1px solid rgba(99,102,241,0.25)',color:'#a5b4fc',borderRadius:'8px',padding:'6px 12px',fontWeight:700,fontSize:'.75rem',cursor: switchingId === child.id ? 'default' : 'pointer', flexShrink:0}}>{switchingId === child.id ? 'Switching...' : 'Use as ' + child.name.split(' ')[0]}</button>
- <span style={{color:'var(--sub)',fontSize:'.8rem'}}>{expanded===child.id?'^':'v'}</span>
+  <span style={{color:'var(--sub)',fontSize:'.85rem',marginLeft:'4px',transition:'transform .2s'}}>{expanded===child.id ? '▲' : '▼'}</span>
  </div>
  {expanded === child.id && (
  <div style={{padding:'16px',borderTop:'1px solid var(--border)',display:'flex',flexDirection:'column',gap:'16px'}}>
@@ -368,13 +369,16 @@ export default function ParentHome() {
  ))}
  </div>
 
+ {/* Invite Card */}
+ <InviteCard />
+
  {/* Quick links */}
  <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(130px,1fr))',gap:'10px'}}>
  {[
- {to:`/parent/child/${activeId}/progress`, icon:'', label:'Progress'},
- {to:`/parent/child/${activeId}/messages`, icon:'', label:'Messages'},
- {to:'/parent/subscription', icon:'', label:'Subscription'},
- {to:'/parent/notifications', icon:'', label:'Notifications'},
+  {to:"/parent/child/"+activeId+"/progress", icon:'📈', label:'Progress'},
+  {to:"/parent/child/"+activeId+"/messages", icon:'💬', label:'Messages'},
+  {to:'/parent/subscription', icon:'💳', label:'Subscription'},
+  {to:'/parent/notifications', icon:'🔔', label:'Notifications'},
  ].map(l => (
  <Link key={l.to} to={l.to}
  style={{...card,textAlign:'center',textDecoration:'none',padding:'16px 10px',transition:'background 0.15s,border-color 0.15s'}}

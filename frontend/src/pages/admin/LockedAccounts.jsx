@@ -11,7 +11,7 @@ const h2style = { fontSize:'1rem', fontWeight:700, color:'var(--text)', margin:'
 
 function Badge({ label, bg, fg }) {
  return (
- <span style={{ fontSize:'.68rem', fontWeight:700, padding:'3px 10px', borderRadius:20, background:bg, color:fg, whiteSpace:'nowrap' }}>
+ <span style={{ fontSize:'.68rem', fontWeight:700, padding:'3px 10px', borderRadius:20, background:bg, color:fg, whiteSpace:'normal', wordBreak:'break-word' }}>
  {label}
  </span>
  )
@@ -195,8 +195,8 @@ export default function LockedAccounts() {
  )}
 
  {!loading && !error && filtered.length > 0 && (
- <div style={{ overflowX:'auto' }}>
- <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.875rem' }}>
+ <div style={{ overflowX:'auto', maxWidth:'100%', WebkitOverflowScrolling:'touch' }}>
+ <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'.875rem' , fontSize:'.78rem'}}>
  <thead>
  <tr style={{ borderBottom:'1px solid var(--border)' }}>
  {['User','Role','Status','Locked Since','Actions'].map(h => (

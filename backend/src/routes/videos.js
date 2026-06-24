@@ -148,4 +148,55 @@ router.delete("/:id", requireAuth, async (req, res) => {
   }
 });
 
+
+// GET comments for a video
+router.get("/:id/comments", requireAuth, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT c.*, u.name as user_name, u.role as user_role
+       FROM video_comments c
+       JOIN users u ON u.id = c.user_id
+       WHERE c.video_id = $1
+       ORDER BY c.created_at ASC`,
+      [req.params.id]
+    );
+    res.json(result.rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// POST add a comment
+router.post("/:id/comments", requireAuth, async (req, res) => {
+  try {
+    const { content, parent_id } = req.body;
+    if (!content?.trim()) return res.status(400).json({ error: "Comment cannot be empty" });
+    const result = await pool.query(
+      `INSERT INTO video_comments (video_id, user_id, content, parent_id)
+       VALUES ($1, $2, $3, $4) RETURNING *`,
+      [req.params.id, req.user.id, content.trim(), parent_id || null]
+    );
+    const full = await pool.query(
+      `SELECT c.*, u.name as user_name, u.role as user_role
+       FROM video_comments c JOIN users u ON u.id = c.user_id
+       WHERE c.id = $1`,
+      [result.rows[0].id]
+    );
+    res.status(201).json(full.rows[0]);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// DELETE a comment
+router.delete("/:id/comments/:commentId", requireAuth, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "SELECT * FROM video_comments WHERE id = $1",
+      [req.params.commentId]
+    );
+    if (!rows[0]) return res.status(404).json({ error: "Comment not found" });
+    if (rows[0].user_id !== req.user.id && req.user.role !== "admin" && req.user.role !== "teacher")
+      return res.status(403).json({ error: "Not allowed" });
+    await pool.query("DELETE FROM video_comments WHERE id = $1", [req.params.commentId]);
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 module.exports = router;
+

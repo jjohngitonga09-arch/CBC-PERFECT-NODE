@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import api from '../../services/api'
 import useAuthStore from '../../store/authStore'
 import KpiCard from '../../components/dashboard/KpiCard'
+import InviteCard from '../../components/student/InviteCard'
 import Spinner from '../../components/common/Spinner'
 import toast from 'react-hot-toast'
 
@@ -235,6 +236,9 @@ export default function StudentHome() {
  </div>
  )}
  </div>
+
+ {/* Invite Card */}
+ <InviteCard />
 
  {/* Latest videos */}
  {videos.length>0&&(

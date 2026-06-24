@@ -1,0 +1,97 @@
+<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" font-family="Arial Rounded MT Bold, Arial, sans-serif">
+  <defs>
+    <linearGradient id="s-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E0E7FF"/>
+      <stop offset="100%" stop-color="#EEF2FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="210" fill="url(#s-sky)"/>
+
+  <!-- Ground / playground -->
+  <rect y="158" width="300" height="52" fill="#C4A26E"/>
+  <rect y="155" width="300" height="9" fill="#D4B483"/>
+  <!-- Gravel texture dots -->
+  <circle cx="30"  cy="170" r="2" fill="#B8904A" opacity="0.6"/>
+  <circle cx="80"  cy="178" r="2" fill="#B8904A" opacity="0.6"/>
+  <circle cx="140" cy="165" r="2" fill="#B8904A" opacity="0.6"/>
+  <circle cx="200" cy="172" r="2" fill="#B8904A" opacity="0.6"/>
+  <circle cx="260" cy="168" r="2" fill="#B8904A" opacity="0.6"/>
+
+  <!-- ── FALLEN CHILD (center-left, lying, one leg scraped) ── -->
+  <!-- Body lying at angle on ground -->
+  <g transform="rotate(-20,150,155)">
+    <!-- Shirt -->
+    <rect x="90" y="148" width="60" height="24" rx="6" fill="#F97316"/>
+    <!-- Head -->
+    <circle cx="88" cy="140" r="16" fill="#C17F4B"/>
+    <!-- Hair -->
+    <path d="M72 138 Q88 120 104 138 L103 131 Q88 114 73 131 Z" fill="#2c1810"/>
+    <!-- Eyes - one crying, scrunched -->
+    <path d="M81 136 Q84 133 87 136" stroke="#1a1a1a" stroke-width="2.5" fill="none"/>
+    <path d="M89 136 Q92 133 95 136" stroke="#1a1a1a" stroke-width="2.5" fill="none"/>
+    <!-- Tears -->
+    <ellipse cx="83" cy="141" rx="2" ry="3.5" fill="#6BBBEE" opacity="0.8"/>
+    <ellipse cx="93" cy="141" rx="2" ry="3.5" fill="#6BBBEE" opacity="0.8"/>
+    <!-- Open mouth (crying) -->
+    <path d="M82 147 Q88 154 94 147" stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Shorts -->
+    <rect x="92" y="170" width="22" height="16" rx="4" fill="#1a1a1a"/>
+    <rect x="116" y="170" width="22" height="16" rx="4" fill="#1a1a1a"/>
+    <!-- Legs (one straight, one bent from fall) -->
+    <line x1="100" y1="184" x2="95" y2="200" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+    <line x1="128" y1="182" x2="148" y2="175" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+    <!-- SCRAPED KNEE (on right leg) -->
+    <ellipse cx="150" cy="174" rx="8" ry="6" fill="#FF9999"/>
+    <ellipse cx="150" cy="174" rx="5" ry="4" fill="#EF4444"/>
+    <!-- Pain lines around knee -->
+    <line x1="160" y1="168" x2="165" y2="164" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+    <line x1="162" y1="172" x2="168" y2="170" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+    <line x1="160" y1="178" x2="166" y2="180" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+    <!-- Arms splayed from fall -->
+    <line x1="92" y1="158" x2="76" y2="162" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+    <line x1="148" y1="162" x2="162" y2="155" stroke="#C17F4B" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- ── FRIEND (right, kneeling, concerned expression) x≈230 ── -->
+  <!-- Kneeling body -->
+  <!-- Shirt (purple) -->
+  <rect x="208" y="120" width="26" height="28" rx="5" fill="#8B5CF6"/>
+  <!-- Dark shorts, knees bent -->
+  <rect x="210" y="145" width="10" height="14" rx="3" fill="#2c2c2c" transform="rotate(15,210,145)"/>
+  <rect x="222" y="145" width="10" height="14" rx="3" fill="#2c2c2c" transform="rotate(-10,232,145)"/>
+  <!-- Feet on ground -->
+  <ellipse cx="208" cy="164" rx="10" ry="5" fill="#4a2c0a"/>
+  <ellipse cx="232" cy="168" rx="10" ry="5" fill="#4a2c0a"/>
+  <!-- Neck -->
+  <rect x="216" y="112" width="10" height="10" rx="3" fill="#8D5524"/>
+  <!-- Head slightly tilted with concern -->
+  <circle cx="221" cy="97" r="16" fill="#8D5524"/>
+  <!-- Hair -->
+  <path d="M205 95 Q221 76 237 95 L236 88 Q221 70 206 88 Z" fill="#2c1810"/>
+  <!-- Worried eyebrows -->
+  <path d="M213 89 Q218 85 222 89" stroke="#2c1810" stroke-width="2.5" fill="none"/>
+  <path d="M220 89 Q225 85 229 89" stroke="#2c1810" stroke-width="2.5" fill="none"/>
+  <!-- Worried eyes (wide open) -->
+  <circle cx="214" cy="93" r="3.2" fill="#1a1a1a"/>
+  <circle cx="228" cy="93" r="3.2" fill="#1a1a1a"/>
+  <circle cx="215" cy="92" r="1.2" fill="white"/>
+  <circle cx="229" cy="92" r="1.2" fill="white"/>
+  <!-- Concerned open mouth -->
+  <path d="M213 101 Q221 107 229 101" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Arms reaching down to help -->
+  <line x1="209" y1="128" x2="194" y2="148" stroke="#8D5524" stroke-width="6" stroke-linecap="round"/>
+  <line x1="233" y1="126" x2="240" y2="144" stroke="#8D5524" stroke-width="6" stroke-linecap="round"/>
+  <!-- Hand reaching to help fallen child -->
+  <circle cx="192" cy="150" r="7" fill="#8D5524"/>
+
+  <!-- ── SORRY SPEECH BUBBLE (from friend) ── -->
+  <rect x="144" y="30" width="154" height="54" rx="14" fill="#EF4444" stroke="#B91C1C" stroke-width="2.5"/>
+  <polygon points="220,84 208,98 232,84" fill="#EF4444"/>
+  <polygon points="220,84 208,98 232,84" fill="none" stroke="#B91C1C" stroke-width="1.5"/>
+  <text x="221" y="54" text-anchor="middle" font-size="15" font-weight="bold" fill="white">Sorry! 😟</text>
+  <text x="221" y="73" text-anchor="middle" font-size="9.5" font-weight="bold" fill="white">Are you okay?</text>
+
+  <!-- Pain stars near knee -->
+  <text x="170" y="148" font-size="14" opacity="0.8">✨</text>
+  <text x="180" y="140" font-size="10" opacity="0.7">⭐</text>
+</svg>

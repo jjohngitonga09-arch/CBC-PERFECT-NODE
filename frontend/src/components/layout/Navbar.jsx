@@ -75,6 +75,17 @@ export default function Navbar() {
         .ham-open .line2 { opacity: 0; width: 0; }
         .ham-open .line3 { transform: translateY(-6px) rotate(-45deg); }
         @media(max-width:360px) { .hide-xs { display: none !important; } }
+        .days-left-btn {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          border-radius: 20px;
+          padding: 4px 10px;
+          border: none;
+          cursor: pointer;
+          transition: opacity 0.15s, transform 0.15s;
+        }
+        .days-left-btn:hover { opacity: 0.85; transform: scale(1.04); }
       `}</style>
 
       <nav style={{
@@ -123,11 +134,18 @@ export default function Navbar() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
 
             {(role === 'student' || role === 'guardian') && daysLeft !== null && (
-              <div className="hide-xs" style={{ display: 'flex', alignItems: 'center', gap: '5px', background: daysLeft <= 1 ? 'rgba(251,191,36,0.15)' : 'rgba(16,185,129,0.15)', borderRadius: '20px', padding: '4px 10px' }}>
-                <span style={{ fontSize: '.72rem', fontWeight: 700, color: daysLeft <= 1 ? '#fbbf24' : '#34d399' }}>
+              <button
+                className="hide-xs days-left-btn"
+                onClick={() => nav('/student/subscription')}
+                title="Click to manage your subscription"
+                style={{
+                  background: daysLeft <= 3 ? 'rgba(239,68,68,0.15)' : daysLeft <= 7 ? 'rgba(251,191,36,0.15)' : 'rgba(16,185,129,0.15)',
+                }}
+              >
+                <span style={{ fontSize: '.72rem', fontWeight: 700, color: daysLeft <= 3 ? '#ef4444' : daysLeft <= 7 ? '#fbbf24' : '#34d399' }}>
                   {isTrial ? '🎁 Trial: ' : ''}{daysLeft} day{daysLeft !== 1 ? 's' : ''} left
                 </span>
-              </div>
+              </button>
             )}
 
             {/* Role pill */}

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+﻿import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from './context/ThemeContext'
 import { useEffect } from 'react'
@@ -32,6 +32,7 @@ import WorldExplorer from './pages/student/WorldExplorer'
 import StudentMessages from './pages/student/Messages'
 import StudentSubscription from './pages/student/Subscription'
 import StudentSettings from './pages/student/Settings'
+import StudentInvite from './pages/student/Invite'
 import GuardianChildren from './pages/guardian/Children'
 import Profile from './pages/shared/Profile'
 import Notifications from './pages/shared/Notifications'
@@ -112,6 +113,7 @@ function AppRoutes() {
  <Route path="/student/world-explorer" element={<WorldExplorer />} />
  <Route path="/student/messages" element={<StudentMessages />} />
  <Route path="/student/subscription" element={<StudentSubscription />} />
+                 <Route path="/student/invite" element={<StudentInvite />} />
  <Route path="/student/settings" element={<StudentSettings />} />
  <Route path="/student/notifications" element={<Notifications />} />
  <Route path="/student/leaderboard" element={<Leaderboard />} />

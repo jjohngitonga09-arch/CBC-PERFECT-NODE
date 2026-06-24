@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+﻿import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 const GRADES = ["PP1","PP2","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6","Grade 7","Grade 8","Grade 9"];
@@ -24,6 +24,8 @@ export default function Signup() {
  const [error, setError] = useState("");
  const [form, setForm] = useState({ name:"", username:"", email:"", phone:"", password:"", grade:"", national_id:"", tsc_number:"" });
  const navigate = useNavigate();
+ const [searchParams] = useSearchParams();
+ const refCode = searchParams.get("ref") || "";
 
  const f = (k,v) => setForm(p => ({...p,[k]:v}));
 
@@ -44,7 +46,7 @@ export default function Signup() {
   if (form.password !== confirmPassword) { setError("Passwords do not match"); return; }
   setError(""); setLoading(true);
   try {
-   const res = await axios.post("/api/auth/register", { ...form, role });
+   const res = await axios.post("/api/auth/register", { ...form, role, referral_code: refCode });
    if (res.data.requiresOtp) {
     setUserId(res.data.userId);
     setStep(2);
@@ -144,7 +146,7 @@ export default function Signup() {
        </div>
       </div>
 
-      {/* Row 2: Email + Phone — Teacher and Parent only */}
+      {/* Row 2: Email + Phone â€” Teacher and Parent only */}
       {role !== "student" && (
        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,220px),1fr))",gap:12,marginBottom:12}}>
         <div>
@@ -210,7 +212,7 @@ export default function Signup() {
          ["At least one number", /[0-9]/.test(form.password)],
         ].map(([label,met])=>(
          <div key={label} style={{display:"flex",alignItems:"center",gap:6,fontSize:".77rem",color:met?"#16a34a":"#9ca3af",marginBottom:2}}>
-          {met?"✓":"○"} {label}
+          {met?"âœ“":"â—‹"} {label}
          </div>
         ))}
        </div>
@@ -229,7 +231,7 @@ export default function Signup() {
        </div>
        {confirmPassword && (
         <div style={{fontSize:".78rem",marginTop:4,color:form.password===confirmPassword?"#16a34a":"#dc2626"}}>
-         {form.password===confirmPassword?"✓ Passwords match":"✗ Passwords do not match"}
+         {form.password===confirmPassword?"âœ“ Passwords match":"âœ— Passwords do not match"}
         </div>
        )}
       </div>
